@@ -17,8 +17,6 @@ def logout_view(request):
     return redirect('login')
 
 # Class-Based view (CBV)
-class MainPage(TemplateView):
-    template_name = 'main_page.html'
 
 class CustomLoginView(LoginView):
     template_name = 'login.html'

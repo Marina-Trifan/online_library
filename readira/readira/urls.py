@@ -18,9 +18,9 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls.i18n import i18n_patterns
 from django.conf import settings
-from django.views.i18n import language
-
-from user_account.views import MainPage, CustomLoginView, RegisterView, logout_view
+from django.views.i18n import set_language
+from library.views import MainPage
+from user_account.views import CustomLoginView, RegisterView, logout_view
 from django.contrib.auth.views import LogoutView
 from django.contrib.auth import logout
 
