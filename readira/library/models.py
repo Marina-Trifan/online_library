@@ -8,7 +8,8 @@ from django.contrib.auth.models import User
 
 class Author(models.Model):
     name = models.CharField(max_length = 255, verbose_name = _('Author'))
-    date_of_birth = models.DateField
+    date_of_birth = models.DateField(verbose_name=_('Date of Birth'), null=True)
+    written_genres = models.CharField(max_length = 255, verbose_name=_('Genres'), null=True)
     bio = models.TextField(verbose_name = _('About the author'))
 
     class Meta:
@@ -33,7 +34,7 @@ class ReadingMaterials(models.Model):
     genre = models.ForeignKey(Genre, on_delete = models.DO_NOTHING , verbose_name = _('Genre'))
     reading_material_type = models.ForeignKey(BookType, on_delete = models.DO_NOTHING , verbose_name = _('Type'))
     book_summary = models.TextField(verbose_name = _('Book Summary'))
-    # image = models.ImageField(upload_to = 'reading_materials/', verbose_name = _('Image'))
+    image = models.ImageField(upload_to = 'reading_materials/', verbose_name = _('Image'), null=True)
     enabled = models.BooleanField(default = True, verbose_name=('Enabled'))
 
     def average_rating(self):

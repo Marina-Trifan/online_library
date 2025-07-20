@@ -6,7 +6,7 @@ from .models import Author, ReadingMaterials, Review, Rating
 from user_account.forms import ReviewForm, RatingForm
 
 class MainPage(TemplateView):
-    template_name = 'main_page.html'
+    template_name = 'library/main_page.html'
 
 
 # Reading Materials View

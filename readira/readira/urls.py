@@ -19,7 +19,7 @@ from django.urls import path
 from django.conf.urls.i18n import i18n_patterns
 from django.conf import settings
 from django.views.i18n import set_language
-from library.views import AuthorListView, AuthorDetailView, ReadingMaterialsListView, ReadingMaterialsDetailView, ReviewCreateView, RatingCreateView
+from library.views import MainPage, AuthorListView, AuthorDetailView, ReadingMaterialsListView, ReadingMaterialsDetailView, ReviewCreateView, RatingCreateView
 from user_account.views import CustomLoginView, RegisterView, logout_view
 from django.contrib.auth.views import LogoutView
 from django.contrib.auth import logout
@@ -31,7 +31,7 @@ urlpatterns = [
 
 urlpatterns +=i18n_patterns (
     path('admin/', admin.site.urls),
-    path('', ReadingMaterialsListView.as_view(), name='reading_materials_list'),
+    path('', MainPage.as_view(), name='main_page'),
     path('materials/<int:pk>/', ReadingMaterialsDetailView.as_view(), name='reading_material_detail'),
     path('authors/', AuthorListView.as_view(), name='author_list'),
     path('authors/<int:pk>/', AuthorDetailView.as_view(), name='author_details'),
