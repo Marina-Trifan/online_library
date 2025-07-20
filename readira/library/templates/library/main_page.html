@@ -11,9 +11,9 @@
 
         <!-- Centre Section -->
         <div class="hidden md:flex space-x-6 items-center px-6">
-            <a href="/reading_materials" class="hover:bg-yellow-400 transition">Reading Materials</a>
+            <a href="{% url 'reading_materials' %}" class="hover:bg-yellow-400 transition">Reading Materials</a>
             <a href="/authors" class="hover:bg-yellow-400 transition">Authors</a>
-            <a href="/genres" class="hover:bg-yellow-400 transition">Genres</a>
+            <a href="{% url 'genre_list' %}" class="hover:bg-yellow-400 transition">Genres</a>
         </div>
 
         <!-- Right Section -->

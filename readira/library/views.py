@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import Author, ReadingMaterials, Review, Rating
+from .models import Author, ReadingMaterials, Review, Rating, Genre
 from user_account.forms import ReviewForm, RatingForm
 
 class MainPage(TemplateView):
@@ -33,6 +33,17 @@ class AuthorDetailView(DetailView):
     model = Author
     template_name = 'authors/detail.html'
     context_object_name = 'author'
+
+# Genre View
+class GenreListView(ListView):
+    model = Genre
+    template_name = 'genres/list.html'
+    context_object_name = 'genres'
+
+class GenreDetailView(DetailView):
+    model = Genre
+    template_name = 'genre/details.html'
+    context_object_name = 'genre'    
 
 # Review View
 
