@@ -1,6 +1,12 @@
+{% extends 'library/base.html' %}
+{% load i18n static %}
+
+{% block content %}
 <h2>Register</h2>
 
 <form method="post">
   {% csrf_token %} {{ form }}
   <button type="submit"> Sign Up </button>
 </form>
+
+{% endblock %}

@@ -4,8 +4,6 @@ from django.urls import reverse_lazy
 from django.views.generic import TemplateView, CreateView
 from django.contrib.auth.views import LoginView
 from django.contrib.auth import logout
-
-
 from user_account.forms import SignUpForm
 
 # functional view
