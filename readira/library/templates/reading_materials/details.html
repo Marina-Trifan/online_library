@@ -1,0 +1,37 @@
+{% extends "library/base.html" %}
+{% load i18n static %}
+
+{% block content %}
+  <h1>{{ material.title }}</h1>
+  <p><strong>Author:</strong> {{ material.author.name }}</p>
+  <p><strong>Genre:</strong> {{ material.genre.name }}</p>
+  <p><strong>Type:</strong> {{ material.reading_material_type.name }}</p>
+  <p><strong>Summary:</strong> {{ material.book_summary }}</p>
+
+  <h3>Average Rating: {{ material.average_rating }}</h3>
+  <h4>Rating Distribution:</h4>
+  <ul>
+    {% for star, count in material.rating_distribution.items %}
+      <li>{{ star }} star: {{ count }}</li>
+    {% endfor %}
+  </ul>
+
+  <hr>
+
+  <h3>Reviews:</h3>
+  {% for review in material.reviews.all %}
+    <div>
+      <strong>{{ review.user.username }}</strong>: {{ review.title }}
+      <p>{{ review.content }}</p>
+    </div>
+  {% empty %}
+    <p>No reviews yet.</p>
+  {% endfor %}
+
+  {% if user.is_authenticated %}
+    <a href="{% url 'create_review' material.pk %}">Leave a Review</a> |
+    <a href="{% url 'create_rating' material.pk %}">Rate this Book</a>
+  {% else %}
+    <p><a href="{% url 'login' %}">Login</a> to review or rate this material.</p>
+  {% endif %}
+{% endblock %}

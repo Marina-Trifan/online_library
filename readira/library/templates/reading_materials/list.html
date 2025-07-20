@@ -1,0 +1,17 @@
+{% extends "library/base.html" %}
+{% load i18n static %}
+
+{% block content %}
+  <h1>Reading Materials</h1>
+  <ul>
+    {% for material in materials %}
+      <li>
+        <a href="{% url 'reading_material_detail' material.pk %}">
+          {{ material.title }} by {{ material.author.name }}
+        </a>
+      </li>
+    {% empty %}
+      <li>No reading materials available.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

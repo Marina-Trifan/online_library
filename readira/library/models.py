@@ -33,6 +33,7 @@ class ReadingMaterials(models.Model):
     genre = models.ForeignKey(Genre, on_delete = models.DO_NOTHING , verbose_name = _('Genre'))
     reading_material_type = models.ForeignKey(BookType, on_delete = models.DO_NOTHING , verbose_name = _('Type'))
     book_summary = models.TextField(verbose_name = _('Book Summary'))
+    # image = models.ImageField(upload_to = 'reading_materials/', verbose_name = _('Image'))
     enabled = models.BooleanField(default = True, verbose_name=('Enabled'))
 
     def average_rating(self):
