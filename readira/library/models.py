@@ -10,6 +10,7 @@ class Author(models.Model):
     name = models.CharField(max_length = 255, verbose_name = _('Author'))
     date_of_birth = models.DateField(verbose_name=_('Date of Birth'), null=True)
     written_genres = models.CharField(max_length = 255, verbose_name=_('Genres'), null=True)
+    image = models.ImageField(upload_to = 'reading_materials/', verbose_name = _('Image'), null=True)
     bio = models.TextField(verbose_name = _('About the author'))
 
     class Meta:
