@@ -18,7 +18,7 @@ class Author(models.Model):
         verbose_name_plural = _('Authors')
 
     def __str__(self):
-        return {self.name}
+        return self.name
 
 
 class Genre(models.Model):
