@@ -3,7 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.db.transaction import atomic
 from library.models import Review, Rating
-from user_account.models import Profile
+from user_account.models import UserProfile
 
 
 class SignUpForm(UserCreationForm):
