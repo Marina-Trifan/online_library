@@ -29,7 +29,6 @@ class BookType(models.Model):
 class Author(models.Model):
     name = models.CharField(max_length=255, verbose_name=_('Author'), null=True, blank=True)
     surname = models.CharField(max_length=255, verbose_name=_('Surname'), null=True, blank=True)
-    role = models.CharField(max_length=255, verbose_name=_('Role Name'), null=True, blank=True)
     date_of_birth = models.DateField(verbose_name=_('Date of Birth'), null=True, blank=True)
     written_genres = models.CharField(max_length=255, verbose_name=_('Genres'), null=True, blank=True)
     image = models.ImageField(upload_to='authors/', verbose_name=_('Image'), null=True, blank=True)

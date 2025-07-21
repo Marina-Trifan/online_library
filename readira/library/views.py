@@ -1,6 +1,9 @@
 from django.shortcuts import render, get_object_or_404
+from django.shortcuts import redirect
+from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Author, ReadingMaterials, Review, Rating, Genre
 from user_account.forms import ReviewForm, RatingForm
@@ -29,10 +32,20 @@ class AuthorListView(ListView):
     template_name = 'authors/list.html'
     context_object_name = 'authors'
 
-class AuthorDetailView(DetailView):
+class AuthorDetailView(LoginRequiredMixin, DetailView):
     model = Author
-    template_name = 'authors/detail.html'
+    template_name = 'authors/details.html'
     context_object_name = 'author'
+    login_url = reverse_lazy('author_access_denied')
+    redirect_field_name = None
+    
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('author_access_denied')
+        return super().dispatch(request, *args, **kwargs)
+
+def author_access_denied(request):
+    return render(request, 'authors/access_denied.html')
 
 # Genre View
 class GenreListView(ListView):

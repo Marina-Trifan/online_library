@@ -20,7 +20,7 @@ from django.conf.urls.i18n import i18n_patterns
 from django.conf import settings
 from django.conf.urls.static import static
 from django.views.i18n import set_language
-from library.views import MainPage, AuthorListView, AuthorDetailView, ReadingMaterialsListView, ReadingMaterialsDetailView, ReviewCreateView, RatingCreateView, GenreListView, GenreDetailView
+from library.views import MainPage, AuthorListView, AuthorDetailView, ReadingMaterialsListView, ReadingMaterialsDetailView, ReviewCreateView, RatingCreateView, GenreListView, GenreDetailView, author_access_denied
 from user_account.views import CustomLoginView, RegisterView, logout_view
 from django.contrib.auth.views import LogoutView
 from django.contrib.auth import logout
@@ -36,7 +36,8 @@ urlpatterns +=i18n_patterns (
     path('materias/', ReadingMaterialsListView.as_view(), name='reading_materials'),
     path('materials/<int:pk>/', ReadingMaterialsDetailView.as_view(), name='reading_material_detail'),
     path('authors/', AuthorListView.as_view(), name='author_list'),
-    path('authors/<int:pk>/', AuthorDetailView.as_view(), name='author_details'),
+    path('author/<int:pk>/', AuthorDetailView.as_view(), name='author_details'),
+    path('author/access-denied/', author_access_denied, name='author_access_denied'),
     path('genres/', GenreListView.as_view(), name='genre_list'),
     path('genres/<int:pk>/', GenreDetailView.as_view(), name = 'genre_details'),
     path('materials/<int:pk>/review/', ReviewCreateView.as_view(), name='create_view'),
