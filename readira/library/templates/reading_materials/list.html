@@ -3,17 +3,21 @@
 
 
 {% block content %}
-<!-- <link href = '{%static "css/tailwind.css" %}' rel = 'stylesheet'>
-  <h1>Reading Materials</h1>
-  <ul>
-    {% for material in materials %}
-      <li>
-        <a class="bg-black" href="{% url 'reading_material_detail' material.pk %}">
-          {{ material.title }} by {{ material.author.name }}
-        </a>
-      </li>
+  <h1 class="text-4xl font-bold text-center mb-8">Your Next Read</h1>
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6 px-6 max-w-7xl mx-auto mb 32">
+    {% for reading_material in materials %}
+      <a href="{% url 'library:reading_material_detail' reading_material.pk %}" class="flex items-center bg-emerald-900 shadow-md rounded-lg p-4 text-black hover:bg-emerald-200 dark:bg-gray-600 dark:hover:bg-gray-200 transition duration-200 ">
+        {% if reading_material.image %}
+          <img src="{{reading_material.image.url}}" alt="{{ reading_material.title }}" class="w-48 h-50 rounded-lg object-cover shadow mr-4">
+        {% else %}
+          <div class="w-24 h-24 rounded-lg bg-gray-300 mx-auto mb-4 flex items-center justify-center text-sm text-gray-600 mr-4">
+            No Image
+          </div>
+        {% endif %}
+        <p class="text-lg font-medium text-black">{{reading_material.title}}</p>
+      </a>
     {% empty %}
-      <li>No reading materials available.</li>
+      <p class="'text-center col-span-full text-gray-500 dark:text-gray-400"> Nothing with that title.</p>
     {% endfor %}
-  </ul> -->
+  </div>
 {% endblock %}

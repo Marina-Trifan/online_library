@@ -22,7 +22,7 @@ class ReadingMaterialsListView(ListView):
 
 class ReadingMaterialsDetailView(DetailView):
     model=ReadingMaterials
-    template_name = 'reading-materials/detail.html'
+    template_name = 'reading_materials/details.html'
     context_object_name = 'material'
 
 # Author View
@@ -71,7 +71,7 @@ class ReviewCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy('Reading_material_detail', Kwargs = {'pk': self.kwargs['pk']})
+        return reverse_lazy('library:reading_material_detail', kwargs = {'pk': self.kwargs['pk']})
 
 
 # Rating View
@@ -87,4 +87,4 @@ class RatingCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy('reading_material_detail', kwargs={'pk': self.kwargs['pk']})
+        return reverse_lazy('library:reading_material_detail', kwargs={'pk': self.kwargs['pk']})

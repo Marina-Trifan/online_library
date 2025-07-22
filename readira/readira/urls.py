@@ -32,8 +32,8 @@ urlpatterns = [
 
 urlpatterns +=i18n_patterns (
     path('admin/', admin.site.urls),
-    path('library/', include('library.urls')),
-    path('user/', include('user_account.urls')),
+    path('library/', include('library.urls', namespace='library')),
+    path('user/', include('user_account.urls', namespace='user_account')),
 )
 
 if settings.DEBUG:
