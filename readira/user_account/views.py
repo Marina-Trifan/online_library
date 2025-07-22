@@ -25,7 +25,6 @@ def logout_view(request):
     return redirect('login')
 
 # Class-Based view (CBV)
-
 # class CustomLoginView(LoginView):
 #     template_name = 'login.html'
 #     success_url = reverse_lazy('index')
