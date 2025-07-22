@@ -48,10 +48,11 @@ class ReadingMaterials(models.Model):
     genre = models.ForeignKey(Genre, on_delete=models.DO_NOTHING, verbose_name=_('Genre'), null=True, blank=True)
     reading_material_type = models.ForeignKey(BookType, on_delete=models.DO_NOTHING, verbose_name=_('Type'), null=True, blank=True)
     book_summary = models.TextField(verbose_name=_('Book Summary'), null=True, blank=True)
+    release_date = models.DateField(verbose_name=_('Release Date'), null=True, blank=True)
     image = models.ImageField(upload_to='reading_materials/', verbose_name=_('Image'), null=True, blank=True)
     enabled = models.BooleanField(default=True, verbose_name=('Enabled'))
-    category = models.ForeignKey(Category, null=True, blank=True, on_delete=models.SET_NULL)
-    price = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0)], null=True, blank=True)
+    # category = models.ForeignKey(Category, null=True, blank=True, on_delete=models.SET_NULL)
+    # price = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0)], null=True, blank=True)
     availability = models.BooleanField(default=True)
 
     def average_rating(self):
