@@ -15,36 +15,25 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from django.conf.urls.i18n import i18n_patterns
 from django.conf import settings
 from django.conf.urls.static import static
 from django.views.i18n import set_language
-from library.views import MainPage, AuthorListView, AuthorDetailView, ReadingMaterialsListView, ReadingMaterialsDetailView, ReviewCreateView, RatingCreateView, GenreListView, GenreDetailView, author_access_denied
-from user_account.views import CustomLoginView, RegisterView, logout_view
+from library.views import MainPage
 from django.contrib.auth.views import LogoutView
 from django.contrib.auth import logout
 
 
 urlpatterns = [
+    path('', MainPage.as_view(), name='main_page'),
     path('set_language/', set_language, name = 'set_language'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns +=i18n_patterns (
     path('admin/', admin.site.urls),
-    path('', MainPage.as_view(), name='main_page'),
-    path('materias/', ReadingMaterialsListView.as_view(), name='reading_materials'),
-    path('materials/<int:pk>/', ReadingMaterialsDetailView.as_view(), name='reading_material_detail'),
-    path('authors/', AuthorListView.as_view(), name='author_list'),
-    path('author/<int:pk>/', AuthorDetailView.as_view(), name='author_details'),
-    path('author/access-denied/', author_access_denied, name='author_access_denied'),
-    path('genres/', GenreListView.as_view(), name='genre_list'),
-    path('genres/<int:pk>/', GenreDetailView.as_view(), name = 'genre_details'),
-    path('materials/<int:pk>/review/', ReviewCreateView.as_view(), name='create_view'),
-    path('materials/<int:pk>/rating', RatingCreateView.as_view(), name='create_rating'),
-    path("login/", CustomLoginView.as_view(), name="login"),
-    path("logout/", logout_view, name="logout"),
-    path("register/", RegisterView.as_view(), name="register"),
+    path('library/', include('library.urls')),
+    path('user/', include('user_account.urls')),
 )
 
 if settings.DEBUG:

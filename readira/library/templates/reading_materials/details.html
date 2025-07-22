@@ -32,6 +32,6 @@
     <a href="{% url 'create_review' material.pk %}">Leave a Review</a> |
     <a href="{% url 'create_rating' material.pk %}">Rate this Book</a>
   {% else %}
-    <p><a href="{% url 'login' %}">Login</a> to review or rate this material.</p>
+    <p><a href="{% url 'user_account:login' %}">Login</a> to review or rate this material.</p>
   {% endif %}
 {% endblock %}

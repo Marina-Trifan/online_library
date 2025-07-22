@@ -67,7 +67,7 @@ class ReviewCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.user = self.request.user
-        form.istance.book = get_object_or_404(ReadingMaterials, pk=self.kwargs['pk'])
+        form.instance.book = get_object_or_404(ReadingMaterials, pk=self.kwargs['pk'])
         return super().form_valid(form)
 
     def get_success_url(self):

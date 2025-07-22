@@ -4,8 +4,7 @@ from django.urls import reverse_lazy
 from django.views.generic import TemplateView, CreateView
 from django.contrib import messages
 from django.contrib.auth.models import User
-from django.contrib.auth.views import LoginView
-from django.contrib.auth import logout
+from django.contrib.auth import authenticate, login, logout
 from user_account.forms import SignUpForm
 
 
@@ -27,9 +26,9 @@ def logout_view(request):
 
 # Class-Based view (CBV)
 
-class CustomLoginView(LoginView):
-    template_name = 'login.html'
-    success_url = reverse_lazy('index')
+# class CustomLoginView(LoginView):
+#     template_name = 'login.html'
+#     success_url = reverse_lazy('index')
 
 
     
