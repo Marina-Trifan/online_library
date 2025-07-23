@@ -80,5 +80,6 @@ def profile_view(request):
 
     return render(request, 'user_account/profile.html', {
         'profile_form': profile_form,
-        'password_form': password_form
+        'password_form': password_form,
+        'user_city': user.profile.city if hasattr(user, 'profile') and user.profile.city else '',
     })

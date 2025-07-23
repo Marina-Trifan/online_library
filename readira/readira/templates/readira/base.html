@@ -33,9 +33,7 @@
     </script>
 </head>
 <body class="h-full flex flex-col bg-black text-white transition-colors duration-300" id = "theme-root">
-    <div id="weather-widget" class="bg-blue-100 dark:bg-zinc-800 text-blue-900 dark:text-blue-200 px-4 py-2 text-sm flex justify-between items-center">
-        <span id="weather-info">Fetching weather...</span>
-    </div>
+
 
 <!-- Header-->
     <header class="fixed top-0 left-0 right-0 top-0 z-50 bg-zinc-800 text-white shadow">
@@ -99,21 +97,27 @@
         {% endblock %}
     </main>
 
-<!-- Footer -->
-    <footer class="bg-zinc-900 text-center text-white py-4 ">
-        <div class="container mx-auto px-6 flex flex-col items-start gap-2">
-            <p class="w-full text-left mb-2 font-semibold text-lg">Contact us</p>
-            <p>
-                <i class="ph ph-phone text-lg"></i>
-                + 40 740 123 456
-            </p>
-            <p>
-                <i class="ph ph-envelope-simple text-lg"></i>
-                contact@readira.ro
-            </p>
-        </div>
 
-    </footer>
+<!-- Footer -->
+<footer class="bg-zinc-900 text-white py-4">
+  <div class="container mx-auto px-6 flex flex-col gap-2">
+    <p id="weather-text" class="text-sm text-blue-300">
+      Weather info loading...
+    </p>
+
+    <div class="flex flex-col items-start">
+      <p class="text-left mb-2 font-semibold text-lg">Contact us</p>
+      <p>
+        <i class="ph ph-phone text-lg"></i>
+        + 40 740 123 456
+      </p>
+      <p>
+        <i class="ph ph-envelope-simple text-lg"></i>
+        contact@readira.ro
+      </p>
+    </div>
+  </div>
+</footer>
     <script>
         function toggleTheme() {
             const html = document.documentElement;
@@ -143,36 +147,22 @@
 
     </script>
     <script>
-        document.addEventListener("DOMContentLoaded", async () => {
-            const city = "{{ user_city|escapejs }}";
-            if (!city) {
-            document.getElementById("weather-info").textContent = "Weather info unavailable.";
-            return;
-            }
-            try {
-            // Step 1: Get coordinates from city
-            const geoRes = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1`);
-            const geoData = await geoRes.json();
-            const location = geoData.results?.[0];
-            if (!location) {
-                document.getElementById("weather-info").textContent = `Weather not found for ${city}`;
-                return;
-            }
-            const lat = location.latitude;
-            const lon = location.longitude;
-            // Step 2: Get current weather
-            const weatherRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`);
-            const weatherData = await weatherRes.json();
-            const weather = weatherData.current_weather;
-            const temperature = weather.temperature;
-            const windspeed = weather.windspeed;
-            const condition = weather.weathercode;
-            document.getElementById("weather-info").textContent = `Weather in ${city}: ${temperature}°C, Wind ${windspeed} km/h`;
-            } catch (error) {
-            document.getElementById("weather-info").textContent = "Weather fetch failed.";
-            console.error(error);
-            }
-        });
+    document.addEventListener("DOMContentLoaded", async () => {
+      const city = "{{ user_city|escapejs }}";
+      if (!city) {
+        document.getElementById("weather-text").textContent = "City not set.";
+        return;
+      }
+
+      try {
+        const response = await fetch(`https://wttr.in/${encodeURIComponent(city)}?format=Weather+in+%l:+%t,+%w`);
+        const weatherText = await response.text();
+        document.getElementById("weather-text").textContent = weatherText;
+      } catch (e) {
+        document.getElementById("weather-text").textContent = "Failed to fetch weather.";
+        console.error(e);
+      }
+    });
     </script>
 </body>
 </html>
