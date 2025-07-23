@@ -32,87 +32,80 @@
         }
     </script>
 </head>
-<body class = 'h-full flex flex-col bg-black text-white transition-colors duration-300' id = 'theme-root'>
+<body class="h-full flex flex-col bg-black text-white transition-colors duration-300" id = "theme-root">
 
 <!-- Header-->
-    <header class='sticky top-0 z-50 bg-zinc-900 text-white px-6 py-3 flex items-center justify-between shadow'>
-    
-        <!-- Left Section -->
-        <div class = 'text-2xl font-bold'>
-            <a href = '/' class='hover:bg-green-600 px-1 rounded'>READIRA</a>
-        </div>
+    <header class="fixed top-0 left-0 right-0 top-0 z-50 bg-zinc-800 text-white shadow">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+            <!-- Left Section -->
+             <div class="flex items-center space-x-20">
+                <a href="/" class="text-3xl font-bold hover:text-green-600">READIRA</a>
 
-        <!-- Right Section -->
-        <div class="hidden md:flex items-center space-x-4">
-            <!-- Language Switcher -->
-            <form action='{% url "set_language" %}' method='post'>
-                {% csrf_token%}
-                <select name='language' onchange='this.form.submit()'
-                    class="bg-zinc-600 text-white text-sm px-2 py-1 rounded-md transition-colors duration-300">    
-                    <option value='en' {% if LANGUAGE_CODE == 'en' %}selected{% endif %}>EN</option>
-                    <option value='ro' {% if LANGUAGE_CODE == 'ro' %}selected{% endif %}>RO</option>
-                </select>
-            </form>
-
-            <!-- Authentication buttons -->
-            {% if user.is_authenticated %}
-                <span class="px-4 text-sm text-white">Welcome, {{ user.username }}</span>
-                <a href="{% url 'user_account:profile' %}" class="px-4 py-2 bg-zinc-500 text-white rounded-xl text-sm">Profile</a>
-                <a href="{% url 'user_account:logout' %}" class="px-4 py-2 bg-zinc-800 text-white rounded-xl text-sm">Log Out</a>
-            {% else %}
-                <a href="{% url 'user_account:login' %}" class="px-4 py-2 bg-green-800 text-white rounded-xl text-sm">Log In</a>
-                <a href="{% url 'user_account:register' %}" class="px-4 py-2 bg-yellow-400 text-black rounded-xl text-sm font-semibold">Sign Up</a>
-            {% endif %}
-            
-            <!-- Theme toggle -->
-            <button onclick="toggleTheme()" class="text-xl hover:text-yellow-400 transition" title="Toggle theme">
-                <i id="theme-icon" class="ph ph-moon"></i>
-            </button>
-        </div>
-    </header>
-    <nav class = 'sticky top-0 z-50 bg-orange-200 w-full mt-0 mb-0 text-black shadow'>
-        <div class="flex items-center justify-between py-3 flex">
-            
-
-            <!-- Centre Section -->
-            <div class="hidden md:flex space-x-6 items-center px-6">
-                <a href="{% url 'library:reading_materials' %}" class="hover:bg-yellow-400 transition">Reading Materials</a>
-                <a href="{% url 'library:author_list' %}" class="hover:bg-yellow-400 transition">Authors</a>
-                <a href="{% url 'library:genre_list' %}" class="hover:bg-yellow-400 transition">Genres</a>
+            <!-- Navbar -->
+                <nav class="hidden md:flex justify-center space-x-6 text-sm">
+                    <a href="{% url 'library:reading_materials' %}" class="font-bold hover:text-yellow-400 hover:scale-110">Reading Materials</a>
+                    <a href="{% url 'library:author_list' %}" class="font-bold hover:text-yellow-400 hover:scale-110">Authors</a>
+                    <a href="{% url 'library:genre_list' %}" class="font-bold hover:text-yellow-400 hover:scale-110">Genres</a>
+                </nav>
             </div>
 
-            <!-- Right Section -->
-            <div class="hidden md:flex items-center space-x-4 px-6">
+            <!-- Right Section: Search, Language, Authetication, Theme toggle-->
+            <div class="flex justify-end space-x-3 text-sm">
 
                 <!-- Search Form -->
-                <form action = '/search' method ='get' class='flex items-center'>
-                    <input type='search' name='q' placeholder='Search your next read...'
-                        class='rounded-1 px-3 py-1 text-black border border-gray-400 focus:outline-none'/>
-                    <button type='submit'
-                            class='bg-gray-400 px-3 py-1 rounded-r hover:bg-gray-200 transition-colors duration-200'>
+                <form action="/search" method="get" class="flex items-center">
+                    <input type="search" name="q" placeholder="Search your next read..." class="rounded-l px-2 py-1 text-black border border-gray-400 focus:outline-none">
+                    <button type="submit" class="bg-gray-400 px-3 py-1 rounded-r hover:bg-gray-200">
                         Search
                     </button>
-                </form>           
+                </form> 
+
+                <!-- Language Switcher -->
+                <form action="{% url 'set_language' %}" method="post">
+                    {% csrf_token%}
+                    <select name="language" onchange="this.form.submit()"
+                        class="bg-zinc-600 text-white text-sm px-2 py-1 rounded-md">    
+                        <option value="en" {% if LANGUAGE_CODE == "en" %}selected{% endif %}>EN</option>
+                        <option value="ro" {% if LANGUAGE_CODE == "ro" %}selected{% endif %}>RO</option>
+                    </select>
+                </form>
+
+                <!-- Authentication buttons -->
+                {% if user.is_authenticated %}
+                    <span class="px-4 text-sm text-white">Welcome, {{ user.username }}</span>
+                    <a href="{% url 'user_account:profile' %}" class="px-2 py-1 bg-zinc-500 text-white rounded-xl text-sm hover:bg-zinc-800">Profile</a>
+                    <a href="{% url 'user_account:logout' %}" class="px-2 py-1 bg-red-600 text-white rounded-xl text-sm hover:bg-red-400">Log Out</a>
+                {% else %}
+                    <a href="{% url 'user_account:login' %}" class="px-2 py-1 bg-green-800 text-white rounded-xl text-sm hover:bg-green-600">Log In</a>
+                    <a href="{% url 'user_account:register' %}" class="px-2 py-1 bg-yellow-400 text-black rounded-xl text-sm font-semibold hover:bg-yellow-300">Sign Up</a>
+                {% endif %}
+
+                <!-- Theme toggle -->
+                <button onclick="toggleTheme()" class="text-xl hover:text-yellow-400 transition" title="Toggle theme">
+                    <i id="theme-icon" class="ph ph-moon"></i>
+                </button>
             </div>
         </div>
-    </nav>
+    </header>
+
+
 
 <!-- Content -->
-    <main class='container mx-auto flex-grow'>
+    <main class="container mx-auto flex-grow pt-4 md:pt-6">
         {% block content %}
         {% endblock %}
     </main>
 
 <!-- Footer -->
-    <footer class='bg-zinc-900 text-center text-white py-4 '>
-        <div class='container mx-auto px-6 flex flex-col items-start gap-2'>
-            <p class='w-full text-left mb-2 font-semibold text-lg'>Contact us</p>
+    <footer class="bg-zinc-900 text-center text-white py-4 ">
+        <div class="container mx-auto px-6 flex flex-col items-start gap-2">
+            <p class="w-full text-left mb-2 font-semibold text-lg">Contact us</p>
             <p>
-                <i class='ph ph-phone text-lg'></i>
+                <i class="ph ph-phone text-lg"></i>
                 + 40 740 123 456
             </p>
             <p>
-                <i class='ph ph-envelope-simple text-lg'></i>
+                <i class="ph ph-envelope-simple text-lg"></i>
                 contact@readira.ro
             </p>
         </div>
@@ -121,27 +114,27 @@
     <script>
         function toggleTheme() {
             const html = document.documentElement;
-            const body = document.getElementById('theme-root');
-            const icon = document.getElementById('theme-icon');
-            const isDark = html.classList.toggle('dark');
+            const body = document.getElementById("theme-root");
+            const icon = document.getElementById("theme-icon");
+            const isDark = html.classList.toggle("dark");
             if (isDark) {
-                body.classList.remove('bg-white', 'text-black');
-                body.classList.add('bg-black', 'text-white');
-                document.cookie = 'theme=dark; path=/; max-age=31536000';
-                if (icon) icon.className = 'ph ph-sun';
+                body.classList.remove("bg-white", "text-black");
+                body.classList.add("bg-black", "text-white");
+                document.cookie = "theme=dark; path=/; max-age=31536000";
+                if (icon) icon.className = "ph ph-sun";
             } else {
-                body.classList.remove('bg-black', 'text-white');
-                body.classList.add('bg-white', 'text-black');
-                document.cookie = 'theme=light; path=/; max-age=31536000';
-                icon.className = 'ph ph-moon';
+                body.classList.remove("bg-black", "text-white");
+                body.classList.add("bg-white", "text-black");
+                document.cookie = "theme=light; path=/; max-age=31536000";
+                icon.className = "ph ph-moon";
             }
         }
 
-        window.addEventListener('DOMContentLoaded', () => {
-            const isDark = document.documentElement.classList.contains('dark');
-            const icon = document.getElementById('theme-icon');
+        window.addEventListener("DOMContentLoaded", () => {
+            const isDark = document.documentElement.classList.contains("dark");
+            const icon = document.getElementById("theme-icon");
             if (icon) {
-            icon.className = isDark ? 'ph ph-sun' : 'ph ph-moon';
+            icon.className = isDark ? "ph ph-sun" : "ph ph-moon";
             }
         });
 
