@@ -5,7 +5,7 @@ from django.views.generic import TemplateView, ListView, DetailView, CreateView,
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import Author, ReadingMaterials, Review, Rating, Genre
+from .models import Author, ReadingMaterials, Review, Rating
 from user_account.forms import ReviewForm, RatingForm
 
 class MainPage(TemplateView):
@@ -19,6 +19,7 @@ class ReadingMaterialsListView(ListView):
     template_name = 'reading_materials/list.html'
     context_object_name = 'materials'
     paginate_by = 20
+    ordering = ['title'] 
 
 
 class ReadingMaterialsDetailView(DetailView):
@@ -33,6 +34,7 @@ class AuthorListView(ListView):
     template_name = 'authors/list.html'
     context_object_name = 'authors'
     paginate_by = 20
+    ordering = ['name']
 
 class AuthorDetailView(LoginRequiredMixin, DetailView):
     model = Author
@@ -48,17 +50,7 @@ class AuthorDetailView(LoginRequiredMixin, DetailView):
 
 def author_access_denied(request):
     return render(request, 'authors/access_denied.html')
-
-# Genre View
-class GenreListView(ListView):
-    model = Genre
-    template_name = 'genres/list.html'
-    context_object_name = 'genres'
-
-class GenreDetailView(DetailView):
-    model = Genre
-    template_name = 'genre/details.html'
-    context_object_name = 'genre'    
+   
 
 # Review View
 

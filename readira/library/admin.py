@@ -1,17 +1,38 @@
 from django.contrib import admin
 
-from .models import Author, Genre, BookType, ReadingMaterials, Review, Rating, Subscription, SubscriptionPlan
+from .models import (
+    Author, 
+    ReadingMaterials,
+    Genre, 
+    Review, 
+    Rating, 
+    Subscription, 
+    SubscriptionPlan,
+    Category)
 
 
 # Register your models here.
 
 
 admin.site.register(Author)
-admin.site.register(Genre)
-admin.site.register(BookType)
-admin.site.register(ReadingMaterials)
 admin.site.register(Review)
 admin.site.register(Rating)
+
+@admin.register(ReadingMaterials)
+class ReadingMaterialsAdmin(admin.ModelAdmin):
+    model=ReadingMaterials
+    fields=['title', 'author', 'book_summary', 'release_date', 'image', 'availability', 'category', 'genre', 'enabled']
+
+@admin.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ('name', 'parent')
+    search_fields = ('name',)
+
+@admin.register(Genre)
+class GenreAdmin(admin.ModelAdmin):
+    list_display=('name', 'category')
+    list_filter=('category',)
+
 @admin.register(SubscriptionPlan)
 class SubscriptionPlanAdmin(admin.ModelAdmin):
     list_display = ('name', 'price', 'duration_days')

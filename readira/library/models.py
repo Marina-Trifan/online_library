@@ -5,25 +5,27 @@ from django.contrib.auth.models import User
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=255, verbose_name=_('Category'), null=True, blank=True)
-    parent = models.ForeignKey('self', null=True, blank=True, related_name='children', on_delete=models.CASCADE)
+    name = models.CharField(max_length=255)
+    parent = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, blank=True, related_name='children')
+    
+    class Meta:
+        verbose_name = _("Category")
+        verbose_name_plural = _("Categories")
 
     def __str__(self):
-        return self.name or "Unnamed Category"
-
+        return self.name
 
 class Genre(models.Model):
-    name = models.CharField(max_length=255, null=True, blank=True)
+    name= models.CharField(max_length=255, null=True, blank=True, verbose_name=_('Genre Name'))
+    category=models.ForeignKey(Category, on_delete= models.CASCADE, related_name='genre', null=True, blank=True, verbose_name='Category')
+
+    class Meta:
+        verbose_name=_('Genre')
+        verbose_name_plural=_('Genres')
 
     def __str__(self):
-        return self.name or "Unnamed Genre"
-
-
-class BookType(models.Model):
-    name = models.CharField(max_length=255, null=True, blank=True)
-
-    def __str__(self):
-        return self.name or "Unnamed BookType"
+        return self.name
+    
 
 
 class Author(models.Model):
@@ -43,16 +45,15 @@ class Author(models.Model):
 
 
 class ReadingMaterials(models.Model):
-    title = models.CharField(max_length=255, verbose_name=_('Title'), null=True, blank=True)
+    title = models.CharField(max_length=255, null=True, blank=True, verbose_name=_('Title'))
     author = models.ForeignKey(Author, on_delete=models.DO_NOTHING, verbose_name=_('Author'), related_name='books', null=True, blank=True)
-    genre = models.ForeignKey(Genre, on_delete=models.DO_NOTHING, verbose_name=_('Genre'), null=True, blank=True)
-    reading_material_type = models.ForeignKey(BookType, on_delete=models.DO_NOTHING, verbose_name=_('Type'), null=True, blank=True)
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, verbose_name=_('Category'), null=True, blank=True)
+    genre = models.ForeignKey(Genre, on_delete=models.SET_NULL, null=True, blank=True, verbose_name=_('Genre'))
     book_summary = models.TextField(verbose_name=_('Book Summary'), null=True, blank=True)
     release_date = models.DateField(verbose_name=_('Release Date'), null=True, blank=True)
+    price = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0)], null=True, blank=True)
     image = models.ImageField(upload_to='reading_materials/', verbose_name=_('Image'), null=True, blank=True)
     enabled = models.BooleanField(default=True, verbose_name=('Enabled'))
-    # category = models.ForeignKey(Category, null=True, blank=True, on_delete=models.SET_NULL)
-    # price = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0)], null=True, blank=True)
     availability = models.BooleanField(default=True)
 
     def average_rating(self):

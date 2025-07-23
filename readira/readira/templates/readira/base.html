@@ -33,6 +33,9 @@
     </script>
 </head>
 <body class="h-full flex flex-col bg-black text-white transition-colors duration-300" id = "theme-root">
+    <div id="weather-widget" class="bg-blue-100 dark:bg-zinc-800 text-blue-900 dark:text-blue-200 px-4 py-2 text-sm flex justify-between items-center">
+        <span id="weather-info">Fetching weather...</span>
+    </div>
 
 <!-- Header-->
     <header class="fixed top-0 left-0 right-0 top-0 z-50 bg-zinc-800 text-white shadow">
@@ -45,7 +48,7 @@
                 <nav class="hidden md:flex justify-center space-x-6 text-sm">
                     <a href="{% url 'library:reading_materials' %}" class="font-bold hover:text-yellow-400 hover:scale-110">Reading Materials</a>
                     <a href="{% url 'library:author_list' %}" class="font-bold hover:text-yellow-400 hover:scale-110">Authors</a>
-                    <a href="{% url 'library:genre_list' %}" class="font-bold hover:text-yellow-400 hover:scale-110">Genres</a>
+                    <a href="" class="font-bold hover:text-yellow-400 hover:scale-110">Genres</a>
                 </nav>
             </div>
 
@@ -138,6 +141,38 @@
             }
         });
 
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            const city = "{{ user_city|escapejs }}";
+            if (!city) {
+            document.getElementById("weather-info").textContent = "Weather info unavailable.";
+            return;
+            }
+            try {
+            // Step 1: Get coordinates from city
+            const geoRes = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1`);
+            const geoData = await geoRes.json();
+            const location = geoData.results?.[0];
+            if (!location) {
+                document.getElementById("weather-info").textContent = `Weather not found for ${city}`;
+                return;
+            }
+            const lat = location.latitude;
+            const lon = location.longitude;
+            // Step 2: Get current weather
+            const weatherRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`);
+            const weatherData = await weatherRes.json();
+            const weather = weatherData.current_weather;
+            const temperature = weather.temperature;
+            const windspeed = weather.windspeed;
+            const condition = weather.weathercode;
+            document.getElementById("weather-info").textContent = `Weather in ${city}: ${temperature}°C, Wind ${windspeed} km/h`;
+            } catch (error) {
+            document.getElementById("weather-info").textContent = "Weather fetch failed.";
+            console.error(error);
+            }
+        });
     </script>
 </body>
 </html>

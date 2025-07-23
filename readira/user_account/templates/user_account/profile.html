@@ -1,5 +1,5 @@
 {% extends "readira/base.html" %}
-{% load i18n static %}
+{% load i18n static widget_tweaks %}
 
 {% block content %}
 <section class="bg-white dark:bg-black text-black dark:text-white py-12 px-4">
@@ -10,11 +10,46 @@
       <h2 class="text-xl font-bold mb-4 text-yellow-500 dark:text-yellow-400">{% trans "Personal Information" %}</h2>
       <form method="post">
         {% csrf_token %}
-        {{ profile_form.as_p }}
+        <div class="mb-4 flex items-center gap-4">
+          <label for="{{ profile_form.full_name.id_for_label }}" class="w-48 font-medium">{% trans "Full Name" %}</label>
+          {{ profile_form.full_name | add_class:"w-full rounded border border-zinc-400 dark:border-zinc-500 bg-white dark:bg-zinc-800 text-black dark:text-white px-3 py-2" }}
+        </div>
+        <div class="mb-4 flex items-center gap-4">
+          <label for="{{ profile_form.avatar_url.id_for_label }}" class="w-48 font-medium">{% trans "Avatar URL" %}</label>
+          {{ profile_form.avatar_url | add_class:"w-full rounded border border-zinc-400 dark:border-zinc-500 bg-white dark:bg-zinc-800 text-black dark:text-white px-3 py-2" }}
+        </div>
+        <div class="mb-4 flex items-center gap-4">
+          <label for="{{ profile_form.city.id_for_label }}" class="w-48 font-medium">{% trans "City" %}</label>
+          {{ profile_form.city | add_class:"w-full rounded border border-zinc-400 dark:border-zinc-500 bg-white dark:bg-zinc-800 text-black dark:text-white px-3 py-2" }}
+        </div>
+        <div class="mb-4 flex items-center gap-4">
+          <label for="{{ profile_form.country.id_for_label }}" class="w-48 font-medium">{% trans "Country" %}</label>
+          {{ profile_form.country | add_class:"w-full rounded border border-zinc-400 dark:border-zinc-500 bg-white dark:bg-zinc-800 text-black dark:text-white px-3 py-2" }}
+        </div>
+        <div class="mb-4 flex items-center gap-4">
+          <label for="{{ profile_form.street.id_for_label }}" class="w-48 font-medium">{% trans "Street" %}</label>
+          {{ profile_form.street | add_class:"w-full rounded border border-zinc-400 dark:border-zinc-500 bg-white dark:bg-zinc-800 text-black dark:text-white px-3 py-2" }}
+        </div>
+        <div class="mb-4 flex items-center gap-4">
+          <label for="{{ profile_form.zip_code.id_for_label }}" class="w-48 font-medium">{% trans "ZIP Code" %}</label>
+          {{ profile_form.zip_code | add_class:"w-full rounded border border-zinc-400 dark:border-zinc-500 bg-white dark:bg-zinc-800 text-black dark:text-white px-3 py-2" }}
+        </div>
+        <div class="mb-4 flex items-center gap-4">
+          <label for="{{ profile_form.preferred_channel.id_for_label }}" class="w-48 font-medium">{% trans "Preferred Channel" %}</label>
+          {{ profile_form.preferred_channel | add_class:"w-full rounded border border-zinc-400 dark:border-zinc-500 bg-white dark:bg-zinc-800 text-black dark:text-white px-3 py-2" }}
+        </div>
+        <div class="mb-4 flex items-center gap-4">
+          <label for="{{ profile_form.username.id_for_label }}" class="w-48 font-medium">{% trans "Username" %}</label>
+          {{ profile_form.username | add_class:"w-full rounded border border-zinc-400 dark:border-zinc-500 bg-white dark:bg-zinc-800 text-black dark:text-white px-3 py-2" }}
+        </div>
+        <div class="mb-4 flex items-center gap-4">
+          <label for="{{ profile_form.email.id_for_label }}" class="w-48 font-medium">{% trans "Email" %}</label>
+          {{ profile_form.email | add_class:"w-full rounded border border-zinc-400 dark:border-zinc-500 bg-white dark:bg-zinc-800 text-black dark:text-white px-3 py-2" }}
+        </div>
         <button type="submit" name="save_profile" class="mt-4 bg-yellow-400 text-black py-2 px-4 rounded hover:bg-yellow-300">
           {% trans "Save Profile" %}
         </button>
-      </form>
+        </form>
     </div>
 
     <!-- Change Password Card -->
@@ -22,24 +57,22 @@
       <h2 class="text-xl font-bold mb-4 text-yellow-500 dark:text-yellow-400">{% trans "Change Password" %}</h2>
       <form method="post">
         {% csrf_token %}
-            <form method="post">
-              {% csrf_token %}
-              <div class="mb-4">
-                <label for="{{ password_form.old_password.id_for_label }}" class="block font-medium">{% trans "Old password" %}</label>
-                {{ password_form.old_password }}
-              </div>
-              <div class="mb-4">
-                <label for="{{ password_form.new_password1.id_for_label }}" class="block font-medium">{% trans "New password" %}</label>
-                {{ password_form.new_password1 }}
-              </div>
-              <div class="mb-4">
-                <label for="{{ password_form.new_password2.id_for_label }}" class="block font-medium">{% trans "New password confirmation" %}</label>
-                {{ password_form.new_password2 }}
-              </div>
-              <button type="submit" name="change_password" class="mt-4 bg-yellow-400 text-black py-2 px-4 rounded hover:bg-yellow-300">
-                {% trans "Change Password" %}
-              </button>
-            </form>
+        <div class="mb-4 flex items-center gap-4">
+          <label for="{{ password_form.old_password.id_for_label }}" class="w-48 font-medium">{% trans "Old password" %}</label>
+          {{ password_form.old_password|add_class:"w-full rounded border border-zinc-400 dark:border-zinc-500 bg-white dark:bg-zinc-800 text-black dark:text-white px-3 py-2" }}
+        </div>
+        <div class="mb-4 flex items-center gap-4">
+          <label for="{{ password_form.new_password1.id_for_label }}" class="w-48 font-medium">{% trans "New password" %}</label>
+          {{ password_form.new_password1|add_class:"w-full rounded border border-zinc-400 dark:border-zinc-500 bg-white dark:bg-zinc-800 text-black dark:text-white px-3 py-2" }}
+        </div>
+        <div class="mb-4 flex items-center gap-4">
+          <label for="{{ password_form.new_password2.id_for_label }}" class="w-48 font-medium">{% trans "New password confirmation" %}</label>
+          {{ password_form.new_password2|add_class:"w-full rounded border border-zinc-400 dark:border-zinc-500 bg-white dark:bg-zinc-800 text-black dark:text-white px-3 py-2" }}
+        </div>
+        <button type="submit" name="change_password" class="mt-4 bg-yellow-400 text-black py-2 px-4 rounded hover:bg-yellow-300">
+          {% trans "Change Password" %}
+        </button>
+        </form>
     </div>
 
     <!-- Subscription -->
