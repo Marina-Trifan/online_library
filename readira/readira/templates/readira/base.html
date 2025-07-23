@@ -42,13 +42,6 @@
             <a href = '/' class='hover:bg-green-600 px-1 rounded'>READIRA</a>
         </div>
 
-        <!--Navbar-->
-        <div class="hidden md:flex space-x-6 items-center px-6">
-            <a href="{% url 'library:reading_materials' %}" class="hover:bg-yellow-400 font-bold transition">Reading Materials</a>
-            <a href="{% url 'library:author_list' %}" class="hover:bg-yellow-400 font-bold transition">Authors</a>
-            <a href="{% url 'library:genre_list' %}" class="hover:bg-yellow-400 font-bold transition">Genres</a>
-        </div>
-
         <!-- Right Section -->
         <div class="hidden md:flex items-center space-x-4">
             <!-- Language Switcher -->
@@ -68,7 +61,7 @@
                 <a href="{% url 'user_account:logout' %}" class="px-4 py-2 bg-zinc-800 text-white rounded-xl text-sm">Log Out</a>
             {% else %}
                 <a href="{% url 'user_account:login' %}" class="px-4 py-2 bg-green-800 text-white rounded-xl text-sm">Log In</a>
-                <a href="{% url 'usr_account:register' %}" class="px-4 py-2 bg-yellow-400 text-black rounded-xl text-sm font-semibold">Sign Up</a>
+                <a href="{% url 'user_account:register' %}" class="px-4 py-2 bg-yellow-400 text-black rounded-xl text-sm font-semibold">Sign Up</a>
             {% endif %}
             
             <!-- Theme toggle -->
@@ -77,7 +70,32 @@
             </button>
         </div>
     </header>
+    <nav class = 'sticky top-0 z-50 bg-orange-200 w-full mt-0 mb-0 text-black shadow'>
+        <div class="flex items-center justify-between py-3 flex">
+            
 
+            <!-- Centre Section -->
+            <div class="hidden md:flex space-x-6 items-center px-6">
+                <a href="{% url 'library:reading_materials' %}" class="hover:bg-yellow-400 transition">Reading Materials</a>
+                <a href="{% url 'library:author_list' %}" class="hover:bg-yellow-400 transition">Authors</a>
+                <a href="{% url 'library:genre_list' %}" class="hover:bg-yellow-400 transition">Genres</a>
+            </div>
+
+            <!-- Right Section -->
+            <div class="hidden md:flex items-center space-x-4 px-6">
+
+                <!-- Search Form -->
+                <form action = '/search' method ='get' class='flex items-center'>
+                    <input type='search' name='q' placeholder='Search your next read...'
+                        class='rounded-1 px-3 py-1 text-black border border-gray-400 focus:outline-none'/>
+                    <button type='submit'
+                            class='bg-gray-400 px-3 py-1 rounded-r hover:bg-gray-200 transition-colors duration-200'>
+                        Search
+                    </button>
+                </form>           
+            </div>
+        </div>
+    </nav>
 
 <!-- Content -->
     <main class='container mx-auto flex-grow'>
