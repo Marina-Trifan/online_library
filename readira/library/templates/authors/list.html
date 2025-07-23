@@ -19,4 +19,21 @@
       <p class="'text-center col-span-full text-gray-500 dark:text-gray-400"> No authors found.</p>
     {% endfor %}
   </div>
+
+  <!-- Pagination Controls -->
+  <div class="flex justify-center mt-24 mb-24 space-x-2">
+    {% if page_obj.has_previous %}
+      <a href="?page=1" class="px-3 py-1 bg-gray-400 dark:bg-gray-700 rounded hover:bg-gray-300">&laquo;</a>
+      <a href="?page={{ page_obj.previous_page_number }}" class="px-3 py-1 bg-gray-400 dark:bg-gray-700 rounded hover:bg-gray-300">Previous</a>
+    {% endif %}
+
+    <span class="px-4 py-1 bg-gray-400 dark:bg-gray-600 text-black dark:text-white rounded">
+      Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+    </span>
+
+    {% if page_obj.has_next %}
+      <a href="?page={{ page_obj.next_page_number }}" class="px-3 py-1 bg-gray-400 dark:bg-gray-700 rounded hover:bg-gray-300">Next</a>
+      <a href="?page={{ page_obj.paginator.num_pages }}" class="px-3 py-1 bg-gray-400 dark:bg-gray-700 rounded hover:bg-gray-300">&raquo;</a>
+    {% endif %}
+  </div>
 {% endblock %}

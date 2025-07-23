@@ -18,6 +18,7 @@ class ReadingMaterialsListView(ListView):
     model = ReadingMaterials
     template_name = 'reading_materials/list.html'
     context_object_name = 'materials'
+    paginate_by = 20
 
 
 class ReadingMaterialsDetailView(DetailView):
@@ -31,6 +32,7 @@ class AuthorListView(ListView):
     model = Author
     template_name = 'authors/list.html'
     context_object_name = 'authors'
+    paginate_by = 20
 
 class AuthorDetailView(LoginRequiredMixin, DetailView):
     model = Author
