@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="990e746c-bd22-4e7f-94a7-6b5e88827028" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/readira/library/templates/authors/access_denied.html" beforeDir="false" afterPath="$PROJECT_DIR$/readira/library/templates/authors/access_denied.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/readira/library/templates/authors/details.html" beforeDir="false" afterPath="$PROJECT_DIR$/readira/library/templates/authors/details.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/readira/library/templates/authors/list.html" beforeDir="false" afterPath="$PROJECT_DIR$/readira/library/templates/authors/list.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/readira/library/templates/genres/details.html" beforeDir="false" afterPath="$PROJECT_DIR$/readira/library/templates/genres/details.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/readira/library/templates/genres/list.html" beforeDir="false" afterPath="$PROJECT_DIR$/readira/library/templates/genres/list.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/readira/library/templates/library/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/readira/readira/templates/readira/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/readira/library/templates/library/main_page.html" beforeDir="false" afterPath="$PROJECT_DIR$/readira/library/templates/library/main_page.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/readira/library/templates/reading_materials/details.html" beforeDir="false" afterPath="$PROJECT_DIR$/readira/library/templates/reading_materials/details.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/readira/library/templates/reading_materials/list.html" beforeDir="false" afterPath="$PROJECT_DIR$/readira/library/templates/reading_materials/list.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/readira/readira/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/readira/readira/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/readira/readira/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/readira/readira/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/readira/user_account/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/readira/user_account/forms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/readira/user_account/templates/user_account/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/readira/user_account/templates/user_account/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/readira/user_account/templates/user_account/ratings_form.html" beforeDir="false" afterPath="$PROJECT_DIR$/readira/user_account/templates/user_account/ratings_form.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/readira/user_account/templates/user_account/register.html" beforeDir="false" afterPath="$PROJECT_DIR$/readira/user_account/templates/user_account/register.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/readira/user_account/templates/user_account/reviews_form.html" beforeDir="false" afterPath="$PROJECT_DIR$/readira/user_account/templates/user_account/reviews_form.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/readira/user_account/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/readira/user_account/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/readira/user_account/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/readira/user_account/views.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 5
+}]]></component>
+  <component name="ProjectId" id="30F5DZrM8na8RBrxZKCEif5AOmU" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "C:/Users/trifa/PycharmProjects/online_library",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\trifa\PycharmProjects\online_library\readira\readira\templates\readira" />
+      <recent name="C:\Users\trifa\PycharmProjects\online_library\readira\readira\templates" />
+      <recent name="C:\Users\trifa\PycharmProjects\online_library\readira\user_account\templates\user_account" />
+    </key>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-python-sdk-fb887030ada0-aa17d162503b-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-243.21565.199" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="990e746c-bd22-4e7f-94a7-6b5e88827028" name="Changes" comment="" />
+      <created>1753210362196</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1753210362196</updated>
+    </task>
+    <servers />
+  </component>
+</project>

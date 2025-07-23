@@ -25,6 +25,11 @@ from django.contrib.auth.views import LogoutView
 from django.contrib.auth import logout
 
 
+def redirect_to_user_language(request):
+    lang = request.COOKIES.get('django_language', 'en')
+    return HttpResponseRedirect(f'/{lang}/')
+    
+
 urlpatterns = [
     path('', MainPage.as_view(), name='main_page'),
     path('set_language/', set_language, name = 'set_language'),

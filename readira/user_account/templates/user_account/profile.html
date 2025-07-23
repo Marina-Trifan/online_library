@@ -1,0 +1,56 @@
+{% extends "readira/base.html" %}
+{% load i18n static %}
+
+{% block content %}
+<section class="bg-white dark:bg-black text-black dark:text-white py-12 px-4">
+  <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
+
+    <!-- Personal Info Card -->
+    <div class="bg-zinc-100 dark:bg-zinc-900 p-6 rounded-2xl shadow flex flex-col">
+      <h2 class="text-xl font-bold mb-4 text-yellow-500 dark:text-yellow-400">{% trans "Personal Information" %}</h2>
+      <form method="post">
+        {% csrf_token %}
+        {{ profile_form.as_p }}
+        <button type="submit" name="save_profile" class="mt-4 bg-yellow-400 text-black py-2 px-4 rounded hover:bg-yellow-300">
+          {% trans "Save Profile" %}
+        </button>
+      </form>
+    </div>
+
+    <!-- Change Password Card -->
+    <div class="bg-zinc-100 dark:bg-zinc-900 p-6 rounded-2xl shadow flex flex-col">
+      <h2 class="text-xl font-bold mb-4 text-yellow-500 dark:text-yellow-400">{% trans "Change Password" %}</h2>
+      <form method="post">
+        {% csrf_token %}
+            <form method="post">
+              {% csrf_token %}
+              <div class="mb-4">
+                <label for="{{ password_form.old_password.id_for_label }}" class="block font-medium">{% trans "Old password" %}</label>
+                {{ password_form.old_password }}
+              </div>
+              <div class="mb-4">
+                <label for="{{ password_form.new_password1.id_for_label }}" class="block font-medium">{% trans "New password" %}</label>
+                {{ password_form.new_password1 }}
+              </div>
+              <div class="mb-4">
+                <label for="{{ password_form.new_password2.id_for_label }}" class="block font-medium">{% trans "New password confirmation" %}</label>
+                {{ password_form.new_password2 }}
+              </div>
+              <button type="submit" name="change_password" class="mt-4 bg-yellow-400 text-black py-2 px-4 rounded hover:bg-yellow-300">
+                {% trans "Change Password" %}
+              </button>
+            </form>
+    </div>
+
+    <!-- Subscription -->
+    <div class="bg-zinc-100 dark:bg-zinc-900 p-6 rounded-2xl shadow flex flex-col justify-between">
+      <div>
+        <h2 class="text-xl font-bold mb-4 text-yellow-500 dark:text-yellow-400">{% trans "Subscription History" %}</h2>
+        <p class="text-sm mb-6">{% trans "Access your subscription history here." %}</p>
+        <a href="" class="bg-yellow-400 text-black py-2 px-4 rounded hover:bg-yellow-300 inline-block mb-6">
+          {% trans "Subscriptions" %}
+        </a>
+      </div>
+  </div>
+</section>
+{% endblock %}
