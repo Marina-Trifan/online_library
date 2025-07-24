@@ -21,12 +21,6 @@
           <!-- Price and Buy button -->
           <div class="flex items-center justify-center mt-3 space-x-3 flex-shrink-0">
             <p class="text-lg text-orange-600 font-semibold">Price: {{ reading_material.price }} €</p>
-            <form method="post" action="">
-              {% csrf_token %}
-              <button type="submit" class="bg-orange-400 text-black px-3 py-1 rounded hover:bg-orange-600 text-sm">
-                Details
-              </button>
-            </form>
           </div>
           
         {% else %}

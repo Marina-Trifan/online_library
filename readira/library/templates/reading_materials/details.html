@@ -1,7 +1,7 @@
 {% extends "readira/base.html" %}
 {% load i18n static %}
 {% block content %}
-<div class="justify-start max-w-4xl mx-auto px-4 py-8 bg-emerald-600 dark:bg-stone-600 shadow-md rounded-lg mt-24 mb-12">
+<div class="justify-start max-w-4xl mx-auto px-4 py-8 bg-gray-600 shadow-md rounded-lg mt-24 mb-12">
   <div class="flex flex-col md:flex-row md:items-start md:space-x-6">
     <!-- Display image-->
     {% if material.image %}
@@ -9,19 +9,19 @@
     {% endif %}
     <!-- Title, Author, Genre and Rating container-->
     <div class="flex-1">
-      <h1 class="text-3xl font-bold text-black dark:text-gray-300 mb-4">{{ material.title }}</h1>
-      <p class="text-black dark:text-gray-300 mb-2"><span class="font-semibold">Author:</span> {{ material.author.name }} {{ material.author.surname }}</p>
-      <p class="text-black dark:text-gray-300 mb-2"><span class="font-semibold">Genre:</span> {{ material.genre.name }}</p>
-      <p class="text-black dark:text-gray-300 mb-2"><span class="font-semibold">Category:</span> {{ material.category.name }}</p>
+      <h1 class="text-3xl font-bold text-gray-300 mb-4">{{ material.title }}</h1>
+      <p class="text-gray-300 mb-2"><span class="font-semibold">Author:</span> {{ material.author.name }} {{ material.author.surname }}</p>
+      <p class="text-gray-300 mb-2"><span class="font-semibold">Genre:</span> {{ material.genre.name }}</p>
+      <p class="text-gray-300 mb-2"><span class="font-semibold">Category:</span> {{ material.category.name }}</p>
       <!-- Display Rating as stars -->
       <div class="mt-4">
-        <h3 class="text-xl font-semibold text-black dark:text-gray-300 mb-2">Rating:</h3>
+        <h3 class="text-xl font-semibold text-gray-300 mb-2">Rating:</h3>
         <div class="flex space-x-1 text-xl">
           {% for i in "12345" %}
             {% if forloop.counter <= material.average_rating|floatformat:0 %}
               <span class="text-yellow-400">★</span>
             {% else %}
-              <span class="text-gray-600">★</span>
+              <span class="text-gray-200">★</span>
             {% endif %}
           {% endfor %}
         </div>
@@ -52,14 +52,14 @@
     </div>
   </div>
   <!-- Reading material Summary-->
-  <div class="mt-8 space-y-4 text-black dark:text-gray-300">
+  <div class="mt-8 space-y-4 text-gray-300">
     <p><span class="font-semibold">Summary:</span> {{ material.book_summary }}</p>
   </div>
   <!-- Demarcation line -->
   <hr class="my-6 border-gray-300">
   <!-- Reviews -->
   <div>
-    <h3 class="text-2xl font-bold text-black dark:text-gray-300 mb-4">Reviews</h3>
+    <h3 class="text-2xl font-bold text-gray-300 mb-4">Reviews</h3>
     <div class="space-y-4">
       {% for review in material.reviews.all %}
         <div class="border border-gray-200 p-4 rounded-md bg-gray-50">
@@ -68,7 +68,7 @@
           <p class="text-gray-700">{{ review.content }}</p>
         </div>
       {% empty %}
-        <p class="text-black dark:text-gray-300">No reviews yet.</p>
+        <p class="text-gray-300">No reviews yet.</p>
       {% endfor %}
     </div>
   </div>
