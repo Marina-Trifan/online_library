@@ -82,3 +82,7 @@ class RatingCreateView(LoginRequiredMixin, CreateView):
 
     def get_success_url(self):
         return reverse_lazy('library:reading_material_detail', kwargs={'pk': self.kwargs['pk']})
+
+
+
+

@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from django.contrib.auth import logout
@@ -7,6 +7,7 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from .forms import CustomUserForm, CustomPasswordChangeForm
+from library.models import ReadingMaterials
 
 User = get_user_model()
 
@@ -65,3 +66,34 @@ def profile_view(request):
 def logout_view(request):
     logout(request)
     return redirect('/')
+
+
+# Buy Button view
+@login_required
+def add_to_cart(request, material_pk):
+    material = get_object_or_404(ReadingMaterials, pk=material_pk)
+    cart = request.session.get('cart', {})
+    key = str(material_pk)
+    if key in cart:
+        messages.info(request, "You already have this book in your cart.")
+    else:
+        cart['key'] = {
+            'pk': material.pk,
+            'title': material.title,
+            'image': material.image.url if material.image else '',
+            'price': float(material.price),
+            'quantity': 1,
+            'total': float(material.price)
+        }
+        messages.success(request, "Book added to cart.")
+
+    request.session['cart'] = cart
+    request.session.modified = True
+    return redirect('user_account:cart')
+
+@login_required
+def cart_view(request):
+    cart = request.session.get('cart', {})
+    materials = list(cart.values())
+    total = sum(item['total'] for item in materials)
+    return render(request, 'user_account/cart.html', {'materials':materials, 'total':total})
