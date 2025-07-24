@@ -45,7 +45,7 @@ class AuthorDetailView(LoginRequiredMixin, DetailView):
     
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
-            return redirect('author_access_denied')
+            return redirect('library:author_access_denied')
         return super().dispatch(request, *args, **kwargs)
 
 def author_access_denied(request):

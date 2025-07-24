@@ -73,8 +73,13 @@
 
                 <!-- Authentication buttons -->
                 {% if user.is_authenticated %}
-                    <span class="px-4 text-sm text-white">Welcome, {{ user.username }}</span>
-                    <a href="{% url 'user_account:profile' %}" class="px-2 py-1 bg-zinc-500 text-white rounded-xl text-sm hover:bg-zinc-800">Profile</a>
+                    <a href="{% url 'user_account:profile' %}" class="text-black rounded-xl text-sm font-semibold">
+                    {% if user.avatar_url %}
+                        <img src="{{ user.avatar_url }}" alt="Avatar" class="rounded-full object-coverw-8 h-8">
+                    {% else %}
+                        <i class="ph ph-user-circle"></i>
+                    {% endif %}
+                </a>
                     <a href="{% url 'user_account:logout' %}" class="px-2 py-1 bg-red-600 text-white rounded-xl text-sm hover:bg-red-400">Log Out</a>
                 {% else %}
                     <a href="{% url 'user_account:login' %}" class="px-2 py-1 bg-green-800 text-white rounded-xl text-sm hover:bg-green-600">Log In</a>

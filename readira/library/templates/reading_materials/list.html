@@ -1,31 +1,42 @@
 {% extends "readira/base.html" %}
 {% load i18n static %}
 
-
 {% block content %}
   <h1 class="text-4xl font-bold text-center mb-8">Your Next Read</h1>
-  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6 px-6 max-w-7xl mx-auto mb 32">
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-x-2 gap-y-8 px-4 max-w-6xl mx-auto mb-32">
     {% for reading_material in materials %}
-      <a href="{% url 'library:reading_material_detail' reading_material.pk %}" class="flex items-center bg-emerald-900 shadow-md rounded-lg p-4 text-black hover:bg-emerald-200 dark:bg-gray-600 dark:hover:bg-gray-200 transition duration-200 ">
+      <a href="{% url 'library:reading_material_detail' reading_material.pk %}" 
+        class="border border-gray-300 hover:border-blue-500 dark:bg-gray-800 p-4 rounded shadow transition-colors duration-200">
+        
         {% if reading_material.image %}
-          <img src="{{reading_material.image.url}}" alt="{{ reading_material.title }}" class="w-48 h-50 rounded-lg object-cover shadow mr-4">
+          <img src="{{ reading_material.image.url }}" alt="{{ reading_material.title }}" 
+            class="w-30 h-48 rounded-lg object-cover shadow mx-auto mb-4 flex-shrink-0">
+          
+          <!-- Title and author -->
+          <p class="text-lg font-bold text-center text-black dark:text-white mt-2 flex-shrink-0">{{ reading_material.title }}</p>
+          <p class="text-sm text-red-800 dark:text-gray-300 text-center mt-1 font-semibold flex-shrink-0">{{ reading_material.author.name }} {{ reading_material.author.surname }}</p>
+          
+          <div class="flex-grow"></div>
+
+          <!-- Price and Buy button -->
+          <div class="flex items-center justify-center mt-3 space-x-3 flex-shrink-0">
+            <p class="text-lg text-orange-600 font-semibold">Price: {{ reading_material.price }} €</p>
+            <form method="post" action="">
+              {% csrf_token %}
+              <button type="submit" class="bg-orange-400 text-black px-3 py-1 rounded hover:bg-orange-600 text-sm">
+                Details
+              </button>
+            </form>
+          </div>
+          
         {% else %}
-          <div class="w-24 h-24 rounded-lg bg-gray-300 mx-auto mb-4 flex items-center justify-center text-sm text-gray-600 mr-4">
+          <div class="w-48 h-50 rounded-lg bg-gray-300 mx-auto mb-4 flex items-center justify-center text-sm text-gray-600">
             No Image
           </div>
         {% endif %}
-        <p class="text-lg font-medium text-black">{{reading_material.title}}</p>
-      <p class="text-sm text-yellow-300 dark:text-yellow-400 mt-1 font-semibold">€{{ reading_material.price }}</p>
-
-      <form method="post" action="" class="mt-2">
-        {% csrf_token %}
-        <button type="submit" class="bg-yellow-400 text-black px-3 py-1 rounded hover:bg-yellow-300 text-sm">
-          Buy
-        </button>
-      </form>
       </a>
     {% empty %}
-      <p class="'text-center col-span-full text-gray-500 dark:text-gray-400"> Nothing with that title.</p>
+      <p class="text-center col-span-full text-gray-500 dark:text-gray-400">Nothing with that title.</p>
     {% endfor %}
   </div>
 

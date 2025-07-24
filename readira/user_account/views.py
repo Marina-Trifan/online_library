@@ -20,7 +20,7 @@ def login_view(request):
             return redirect('/')  # or 'dashboard', etc.
         else:
             messages.error(request, 'Invalid credentials')
-    return render(request, 'user_backend/login.html')
+    return render(request, 'user_account/login.html')
 
 def register_view(request):
     if request.method == 'POST':
@@ -36,7 +36,7 @@ def register_view(request):
             user = User.objects.create_user(email=email, password=password)
             login(request, user)
             return redirect('/')
-    return render(request, 'user_backend/register.html')
+    return render(request, 'user_account/register.html')
 
 @login_required
 def profile_view(request):
