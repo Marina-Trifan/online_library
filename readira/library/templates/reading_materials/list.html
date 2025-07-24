@@ -15,6 +15,14 @@
           </div>
         {% endif %}
         <p class="text-lg font-medium text-black">{{reading_material.title}}</p>
+      <p class="text-sm text-yellow-300 dark:text-yellow-400 mt-1 font-semibold">€{{ reading_material.price }}</p>
+
+      <form method="post" action="" class="mt-2">
+        {% csrf_token %}
+        <button type="submit" class="bg-yellow-400 text-black px-3 py-1 rounded hover:bg-yellow-300 text-sm">
+          Buy
+        </button>
+      </form>
       </a>
     {% empty %}
       <p class="'text-center col-span-full text-gray-500 dark:text-gray-400"> Nothing with that title.</p>

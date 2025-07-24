@@ -21,7 +21,7 @@ admin.site.register(Rating)
 @admin.register(ReadingMaterials)
 class ReadingMaterialsAdmin(admin.ModelAdmin):
     model=ReadingMaterials
-    fields=['title', 'author', 'book_summary', 'release_date', 'image', 'availability', 'category', 'genre', 'enabled']
+    fields=['title', 'author', 'book_summary', 'release_date', 'price', 'image', 'availability', 'category', 'genre', 'enabled']
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):

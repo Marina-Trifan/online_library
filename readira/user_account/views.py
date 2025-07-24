@@ -1,85 +1,67 @@
-from django.http import HttpResponse
-from django.shortcuts import redirect, render
-from django.urls import reverse_lazy
-from django.views import View
-from django.views.generic import TemplateView, CreateView
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login
 from django.contrib import messages
-from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
+from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import PasswordChangeForm
-from .forms import ProfileForm
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.decorators import login_required
+from .forms import CustomUserForm, CustomPasswordChangeForm
 
-
+User = get_user_model()
 
 def login_view(request):
-    if request.method=='POST':
-        username=request.POST.get('username')
-        password=request.POST.get('password')
-        user=authenticate(request, username=username, password=password)
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        user = authenticate(request, email=email, password=password)
         if user:
             login(request, user)
-            return redirect('/')
+            return redirect('/')  # or 'dashboard', etc.
         else:
-            messages.error(request, 'invalid credentials')
-    return render(request, 'user_account/login.html')
+            messages.error(request, 'Invalid credentials')
+    return render(request, 'user_backend/login.html')
 
-def logout_view(request):
-    logout(request)
-    return redirect('user_account:login')
+def register_view(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        password2 = request.POST.get('password2')
 
-
-    
-class RegisterView(View):
-    def get(self, request):
-        return render(request, "user_account/register.html")
-
-    def post(self, request):
-        username = request.POST.get("username")
-        email = request.POST.get("email")
-        password = request.POST.get("password")
-        confirm_password = request.POST.get("confirm_password")
-
-        context = {
-            "username": username,
-            "email": email,
-        }
-
-        if password != confirm_password:
-            context["error"] = "Passwords do not match."
-            return render(request, "user_account/register.html", context)
-
-        if User.objects.filter(username=username).exists():
-            context["error"] = "Username already taken."
-            return render(request, "user_account/register.html", context)
-
-        user = User.objects.create_user(username=username, email=email, password=password)
-        login(request, user)
-        return redirect("user_account:profile")
+        if password != password2:
+            messages.error(request, 'Passwords do not match')
+        elif User.objects.filter(email=email).exists():
+            messages.error(request, 'Email already registered')
+        else:
+            user = User.objects.create_user(email=email, password=password)
+            login(request, user)
+            return redirect('/')
+    return render(request, 'user_backend/register.html')
 
 @login_required
 def profile_view(request):
     user = request.user
     if request.method == 'POST':
-        profile_form = ProfileForm(request.POST, instance=user)
-        password_form = PasswordChangeForm(user, request.POST)
-
-        if 'save_profile' in request.POST and profile_form.is_valid():
-            profile_form.save()
-            messages.success(request, 'Profile updated.')
-            return redirect('profile')
-
-        elif 'change_password' in request.POST and password_form.is_valid():
-            user = password_form.save()
-            update_session_auth_hash(request, user)
-            messages.success(request, 'Password changed.')
-            return redirect('profile')
+        if 'save_profile' in request.POST:
+            profile_form = CustomUserForm(request.POST, instance=user)
+            password_form = CustomPasswordChangeForm(user)
+            if profile_form.is_valid():
+                profile_form.save()
+        elif 'change_password' in request.POST:
+            profile_form = CustomUserForm(instance=user)
+            password_form = CustomPasswordChangeForm(user, request.POST)
+            if password_form.is_valid():
+                password_form.save()
+                update_session_auth_hash(request, password_form.user)
     else:
-        profile_form = ProfileForm(instance=user)
-        password_form = PasswordChangeForm(user)
-
+        profile_form = CustomUserForm(instance=user)
+        password_form = CustomPasswordChangeForm(user)
     return render(request, 'user_account/profile.html', {
         'profile_form': profile_form,
         'password_form': password_form,
-        'user_city': user.profile.city if hasattr(user, 'profile') and user.profile.city else '',
     })
+
+@login_required
+def logout_view(request):
+    logout(request)
+    return redirect('/')

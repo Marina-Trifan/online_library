@@ -1,7 +1,7 @@
+from django.conf import settings
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.core.validators import MinValueValidator, MaxValueValidator
-from django.contrib.auth.models import User
 
 
 class Category(models.Model):
@@ -75,7 +75,7 @@ class ReadingMaterials(models.Model):
 
 class Review(models.Model):
     book = models.ForeignKey(ReadingMaterials, on_delete=models.CASCADE, related_name='reviews', verbose_name=_('Reading Material Review'), null=True, blank=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
     title = models.CharField(max_length=255, verbose_name=_('Title'), null=True, blank=True)
     content = models.TextField(verbose_name=_('Content'), null=True, blank=True)
 
@@ -90,7 +90,7 @@ class Review(models.Model):
 
 class Rating(models.Model):
     book = models.ForeignKey(ReadingMaterials, related_name='ratings', on_delete=models.CASCADE, verbose_name=_('Review'), null=True, blank=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
     value = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)], null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -118,7 +118,7 @@ class SubscriptionPlan(models.Model):
 
 
 class Subscription(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='subscriptions', verbose_name=_('User'), null=True, blank=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='subscriptions', verbose_name=_('User'), null=True, blank=True)
     plan = models.ForeignKey(SubscriptionPlan, on_delete=models.CASCADE, verbose_name=_('Plan'), null=True, blank=True)
     start_date = models.DateTimeField(auto_now_add=True, verbose_name=_('Start Date'))
     end_date = models.DateTimeField(verbose_name=_('End Date'), null=True, blank=True)

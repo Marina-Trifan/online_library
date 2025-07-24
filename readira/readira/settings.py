@@ -77,6 +77,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'readira.wsgi.application'
+AUTH_USER_MODEL = 'user_account.CustomUser'
 
 
 # Database
