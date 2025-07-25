@@ -6,6 +6,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
+from django.views.generic import TemplateView
 from .forms import CustomUserForm, CustomPasswordChangeForm
 from library.models import ReadingMaterials
 
@@ -97,3 +98,9 @@ def cart_view(request):
     materials = list(cart.values())
     total = sum(item['total'] for item in materials)
     return render(request, 'user_account/cart.html', {'materials':materials, 'total':total})
+
+
+# Subscriptions view
+class SubscriptionPageView(TemplateView):
+    template_name = 'user_account/subscriptions.html'
+
