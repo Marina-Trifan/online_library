@@ -8,7 +8,7 @@ from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView
 from .forms import CustomUserForm, CustomPasswordChangeForm
-from library.models import ReadingMaterials
+from library.models import ReadingMaterials, SubscriptionPlan
 
 User = get_user_model()
 
@@ -103,4 +103,10 @@ def cart_view(request):
 # Subscriptions view
 class SubscriptionPageView(TemplateView):
     template_name = 'user_account/subscriptions.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        plans = SubscriptionPlan.objects.all()
+        context['plans'] = plans
+        return context
 
