@@ -3,8 +3,11 @@ from django.db.transaction import atomic
 from library.models import Review, Rating
 from django import forms
 from django.contrib.auth.forms import PasswordChangeForm
-from django.contrib.auth import get_user_model
 from .models import CustomUser
+from django.contrib.auth import get_user_model
+from django.contrib.auth import authenticate
+from django.utils.translation import gettext_lazy as _
+
 
 CustomUser = get_user_model()
 
@@ -38,3 +41,41 @@ class CustomUserForm(forms.ModelForm):
 
 class CustomPasswordChangeForm(PasswordChangeForm):
     pass  # Can be customized further if needed
+
+
+class EmailLoginForm(forms.Form):
+    email = forms.EmailField(
+        label=_("Email"),
+        widget=forms.EmailInput(attrs={
+            "id": "email",
+            "class": "w-full px-4 py-2 rounded-xl border border-gray-400 text-black",
+            "required": "required",
+        })
+    )
+    password = forms.CharField(
+        label=_("Password"),
+        widget=forms.PasswordInput(attrs={
+            "id": "password",
+            "class": "w-full px-4 py-2 rounded-xl border border-gray-400 text-black",
+            "required": "required",
+        })
+    )
+
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop("request", None)
+        super().__init__(*args, **kwargs)
+        self.user = None
+
+    def clean(self):
+        email = self.cleaned_data.get("email")
+        password = self.cleaned_data.get("password")
+        if email and password:
+            self.user = authenticate(self.request, username=email, password=password)
+            if self.user is None:
+                raise forms.ValidationError(_("Invalid email or password."))
+            elif not self.user.is_active:
+                raise forms.ValidationError(_("This account is inactive."))
+        return self.cleaned_data
+
+    def get_user(self):
+        return self.user

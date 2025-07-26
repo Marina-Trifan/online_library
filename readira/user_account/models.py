@@ -22,10 +22,10 @@ class CustomUserManager(BaseUserManager):
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True, verbose_name=_("Email (Login)"))
-    city = models.CharField(max_length=100, verbose_name=_("City"))
-    country = models.CharField(max_length=100, verbose_name=_("Country"))
-    street = models.CharField(max_length=255, verbose_name=_("Street"))
-    zip_code = models.CharField(max_length=20, verbose_name=_("ZIP Code"))
+    city = models.CharField(max_length=100, null=True, blank = True, verbose_name=_("City"))
+    country = models.CharField(max_length=100, null=True, blank = True, verbose_name=_("Country"))
+    street = models.CharField(max_length=255, null=True, blank = True, verbose_name=_("Street"))
+    zip_code = models.CharField(max_length=20, null=True, blank = True, verbose_name=_("ZIP Code"))
 
     avatar_url = models.URLField(null=True, blank=True, verbose_name=_("Avatar / Logo / Thumbnail"))
     full_name = models.CharField(max_length=150, blank=True, verbose_name=_("Full Name"))

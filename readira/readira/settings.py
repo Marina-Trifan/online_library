@@ -77,7 +77,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'readira.wsgi.application'
-AUTH_USER_MODEL = 'user_account.CustomUser'
 
 
 # Database
@@ -137,7 +136,7 @@ STATICFILES_DIRS = [
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR /'media'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 LOCALE_PATHS = [BASE_DIR/'locale']
 
@@ -171,7 +170,7 @@ LOGGING = {
         },
     },
 }
-
+AUTH_USER_MODEL = 'user_account.CustomUser'
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'index'
 LOGOUT_REDIRECT_URL = 'login'

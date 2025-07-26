@@ -2,7 +2,8 @@ from django.conf import settings
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.core.validators import MinValueValidator, MaxValueValidator
-
+from user_account.models import CustomUser
+from django.utils import timezone
 
 class Category(models.Model):
     name = models.CharField(max_length=255)
@@ -25,8 +26,6 @@ class Genre(models.Model):
 
     def __str__(self):
         return self.name
-    
-
 
 class Author(models.Model):
     name = models.CharField(max_length=255, verbose_name=_('Author'), null=True, blank=True)
@@ -42,7 +41,6 @@ class Author(models.Model):
 
     def __str__(self):
         return self.name or "Unnamed Author"
-
 
 class ReadingMaterials(models.Model):
     title = models.CharField(max_length=255, null=True, blank=True, verbose_name=_('Title'))
@@ -72,7 +70,6 @@ class ReadingMaterials(models.Model):
     def __str__(self):
         return self.title or "Unnamed Material"
 
-
 class Review(models.Model):
     book = models.ForeignKey(ReadingMaterials, on_delete=models.CASCADE, related_name='reviews', verbose_name=_('Reading Material Review'), null=True, blank=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
@@ -86,7 +83,6 @@ class Review(models.Model):
 
     def __str__(self):
         return f'Review by {self.user} - {self.title}'
-
 
 class Rating(models.Model):
     book = models.ForeignKey(ReadingMaterials, related_name='ratings', on_delete=models.CASCADE, verbose_name=_('Review'), null=True, blank=True)
@@ -102,7 +98,6 @@ class Rating(models.Model):
     def __str__(self):
         return f'{self.user} rated "{self.book}" {self.value} stars'
 
-
 class SubscriptionPlan(models.Model):
     name = models.CharField(max_length=100, verbose_name=_('Plan Name'), null=True, blank=True)
     price = models.DecimalField(max_digits=8, decimal_places=2, verbose_name=_('Price'), null=True, blank=True)
@@ -115,7 +110,6 @@ class SubscriptionPlan(models.Model):
 
     def __str__(self):
         return f"{self.name} - {self.duration_days} days" if self.name else "Unnamed Plan"
-
 
 class Subscription(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='subscriptions', verbose_name=_('User'), null=True, blank=True)
@@ -131,3 +125,39 @@ class Subscription(models.Model):
 
     def __str__(self):
         return f"{self.user.email} - {self.plan.name}" if self.user and self.plan else "Incomplete Subscription"
+
+class Order(models.Model):
+    class Status(models.TextChoices):
+        PAID = 'paid', 'Paid'
+        PENDING = 'pending', 'Pending'
+        SHIPPED = 'shipped', 'Shipped'
+        DELIVERED = 'delivered', 'Delivered'
+
+    user = models.ForeignKey(CustomUser, related_name="orders", on_delete=models.CASCADE)
+    total_cost = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    delivery_address = models.TextField(blank=True, null=True)
+    user_address = models.TextField(blank=True, null=True)
+    submitted_at = models.DateTimeField(default=timezone.now)
+    client_full_name = models.CharField(max_length=255)
+    status = models.CharField(max_length=10, choices=Status.choices, default=Status.PENDING)
+    quantity = models.PositiveIntegerField()
+    price_per_item = models.DecimalField(max_digits=10, decimal_places=2)
+    reading_material = models.ForeignKey(ReadingMaterials, on_delete=models.PROTECT, null=True, blank=True, verbose_name="Reading Material")
+
+    # Payment fields
+    card_number = models.CharField(max_length=16, blank=True, null=True)
+    card_expiry = models.CharField(max_length=5, blank=True, null=True)  # Format: MM/YY
+    card_cvv = models.CharField(max_length=3, blank=True, null=True)
+    cardholder_name = models.CharField(max_length=255, blank=True, null=True)
+    buy_session_hash = models.CharField(max_length=64, blank=True, null=True)
+
+    class Meta:
+        verbose_name = 'Order'
+        verbose_name_plural = 'Orders'
+
+    def __str__(self):
+        return f"Order #{self.id} - {self.reading_material.title}"
+
+    def save(self, *args, **kwargs):
+        self.total_cost = self.quantity * self.price_per_item
+        super().save(*args, **kwargs)

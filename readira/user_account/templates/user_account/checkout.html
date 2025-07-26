@@ -1,0 +1,77 @@
+{% extends "readira/base.html" %}
+{% load i18n static %}
+
+{% block content %}
+<section class="max-w-2xl mx-auto py-12 px-6">
+  <h1 class="text-3xl font-bold text-center text-purple-600 mb-8">Checkout</h1>
+
+  {% if messages %}
+    <ul class="mb-4 space-y-2">
+      {% for message in messages %}
+        <li class="text-sm text-red-600 bg-red-100 px-4 py-2 rounded">{{ message }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  <form method="post" class="space-y-6 bg-white dark:bg-zinc-900 p-6 rounded-xl shadow-lg">
+    {% csrf_token %}
+
+    <div>
+      <label for="cardholder_name" class="block font-semibold mb-1">Cardholder Name</label>
+        <input type="text" name="cardholder_name" placeholder="First Last"  pattern="^[A-Za-z]+(?:\s+[A-Za-z]+)+$"  title="Please enter at least two names (letters only)"  required  class="w-full px-4 py-2 border rounded bg-white dark:bg-zinc-800 text-black dark:text-white">
+    </div>
+
+    <div>
+      <label for="card_number" class="block font-semibold mb-1">Card Number</label>
+        <input type="text" name="card_number"  placeholder="1234567812345678"  inputmode="numeric"  pattern="\d{16}"  maxlength="16"  title="Card number must be exactly 16 digits"  required  autocomplete="cc-number"  oninput="this.value = this.value.replace(/[^0-9]/g, '')"  class="w-full px-4 py-2 border rounded bg-white dark:bg-zinc-800 text-black dark:text-white">
+    </div>
+
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <label for="card_expiry" class="block font-semibold mb-1">Expiration Date (MM/YY)</label>
+        <input type="text"
+               name="card_expiry"
+               id="card_expiry"
+               placeholder="MM/YY"
+               maxlength="5"
+               required
+               class="w-full px-4 py-2 border rounded bg-white dark:bg-zinc-800 text-black dark:text-white">
+      </div>
+      <div>
+        <label for="card_cvv" class="block font-semibold mb-1">CVV</label>
+        <input type="text"
+               name="card_cvv"
+               placeholder="123"
+               inputmode="numeric"
+               pattern="[0-9]{3}"
+               maxlength="3"
+               minlength="3"
+               title="CVV must be exactly 3 digits"
+               required
+               class="w-full px-4 py-2 border rounded bg-white dark:bg-zinc-800"
+               autocomplete="cc-csc"
+               oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+      </div>
+    </div>
+
+    <p class="text-xl font-bold text-purple-600 mt-4">Total: {{ total_price }} €</p>
+
+    <div>
+      <button type="submit" class="w-full bg-purple-500 hover:bg-purple-600 text-white py-3 rounded-lg font-semibold">
+        Pay Now
+      </button>
+    </div>
+  </form>
+</section>
+
+<script>
+document.getElementById("card_expiry").addEventListener("input", function (e) {
+  let val = e.target.value.replace(/[^0-9]/g, '');
+  if (val.length >= 3) {
+    e.target.value = val.slice(0, 2) + '/' + val.slice(2, 4);
+  } else {
+    e.target.value = val;
+  }
+});
+</script>
+{% endblock %}

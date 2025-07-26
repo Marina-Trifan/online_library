@@ -1,15 +1,18 @@
 from django.urls import path
 from . import views
-from .views import profile_view, add_to_cart, cart_view, SubscriptionPageView
+from .views import profile_view, cart_view, SubscriptionPageView, StoreLoginView, RegisterView
 
 app_name = 'user_backend'
 
 urlpatterns = [
-    path('login/', views.login_view, name='login'),
-    path('register/', views.register_view, name='register'),
+    path("login/", StoreLoginView.as_view(), name="login"),
+    path("register/", RegisterView.as_view(), name="register"),
     path("profile/", profile_view, name="profile"),
     path('logout/', views.logout_view, name='logout'),
-    path('add-to-cart/<int:material_pk>/add_to_cart/', add_to_cart, name='add_to_cart'),
+    path('add-to-cart/<int:material_id>/add_to_cart/', views.add_to_cart, name='add_to_cart'),
+    path('remove-from-cart/<int:material_id>/', views.remove_from_cart, name='remove_from_cart'),
     path('cart', cart_view, name = 'cart'),
+    path('checkout/<str:token>/', views.checkout_view, name='checkout'),
+    path('checkout-success/', views.checkout_success_view, name='checkout_success'),
     path('subscriptions/', SubscriptionPageView.as_view(), name='subscriptions'),
 ]

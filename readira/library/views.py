@@ -7,10 +7,29 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Author, ReadingMaterials, Review, Rating
 from user_account.forms import ReviewForm, RatingForm
+from django.utils.translation import get_language
+from django.db.models import Q
+
+
 
 class MainPage(TemplateView):
     template_name = 'library/main_page.html'
 
+def search_view(request):
+    query = request.GET.get('q', '')
+    results_books = []
+    results_authors = []
+
+    if query:
+        results_books = ReadingMaterials.objects.filter(title__icontains=query)
+        results_authors = Author.objects.filter(name__icontains=query) | Author.objects.filter(surname__icontains=query)
+
+    return render(request, "library/search.html", {
+        "query": query,
+        "results_books": results_books,
+        "results_authors": results_authors,
+        "LANGUAGE_CODE": get_language()
+    })
 
 # Reading Materials View
 

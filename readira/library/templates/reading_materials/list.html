@@ -6,7 +6,7 @@
   <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-x-2 gap-y-8 px-4 max-w-6xl mx-auto mb-32">
     {% for reading_material in materials %}
       <a href="{% url 'library:reading_material_detail' reading_material.pk %}" 
-        class="border border-gray-300 hover:border-blue-500 dark:bg-gray-800 p-4 rounded shadow transition-colors duration-200">
+        class="border border-gray-300 hover:scale-105 dark:bg-gray-800 p-4 rounded shadow transition-colors duration-200">
         
         {% if reading_material.image %}
           <img src="{{ reading_material.image.url }}" alt="{{ reading_material.title }}" 
@@ -14,13 +14,13 @@
           
           <!-- Title and author -->
           <p class="text-lg font-bold text-center text-black dark:text-white mt-2 flex-shrink-0">{{ reading_material.title }}</p>
-          <p class="text-sm text-red-800 dark:text-gray-300 text-center mt-1 font-semibold flex-shrink-0">{{ reading_material.author.name }} {{ reading_material.author.surname }}</p>
+          <p class="text-sm text-gray-800 dark:text-gray-300 text-center mt-1 font-semibold flex-shrink-0">{{ reading_material.author.name }} {{ reading_material.author.surname }}</p>
           
           <div class="flex-grow"></div>
 
           <!-- Price and Buy button -->
           <div class="flex items-center justify-center mt-3 space-x-3 flex-shrink-0">
-            <p class="text-lg text-orange-600 font-semibold">Price: {{ reading_material.price }} €</p>
+            <p class="text-lg text-green-700 dark:text-green-600 font-semibold">Price: {{ reading_material.price }} €</p>
           </div>
           
         {% else %}

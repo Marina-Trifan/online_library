@@ -1,7 +1,7 @@
 {% extends "readira/base.html" %}
 {% load i18n static %}
 {% block content %}
-<div class="justify-start max-w-4xl mx-auto px-4 py-8 bg-gray-600 shadow-md rounded-lg mt-24 mb-12">
+<div class="max-w-4xl mx-auto px-4 py-8 border border-gray-400 dark:bg-gray-800 bg-white dark:text-white rounded shadow transition-colors duration-200 mt-24 mb-12">
   <div class="flex flex-col md:flex-row md:items-start md:space-x-6">
     <!-- Display image-->
     {% if material.image %}
@@ -9,19 +9,19 @@
     {% endif %}
     <!-- Title, Author, Genre and Rating container-->
     <div class="flex-1">
-      <h1 class="text-3xl font-bold text-gray-300 mb-4">{{ material.title }}</h1>
-      <p class="text-gray-300 mb-2"><span class="font-semibold">Author:</span> {{ material.author.name }} {{ material.author.surname }}</p>
-      <p class="text-gray-300 mb-2"><span class="font-semibold">Genre:</span> {{ material.genre.name }}</p>
-      <p class="text-gray-300 mb-2"><span class="font-semibold">Category:</span> {{ material.category.name }}</p>
+      <h1 class="text-3xl font-bold text-black dark:text-white mb-4">{{ material.title }}</h1>
+      <p class="text-black dark:text-white mb-2"><span class="font-semibold">Author:</span> {{ material.author.name }} {{ material.author.surname }}</p>
+      <p class="text-black dark:text-white mb-2"><span class="font-semibold">Genre:</span> {{ material.genre.name }}</p>
+      <p class="text-black dark:text-white mb-2"><span class="font-semibold">Category:</span> {{ material.category.name }}</p>
       <!-- Display Rating as stars -->
       <div class="mt-4">
-        <h3 class="text-xl font-semibold text-gray-300 mb-2">Rating:</h3>
+        <p class="text-xl text-black dark:text-white mb-2"><span class="font-semibold"></span>Rating:</p>
         <div class="flex space-x-1 text-xl">
           {% for i in "12345" %}
             {% if forloop.counter <= material.average_rating|floatformat:0 %}
               <span class="text-yellow-400">★</span>
             {% else %}
-              <span class="text-gray-200">★</span>
+              <span class="text-gray-400 dark:text-gray-200">★</span>
             {% endif %}
           {% endfor %}
         </div>
@@ -29,46 +29,46 @@
           {% if user.is_authenticated %}
             <!-- Review, Rating Buttons-->
             <div class="flex justify-center gap-4 mt-2">
-              <a href="{% url 'library:create_review' material.pk %}" class="inline-block px-4 py-2 bg-teal-800 text-white rounded hover:bg-teal-600 hover:text-black transition">Leave a Review</a>
-              <a href="{% url 'library:create_rating' material.pk %}" class="inline-block px-4 py-2 bg-yellow-600 text-white rounded hover:bg-yellow-400 hover:text-black transition">Rate this Book</a>
+              <a href="{% url 'library:create_review' material.pk %}" 
+                class="inline-block px-5 py-2 bg-violet-800 hover:bg-violet-600 text-white rounded-lg font-semibold">Leave a Review</a>
+              <a href="{% url 'library:create_rating' material.pk %}" class="inline-block px-5 py-2 bg-orange-700 hover:bg-orange-600 text-white rounded-lg font-semibold">Rate this Book</a>
             </div>  
               
               <!-- Price and Buy Button-->
-            <div class="mt-4 flex justify-center gap-4">
-              <p class="text-sm text-white mt-1 text-2xl font-bold">{{ material.price }} €</p>
+            <div class="mt-4 flex justify-center">
               <form method="post" action="{% url 'user_account:add_to_cart' material.pk %}">
                 {% csrf_token %}
-                <button type="submit" class="bg-orange-600 text-white px-3 py-1 rounded hover:bg-orange-400 text-sm">
-                  Buy
+                <button type="submit" class="inline-block px-5 py-2 bg-green-700 hover:bg-green-600 text-white rounded-lg font-semibold">
+                  {{ material.price }} € Buy
                 </button>
               </form>
             </div>
           {% else %}
-            <p class="text-gray-600">
-              <a href="{% url 'user_account:login' %}" class="text-blue-600 hover:underline">Login</a> to review or rate this material.
+            <p class="text-black dark:text-white mt-4">
+              <a href="{% url 'user_account:login' %}" class="text-blue-600 font-semibold hover:underline">Login</a> to Buy, Rate or Review this material.
             </p>
           {% endif %}
       </div>
     </div>
   </div>
   <!-- Reading material Summary-->
-  <div class="mt-8 space-y-4 text-gray-300">
+  <div class="mt-8 space-y-4 text-black dark:text-white">
     <p><span class="font-semibold">Summary:</span> {{ material.book_summary }}</p>
   </div>
   <!-- Demarcation line -->
   <hr class="my-6 border-gray-300">
   <!-- Reviews -->
   <div>
-    <h3 class="text-2xl font-bold text-gray-300 mb-4">Reviews</h3>
+    <h3 class="text-2xl font-bold text-black dark:text-white mb-4">Reviews</h3>
     <div class="space-y-4">
       {% for review in material.reviews.all %}
-        <div class="border border-gray-200 p-4 rounded-md bg-gray-50">
+        <div class="border border-gray-300 dark:border-gray-600 p-4 rounded-md bg-white dark:bg-gray-700 transition">
           <p class="text-sm text-gray-500 font-semibold">{{ review.user.username }}</p>
           <p class="text-lg font-medium text-gray-800">{{ review.title }}</p>
           <p class="text-gray-700">{{ review.content }}</p>
         </div>
       {% empty %}
-        <p class="text-gray-300">No reviews yet.</p>
+        <p class="text-black dark:text-white">No reviews yet.</p>
       {% endfor %}
     </div>
   </div>

@@ -50,50 +50,68 @@
                 </nav>
             </div>
 
-            <!-- Right Section: Search, Language, Authetication, Theme toggle-->
-            <div class="flex justify-end space-x-3 text-sm">
+            <!-- Right Section: Search, Cart icon, Authetication, Language, Theme toggle-->
+            <div class="flex justify-end text-sm items-center">
+
+                <!-- Search Form and Cart icon -->
+                <div class="flex items-center space-x-6">
 
                 <!-- Search Form -->
-                <form action="/search" method="get" class="flex items-center">
-                    <input type="search" name="q" placeholder="Search your next read..." class="rounded-l px-2 py-1 text-black border border-gray-400 focus:outline-none">
-                    <button type="submit" class="bg-gray-400 px-3 py-1 rounded-r hover:bg-gray-200">
-                        Search
-                    </button>
-                </form> 
+                    <form action="/search" method="get" class="flex items-center">
+                        <input type="search" name="q" placeholder="Search your next read..." class="rounded-l px-2 py-2 text-black border border-gray-400 focus:outline-none">
+                        <button type="submit" class="bg-gray-400 px-3 py-2 rounded-r hover:bg-gray-200 text-black">
+                            Search
+                        </button>
+                    </form>
+                    
+                    <!-- Cart icon -->
+                    <a href="{% url 'user_account:cart' %}" class="cart-icon">
+                    <i class="ph ph-shopping-cart" style="font-size: 24px;"></i>
+                    </a>
+                </div>
 
-                <!-- Language Switcher -->
-                <form action="{% url 'set_language' %}" method="post">
-                    {% csrf_token%}
-                    <select name="language" onchange="this.form.submit()"
-                        class="bg-zinc-600 text-white text-sm px-2 py-1 rounded-md">    
-                        <option value="en" {% if LANGUAGE_CODE == "en" %}selected{% endif %}>EN</option>
-                        <option value="ro" {% if LANGUAGE_CODE == "ro" %}selected{% endif %}>RO</option>
-                    </select>
-                </form>
+                <!-- Authentication, Language, Theme -->
+                <div class="flex items-center space-x-3 ml-6">
 
                 <!-- Authentication buttons -->
-                {% if user.is_authenticated %}
-                    <a href="{% url 'user_account:profile' %}" class="text-black rounded-xl text-sm font-semibold">
-                    {% if user.avatar_url %}
-                        <img src="{{ user.avatar_url }}" alt="Avatar" class="rounded-full object-coverw-8 h-8">
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'user_account:profile' %}" class="text-black rounded-xl text-sm font-semibold">
+                            {% if user.avatar_url %}
+                                <img src="{{ user.avatar_url }}" alt="Avatar" class="rounded-full object-coverw-8 h-8">
+                            {% else %}
+                                <i class="ph ph-user-circle"></i>
+                            {% endif %}
+                        </a>
+                        <a href="{% url 'user_account:logout' %}" class="px-2 py-2 bg-red-600 text-white rounded-xl text-sm hover:bg-red-400">Log Out</a>
                     {% else %}
-                        <i class="ph ph-user-circle"></i>
+                        <a href="{% url 'user_account:login' %}"
+                            class="px-3 py-2 bg-green-200 text-green-900 rounded-xl text-sm hover:bg-green-300 transition font-medium">
+                            Log In
+                        </a>
+                        <a href="{% url 'user_account:register' %}"
+                            class="px-3 py-2 bg-pink-200 text-pink-900 rounded-xl text-sm hover:bg-pink-300 transition font-semibold">
+                            Sign Up
+                        </a>
                     {% endif %}
-                </a>
-                    <a href="{% url 'user_account:logout' %}" class="px-2 py-1 bg-red-600 text-white rounded-xl text-sm hover:bg-red-400">Log Out</a>
-                {% else %}
-                    <a href="{% url 'user_account:login' %}" class="px-2 py-1 bg-green-800 text-white rounded-xl text-sm hover:bg-green-600">Log In</a>
-                    <a href="{% url 'user_account:register' %}" class="px-2 py-1 bg-yellow-400 text-black rounded-xl text-sm font-semibold hover:bg-yellow-300">Sign Up</a>
-                {% endif %}
 
-                <!-- Theme toggle -->
-                <button onclick="toggleTheme()" class="text-xl hover:text-yellow-400 transition" title="Toggle theme">
-                    <i id="theme-icon" class="ph ph-moon"></i>
-                </button>
+                    <!-- Language Switcher -->
+                    <form action="{% url 'set_language' %}" method="post">
+                        {% csrf_token%}
+                        <select name="language" onchange="this.form.submit()"
+                            class="bg-zinc-600 text-white text-sm px-2 py-2 rounded-md">    
+                            <option value="en" {% if LANGUAGE_CODE == "en" %}selected{% endif %}>EN</option>
+                            <option value="ro" {% if LANGUAGE_CODE == "ro" %}selected{% endif %}>RO</option>
+                        </select>
+                    </form>
+
+                    <!-- Theme toggle -->
+                    <button onclick="toggleTheme()" class="text-xl hover:text-yellow-400 transition" title="Toggle theme">
+                        <i id="theme-icon" class="ph ph-moon"></i>
+                    </button>
+                </div>
             </div>
         </div>
     </header>
-
 
 
 <!-- Content -->
@@ -105,13 +123,10 @@
 
 <!-- Footer -->
 <footer class="bg-zinc-900 text-white py-4">
-  <div class="container mx-auto px-6 flex flex-col gap-2">
-    <p id="weather-text" class="text-sm text-blue-300">
-      Weather info loading...
-    </p>
-
+  <div class="container mx-auto px-6 flex justify-between items-center">
+    <!-- Left: Contact us -->
     <div class="flex flex-col items-start">
-      <p class="text-left mb-2 font-semibold text-lg">Contact us</p>
+      <p class="mb-2 font-semibold text-lg">Contact us</p>
       <p>
         <i class="ph ph-phone text-lg"></i>
         + 40 740 123 456
@@ -121,6 +136,11 @@
         contact@readira.ro
       </p>
     </div>
+
+    <!-- Right: Weather Widget -->
+    <p id="weather-text" class="text-sm text-blue-300 whitespace-nowrap">
+      Weather info loading...
+    </p>
   </div>
 </footer>
     <script>
