@@ -1,0 +1,31 @@
+{% extends 'readira/base.html' %}
+{% load i18n static %}
+
+{% block content %}
+<!-- Banner -->
+<section class="relative h-[300px] md:h-[400px] w-full bg-cover bg-center flex items-center justify-center text-black"
+         style="background-image: url('https://img.freepik.com/premium-photo/blue-bokeh-with-firework-new-year-celebrate-background_35652-428.jpg');">
+    <div class="p-6 md:p-10 text-center max-w-2xl">
+        <h2 class="text-2xl md:text-3xl font-bold leading-snug">
+            Start your literary adventure!<br />
+            <span class="block mt-2 font-medium text-lg md:text-xl">
+            With a Readira subscription, you have unlimited access to knowledge and inspiration.
+            </span>
+        </h2>
+    </div>
+</section>
+
+<!-- Choice Buttons -->
+<section class="flex flex-col items-center mt-12 px-4 pb-12">
+  <form method="post" class="space-y-4 text-center">
+    {% csrf_token %}
+    <button type="submit" name="choice" value="subscribe" class="px-6 py-3 bg-green-600 hover:bg-green-700 transition text-white rounded-lg font-semibold">
+      Subscribe
+    </button>
+    <br />
+    <button type="submit" name="choice" value="skip" class="px-6 py-3 bg-gray-500 hover:bg-gray-600 transition text-white rounded-lg font-semibold">
+      Skip for now
+    </button>
+  </form>
+</section>
+{% endblock %}

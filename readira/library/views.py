@@ -31,20 +31,33 @@ def search_view(request):
         "LANGUAGE_CODE": get_language()
     })
 
-# Reading Materials View
+# Reading Materials Views
 
 class ReadingMaterialsListView(ListView):
     model = ReadingMaterials
     template_name = 'reading_materials/list.html'
     context_object_name = 'materials'
     paginate_by = 20
-    ordering = ['title'] 
+    ordering = ['title']
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
+        context['has_subscription'] = user.is_authenticated and user.has_active_subscription
+        return context 
 
 
 class ReadingMaterialsDetailView(DetailView):
     model=ReadingMaterials
     template_name = 'reading_materials/details.html'
     context_object_name = 'material'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
+        context['has_subscription'] = user.is_authenticated and user.has_active_subscription
+        return context 
+
 
 # Author View
 
@@ -96,6 +109,18 @@ class RatingCreateView(LoginRequiredMixin, CreateView):
 
     def get_success_url(self):
         return reverse_lazy('library:reading_material_detail', kwargs={'pk': self.kwargs['pk']})
+    
+
+# Borrow View
+
+@login_required
+def borrow_material(request, material_id):
+    user = request.user
+    from django.utils.timezone import now
+    if not user.has_active_subscription:
+        return redirect('user_account:subscriptions')
+    material = get_object_or_404(ReadingMaterials, pk=material_id)
+    return render(request, 'user_account/borrow_success.html', {'material': material})
 
 
 

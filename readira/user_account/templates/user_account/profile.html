@@ -71,7 +71,7 @@ profile.html: {% extends "readira/base.html" %}
 
         <!-- Old Password -->
         <div class="mb-4">
-          <div class="flex items-center gap 4">
+          <div class="flex items-center gap-4">
             <label for="{{ password_form.old_password.id_for_label }}" class="w-48 font-medium">{% trans "Old password" %}</label>
             {{ password_form.old_password|add_class:"w-full rounded-lg border border-zinc-400 dark:border-zinc-500 bg-white dark:bg-zinc-800 text-black dark:text-white px-3 py-2" }}
           </div>
@@ -121,22 +121,7 @@ profile.html: {% extends "readira/base.html" %}
     <!-- Order and Subscription container -->
     <div class="border border-gray-300 dark:bg-gray-800 p-4 rounded shadow flex flex-col justify-between">
       
-      <!-- Orders -->
-      <div>
-        <h2 class="text-xl font-bold mb-4 text-black dark:text-white">{% trans "Orders" %}</h2>
-
-        {% if orders %}
-          {% for order in orders %}
-            <div class="text-sm mb-6">
-              <p>#{{ order.id }} – {{ order.submitted_at|date:"SHORT_DATE_FORMAT" }} - {{ order.total_cost }} {{ order.currency|default:"EUR" }} - {{ order.get_status_display }}</p>
-            </div>
-          {% endfor %}
-        {% else %}
-          <p class="text-sm text-gray-500">{% trans "No orders found." %}</p>
-        {% endif %}
-      </div>
-
-      <!-- Subscription -->
+      <!-- Subscription History -->
       <div>
         <h2 class="text-xl font-bold mb-4 text-black dark:text-white">{% trans "Subscription History" %}</h2>
         {% if subscriptions %}
@@ -146,7 +131,21 @@ profile.html: {% extends "readira/base.html" %}
             </div>
           {% endfor %}
         {% else %}
-          <p class="text-sm text-gray-500">{% trans "No subscriptions found." %}</p>
+          <p class="text-sm text-gray-800 dark:text-gray-300">{% trans "No subscriptions found." %}</p>
+        {% endif %}
+      </div>
+
+      <!-- Orders History -->
+      <div class="mt-8">
+        <h2 class="text-xl font-bold mb-4 text-black dark:text-white">{% trans "Orders" %}</h2>
+        {% if orders %}
+          {% for order in orders %}
+            <div class="text-sm mb-6">
+              <p>#{{ order.id }} – {{ order.submitted_at|date:"SHORT_DATE_FORMAT" }} - {{ order.total_cost }} {{ order.currency|default:"EUR" }} - {{ order.get_status_display }}</p>
+            </div>
+          {% endfor %}
+        {% else %}
+          <p class="text-sm text-gray-500">{% trans "No orders found." %}</p>
         {% endif %}
       </div>
     </div>

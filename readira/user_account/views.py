@@ -8,7 +8,7 @@ from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView
 from .forms import CustomUserForm, CustomPasswordChangeForm
-from library.models import ReadingMaterials, SubscriptionPlan, Order
+from library.models import ReadingMaterials, SubscriptionPlan, Subscription, Order
 from django.views.decorators.http import require_POST
 from django.views.decorators.http import require_http_methods
 from datetime import datetime
@@ -26,6 +26,9 @@ class StoreLoginView(LoginView):
     authentication_form = EmailLoginForm
 
     def get_success_url(self):
+        user = self.request.user
+        if not user.first_login_complete:
+            return reverse_lazy('user_account:choose_plan')
         return reverse_lazy("user_account:profile")
 
 class RegisterView(View):
@@ -82,24 +85,28 @@ def profile_view(request):
         profile_form = CustomUserForm(instance=user)
         password_form = CustomPasswordChangeForm(user)
 
-    orders = getattr(user, "orders", None)
-    orders = orders.all().order_by('-submitted_at') if orders else []
+    subs = user.subscriptions.all().order_by('-start_date') if hasattr(user, 'subscriptions') else []
+    orders = user.orders.all().order_by('-submitted_at') if hasattr(user, 'orders') else []
+    has_sub = user.has_active_subscription
     fields = ['full_name', 'phone', 'city', 'country', 'street', 'zip_code', 'avatar_url', 'preferred_channel']
 
     return render(request, 'user_account/profile.html', {
         'profile_form': profile_form,
         'password_form': password_form,
-        'orders': orders,
-        "fields": fields
+        'orders': orders if not has_sub else [],
+        'subscriptions': subs,
+        'has_subscription': has_sub,
+        'fields': fields
     })
 
+# Logout View
 @login_required
 def logout_view(request):
     logout(request)
     return redirect('/')
 
 
-# Buy Button view
+# Buy Button View
 @login_required
 def add_to_cart(request, material_id):
     material = get_object_or_404(ReadingMaterials, id=material_id)
@@ -119,7 +126,7 @@ def add_to_cart(request, material_id):
             "price": float(material.price or 0),
             "quantity": quantity,
             "total": round(float(material.price or 0) * quantity, 2),
-        }
+        }  
 
     # Ensure token is created only once
     if "order_token" not in request.session:
@@ -132,11 +139,28 @@ def add_to_cart(request, material_id):
 
     return redirect("user_account:cart")
 
+
 @login_required
 def cart_view(request):
     cart = request.session.get("cart", {})
     materials = []
     total = 0
+
+    plan_id = request.GET.get('plan_id')
+    if plan_id:
+        try:
+            plan = SubscriptionPlan.objects.get(pk=plan_id)
+            request.session['selected_plan_id'] = plan.id
+            request.session.modified = True
+        except SubscriptionPlan.DoesNotExist:
+            pass
+    selected_plan = None
+    stored_plan_id = request.session.get("selected_plan_id")
+    if stored_plan_id:
+        try:
+            selected_plan = SubscriptionPlan.objects.get(pk=stored_plan_id)
+        except SubscriptionPlan.DoesNotExist:
+            request.session.pop("selected_plan_id", None)
 
     for item in cart.values():
         try:
@@ -147,12 +171,20 @@ def cart_view(request):
             total += material.total
         except ReadingMaterials.DoesNotExist:
             continue
+    if selected_plan:
+        total += selected_plan.price  
+
+    if "order_token" not in request.session:
+        raw = f"{request.user.id}-{get_random_string(12)}"
+        token = hashlib.sha256(raw.encode()).hexdigest()
+        request.session["order_token"] = token
 
     order_token = request.session.get("order_token")
     return render(request, "user_account/cart.html", {
         "materials": materials,
         "total_price": total,
         "order_token": order_token,
+        "selected_plan":selected_plan,
     })
 
 @require_POST
@@ -164,17 +196,37 @@ def remove_from_cart(request, material_id):
         request.session.modified = True
     return redirect('user_account:cart')
 
+# Remove subscription view
+@require_POST
+@login_required
+def remove_subscription(request):
+    if "selected_plan_id" in request.session:
+        del request.session["selected_plan_id"]
+        request.session.modified = True
+        messages.success(request, "Subscription plan removed from your cart.")
+    return redirect("user_account:cart")
+
+
 @require_http_methods(["GET", "POST"])
 @login_required
 def checkout_view(request, token):
     cart = request.session.get("cart", {})
     session_token = request.session.get("order_token")
 
-    if not cart or session_token != token:
+    if (not cart and not request.session.get("selected_plan_id")) or session_token != token:
         messages.error(request, "Invalid or expired checkout session.")
         return redirect("user_account:cart")
 
     total_price = sum(item["total"] for item in cart.values())
+
+    selected_plan = None
+    plan_id = request.session.get("selected_plan_id")
+    if plan_id:
+        try:
+            selected_plan = SubscriptionPlan.objects.get(pk=plan_id)
+            total_price += selected_plan.price
+        except SubscriptionPlan.DoesNotExist:
+            request.session.pop("selected_plan_id", None)
 
     if request.method == "POST":
         # Validate fields (same as before)
@@ -206,7 +258,8 @@ def checkout_view(request, token):
                 messages.error(request, err)
             return render(request, "user_account/checkout.html", {
                 "total_price": total_price,
-                "order_token": token
+                "order_token": token,
+                "selected_plan": selected_plan,
             })
 
         # Create orders
@@ -229,9 +282,26 @@ def checkout_view(request, token):
                 status=Order.Status.PAID,
             )
 
+        # ✅ CREARE ABONAMENT dacă există plan selectat
+        if selected_plan:
+            from datetime import timedelta
+
+            start_date = datetime.today()
+            end_date = start_date + timedelta(days=selected_plan.duration_days or 30)
+
+            from library.models import Subscription  # asigură-te că importul e prezent
+            Subscription.objects.create(
+                user=request.user,
+                plan=selected_plan,
+                start_date=start_date,
+                end_date=end_date,
+                active=True
+            )
+
         # Finalize: clear cart + token
         request.session.pop("cart", None)
         request.session.pop("order_token", None)
+        request.session.pop("selected_plan_id", None)
         request.session.modified = True
 
         return redirect("user_account:checkout_success")
@@ -254,4 +324,19 @@ class SubscriptionPageView(TemplateView):
         plans = SubscriptionPlan.objects.all()
         context['plans'] = plans
         return context
+    
+@login_required
+def choose_subscription(request):
+    user = request.user
+    if user.first_login_complete:
+        return redirect('library:reading_materials')
+    if request.method =='POST':
+        choice = request.POST.get('choice')
+        user.first_login_complete = True
+        user.save()
+        if choice =='subscribe':
+            return redirect('user_account:subscriptions')
+        else:
+            return redirect('library:reading_materials')
+    return render(request, 'user_account/choose_plan.html')
 

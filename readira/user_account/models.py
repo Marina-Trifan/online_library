@@ -49,7 +49,14 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
+    first_login_complete = models.BooleanField(default=False, verbose_name=_('First login complete'))
+
     objects = CustomUserManager()
+
+    @property
+    def has_active_subscription(self):
+        from django.utils.timezone import now
+        return self.subscriptions.filter(active=True, end_date__gte=now()).exists()
 
     class Meta:
         verbose_name = _("User")

@@ -34,15 +34,25 @@
               <a href="{% url 'library:create_rating' material.pk %}" class="inline-block px-5 py-2 bg-orange-700 hover:bg-orange-600 text-white rounded-lg font-semibold">Rate this Book</a>
             </div>  
               
-              <!-- Price and Buy Button-->
-            <div class="mt-4 flex justify-center">
-              <form method="post" action="{% url 'user_account:add_to_cart' material.pk %}">
+            <!-- Price and Buy Button or Subscription Button -->
+            {% if has_subscription %}
+              <form method="post" action="{% url 'library:borrow_material' material.pk %}">
                 {% csrf_token %}
-                <button type="submit" class="inline-block px-5 py-2 bg-green-700 hover:bg-green-600 text-white rounded-lg font-semibold">
-                  {{ material.price }} € Buy
+                <button type="submit" class="px-5 py-2 bg-blue-700 text-white rounded-lg font-semibold mt-6">
+                  Borrow
                 </button>
               </form>
-            </div>
+            {% else %}
+              <div class="flex justify-center mt-6">
+                <form method="post" action="{% url 'user_account:add_to_cart' material.pk %}">
+                  {% csrf_token %}
+                  <button type="submit" class="px-5 py-2 bg-green-700 text-white rounded-lg font-semibold">
+                    {{ material.price }} € Buy
+                  </button>
+                </form>
+              </div>
+            {% endif %}
+            
           {% else %}
             <p class="text-black dark:text-white mt-4">
               <a href="{% url 'user_account:login' %}" class="text-blue-600 font-semibold hover:underline">Login</a> to Buy, Rate or Review this material.

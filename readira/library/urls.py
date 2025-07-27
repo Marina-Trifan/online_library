@@ -7,6 +7,7 @@ from .views import (
     ReadingMaterialsDetailView,
     ReviewCreateView,
     RatingCreateView,
+    borrow_material,
     )
 
 app_name='library'
@@ -18,4 +19,5 @@ urlpatterns = [
     path('author/<int:pk>/', AuthorDetailView.as_view(), name='author_details'),
     path('materials/<int:pk>/review/', ReviewCreateView.as_view(), name='create_review'),
     path('materials/<int:pk>/rating', RatingCreateView.as_view(), name='create_rating'),
+    path('materials/<int:material_id>/borrow/', borrow_material, name='borrow_material')
 ]
