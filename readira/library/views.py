@@ -59,16 +59,11 @@ class AuthorDetailView(LoginRequiredMixin, DetailView):
     model = Author
     template_name = 'authors/details.html'
     context_object_name = 'author'
-    login_url = reverse_lazy('author_access_denied')
-    redirect_field_name = None
     
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
-            return redirect('library:author_access_denied')
+            return redirect('user_account:login')
         return super().dispatch(request, *args, **kwargs)
-
-def author_access_denied(request):
-    return render(request, 'authors/access_denied.html')
    
 
 # Review View
