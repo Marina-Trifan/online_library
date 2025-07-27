@@ -66,12 +66,18 @@ def profile_view(request):
             password_form = CustomPasswordChangeForm(user)
             if profile_form.is_valid():
                 profile_form.save()
+                messages.success(request, 'Profile updated successfully.')
+            else:
+                messages.error(request, 'Something went wrong. Please check the form fileds and try again.')
         elif 'change_password' in request.POST:
             profile_form = CustomUserForm(instance=user)
             password_form = CustomPasswordChangeForm(user, request.POST)
             if password_form.is_valid():
                 password_form.save()
                 update_session_auth_hash(request, password_form.user)
+                messages.success(request, 'Password changed successfully.')
+            else:
+                messages.error(request, 'Something went wrong. Please check the form fileds and try again.')
     else:
         profile_form = CustomUserForm(instance=user)
         password_form = CustomPasswordChangeForm(user)

@@ -4,6 +4,21 @@ profile.html: {% extends "readira/base.html" %}
 {% block content %}
 <section class="bg-white dark:bg-black text-black dark:text-white py-24 px-4">
   <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
+    {% if messages %}
+      <div class="col-span-3">
+        {% for message in messages %}
+          {% if message.tags == 'success' %}
+            <div class="p-4 text-xl text-green-600 text-center font-bold mx-auto w-full max-w-lg">
+              {{ message }}
+            </div>
+          {% elif message.tags == 'error' %}
+            <div class="p-4 text-xl text-red-600 text-center font-bold mx-auto w-full max-w-lg">
+              {{ message }}
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% endif %}
 
     <!-- Personal Info Card -->
     <div class="border border-gray-300 dark:bg-gray-800 p-4 rounded shadow flex flex-col">
@@ -39,10 +54,6 @@ profile.html: {% extends "readira/base.html" %}
           {{ profile_form.preferred_channel | add_class:"w-full rounded-lg border border-zinc-400 dark:border-zinc-500 bg-white dark:bg-zinc-800 text-black dark:text-white px-3 py-2" }}
         </div>
         <div class="mb-4 flex items-center gap-4">
-          <label for="{{ profile_form.username.id_for_label }}" class="w-48 font-medium">{% trans "Username" %}</label>
-          {{ profile_form.username | add_class:"w-full rounded-lg border border-zinc-400 dark:border-zinc-500 bg-white dark:bg-zinc-800 text-black dark:text-white px-3 py-2" }}
-        </div>
-        <div class="mb-4 flex items-center gap-4">
           <label for="{{ profile_form.email.id_for_label }}" class="w-48 font-medium">{% trans "Email" %}</label>
           {{ profile_form.email | add_class:"w-full rounded-lg border border-zinc-400 dark:border-zinc-500 bg-white dark:bg-zinc-800 text-black dark:text-white px-3 py-2" }}
         </div>
@@ -57,18 +68,50 @@ profile.html: {% extends "readira/base.html" %}
       <h2 class="text-xl font-bold mb-4 text-black dark:text-white">{% trans "Change Password" %}</h2>
       <form method="post">
         {% csrf_token %}
-        <div class="mb-4 flex items-center gap-4">
-          <label for="{{ password_form.old_password.id_for_label }}" class="w-48 font-medium">{% trans "Old password" %}</label>
-          {{ password_form.old_password|add_class:"w-full rounded-lg border border-zinc-400 dark:border-zinc-500 bg-white dark:bg-zinc-800 text-black dark:text-white px-3 py-2" }}
+
+        <!-- Old Password -->
+        <div class="mb-4">
+          <div class="flex items-center gap 4">
+            <label for="{{ password_form.old_password.id_for_label }}" class="w-48 font-medium">{% trans "Old password" %}</label>
+            {{ password_form.old_password|add_class:"w-full rounded-lg border border-zinc-400 dark:border-zinc-500 bg-white dark:bg-zinc-800 text-black dark:text-white px-3 py-2" }}
+          </div>
+          {% if password_form.old_password.errors %}
+            <div class="text-red-500 text-sm mt-2 ml-40">
+              {% for error in password_form.old_password.errors %}
+                <p>{{ error }}</p>
+              {% endfor %}
+            </div>
+          {% endif %}
         </div>
+
+        <!-- New Password -->
         <div class="mb-4 flex items-center gap-4">
           <label for="{{ password_form.new_password1.id_for_label }}" class="w-48 font-medium">{% trans "New password" %}</label>
           {{ password_form.new_password1|add_class:"w-full rounded-lg border border-zinc-400 dark:border-zinc-500 bg-white dark:bg-zinc-800 text-black dark:text-white px-3 py-2" }}
+          {% if password_form.new_password1.errors %}
+            <div class="text-red-500 text-sm">
+              {% for error in password_form.new_password1.errors %}
+                <p>{{ error }}</p>
+              {% endfor %}
+            </div>
+          {% endif %}
         </div>
-        <div class="mb-4 flex items-center gap-4">
-          <label for="{{ password_form.new_password2.id_for_label }}" class="w-48 font-medium">{% trans "New password confirmation" %}</label>
-          {{ password_form.new_password2|add_class:"w-full rounded-lg border border-zinc-400 dark:border-zinc-500 bg-white dark:bg-zinc-800 text-black dark:text-white px-3 py-2" }}
+
+        <!-- New Password Confirmation -->
+        <div class="'mb-4">
+          <div class="flex items-center gap-4">
+            <label for="{{ password_form.new_password2.id_for_label }}" class="w-48 font-medium">{% trans "New password confirmation" %}</label>
+            {{ password_form.new_password2|add_class:"w-full rounded-lg border border-zinc-400 dark:border-zinc-500 bg-white dark:bg-zinc-800 text-black dark:text-white px-3 py-2" }}
+          </div>
+          {% if password_form.new_password2.errors %}
+            <div class="text-red-500 text-sm mt-2 ml-40">
+              {% for error in password_form.new_password2.errors %}
+                <p>{{ error }}</p>
+              {% endfor %}
+            </div>
+          {% endif %}
         </div>
+
         <button type="submit" name="change_password" class="inline-block mt-4 px-5 py-2 bg-blue-800 hover:bg-blue-600 text-white rounded-lg font-semibold">
           {% trans "Change Password" %}
         </button>
@@ -96,10 +139,15 @@ profile.html: {% extends "readira/base.html" %}
       <!-- Subscription -->
       <div>
         <h2 class="text-xl font-bold mb-4 text-black dark:text-white">{% trans "Subscription History" %}</h2>
-        <p class="text-sm mb-6">{% trans "Access your subscription history here." %}</p>
-        <a href="#" class="inline-block mt-4 px-5 py-2 bg-blue-800 hover:bg-blue-600 text-white rounded-lg font-semibold">
-          {% trans "Subscriptions" %}
-        </a>
+        {% if subscriptions %}
+          {% for sub in subscriptions %}
+            <div class="text-sm mb-6">
+              <p>#{{ sub.id }} – {{ sub.created_at|date:"SHORT_DATE_FORMAT" }} – {{ sub.plan.name }} – {{ sub.get_status_display }}</p>
+            </div>
+          {% endfor %}
+        {% else %}
+          <p class="text-sm text-gray-500">{% trans "No subscriptions found." %}</p>
+        {% endif %}
       </div>
     </div>
   </div>

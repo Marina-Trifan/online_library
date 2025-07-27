@@ -40,7 +40,12 @@ class CustomUserForm(forms.ModelForm):
 
 
 class CustomPasswordChangeForm(PasswordChangeForm):
-    pass  # Can be customized further if needed
+    def clean_old_password(self):
+        old_password = self.cleaned_data.get('old_passord')
+        if not self.user.check_password(old_password):
+            raise forms.ValidationError(_('Incorrect password.'), code='password_incorrect')
+        return old_password
+
 
 
 class EmailLoginForm(forms.Form):
