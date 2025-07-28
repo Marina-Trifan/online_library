@@ -59,9 +59,17 @@
         <div class="mt-8 border-t-2 border-gray-400 dark:border-gray-200 pt-4">
           <h2 class="text-2xl font-semibold mb-4 text-black dark:text-white">Subscription Plan</h2>
           <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-            <p class="text-lg">
-              {{ selected_plan.name }} — {{ selected_plan.price }} € for {{ selected_plan.duration_days }} days
-            </p>
+            <div>
+              <p class="text-lg">
+                {{ selected_plan.name }} — {{ selected_plan.price }} € for {{ selected_plan.duration_days }} days
+              </p>
+              <p>Plan: {{ selected_plan.name }} – {{ selected_plan.price }} {{ selected_plan.currency|default:"EUR" }}</p>
+              {% if has_active_subscription %}
+                <p class="text-red-600 font-semibold">
+                  You already have an active subscription for this plan.
+                </p>
+              {% endif %}
+            </div>
             <form method="post" action="{% url 'user_account:remove_subscription' %}">
               {% csrf_token %}
               <button type="submit" class="text-sm text-red-600 font-semibold hover:underline mt-2 sm:mt-0">
@@ -91,9 +99,17 @@
         <div class="mt-8 border-t-2 border-gray-400 dark:border-gray-200 pt-4">
           <h2 class="text-2xl font-semibold mb-4 text-black dark:text-white">Subscription Plan</h2>
           <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-            <p class="text-lg">
-              {{ selected_plan.name }} — {{ selected_plan.price }} € for {{ selected_plan.duration_days }} days
-            </p>
+            <div>
+              <p class="text-lg">
+                {{ selected_plan.name }} — {{ selected_plan.price }} € for {{ selected_plan.duration_days }} days
+              </p>
+              <p>Plan: {{ selected_plan.name }} – {{ selected_plan.price }} {{ selected_plan.currency|default:"EUR" }}</p>
+              {% if has_active_subscription %}
+                <p class="text-red-600 font-semibold">
+                  You already have an active subscription for this plan.
+                </p>
+              {% endif %}
+            </div>
             <form method="post" action="{% url 'user_account:remove_subscription' %}">
               {% csrf_token %}
               <button type="submit" class="text-sm text-red-600 font-semibold hover:underline mt-2 sm:mt-0">
@@ -125,5 +141,6 @@
           class="text-blue-600 font-semibold hover:underline">← Back to Reading Materials</a>
       </div>
     {% endif %}
+  </div>
 </section>
 {% endblock %}

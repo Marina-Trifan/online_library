@@ -121,7 +121,6 @@ class Subscription(models.Model):
     class Meta:
         verbose_name = _('Subscription')
         verbose_name_plural = _('Subscriptions')
-        unique_together = ('user', 'plan')
 
     def __str__(self):
         return f"{self.user.email} - {self.plan.name}" if self.user and self.plan else "Incomplete Subscription"

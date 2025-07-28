@@ -29,7 +29,12 @@
 
         <!-- Price -->
         {% if has_subscription %}
-          <a href="{% url 'library:borrow_material' reading_material.pk %}" class="btn bg-blue-600 text-white rounded">Borrow</a>
+          <div class="flex justify-center mt-4">
+            <a href="{% url 'library:borrow_material' reading_material.pk %}" 
+              class="inline-block mt-4 px-5 py-2 bg-green-800 hover:bg-green-600 text-white rounded-lg font-semibold">
+              Borrow
+            </a>
+          </div>
         {% else %}
           <p class="text-lg font-semibold text-green-600 text-center">Price: {{ reading_material.price }} €</p>
         {% endif %}

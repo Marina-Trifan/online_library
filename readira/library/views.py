@@ -6,7 +6,7 @@ from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Author, ReadingMaterials, Review, Rating
-from user_account.forms import ReviewForm, RatingForm
+from user_account.forms import ReviewForm
 from django.utils.translation import get_language
 from django.db.models import Q
 
@@ -48,18 +48,46 @@ class ReadingMaterialsListView(ListView):
 
 
 class ReadingMaterialsDetailView(DetailView):
-    model=ReadingMaterials
+    model = ReadingMaterials
     template_name = 'reading_materials/details.html'
     context_object_name = 'material'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         user = self.request.user
+        material = self.object
         context['has_subscription'] = user.is_authenticated and user.has_active_subscription
-        return context 
+
+        if user.is_authenticated:
+            rating = Rating.objects.filter(user=user, book=material).first()
+            context['user_rating'] = rating.value if rating else 0
+        else:
+            context['user_rating'] = 0
+
+        return context
+
+    def post(self, request, *args, **kwargs):
+        """Handles rating submission directly from the details page."""
+        self.object = self.get_object()
+
+        if not request.user.is_authenticated:
+            return redirect('user_account:login')
+
+        score = request.POST.get("score")
+        if score and score.isdigit():
+            score = int(score)
+            if 1 <= score <= 5:
+                # Creează sau actualizează ratingul utilizatorului
+                Rating.objects.update_or_create(
+                    user=request.user,
+                    book=self.object,
+                    defaults={"value": score}
+                )
+
+        return redirect('library:reading_material_detail', pk=self.object.pk)
 
 
-# Author View
+# Author Views
 
 class AuthorListView(ListView):
     model = Author
@@ -84,7 +112,7 @@ class AuthorDetailView(LoginRequiredMixin, DetailView):
 class ReviewCreateView(LoginRequiredMixin, CreateView):
     model = Review
     form_class = ReviewForm
-    template_name = 'reviews/form.html'
+    template_name = 'user_account/reviews.html'
 
     def form_valid(self, form):
         form.instance.user = self.request.user
@@ -92,24 +120,7 @@ class ReviewCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy('library:reading_material_detail', kwargs = {'pk': self.kwargs['pk']})
-
-
-# Rating View
-
-class RatingCreateView(LoginRequiredMixin, CreateView):
-    model = Rating
-    form_class = RatingForm
-    template_name = 'rating/form.html'
-
-    def form_valid(self, form):
-        form.instance.user = self.request.user
-        form.instance.book = get_object_or_404(ReadingMaterials, pk=self.kwargs['pk'])
-        return super().form_valid(form)
-
-    def get_success_url(self):
-        return reverse_lazy('library:reading_material_detail', kwargs={'pk': self.kwargs['pk']})
-    
+        return reverse_lazy('library:reading_material_detail', kwargs = {'pk': self.kwargs['pk']})  
 
 # Borrow View
 

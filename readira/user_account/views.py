@@ -11,13 +11,15 @@ from .forms import CustomUserForm, CustomPasswordChangeForm
 from library.models import ReadingMaterials, SubscriptionPlan, Subscription, Order
 from django.views.decorators.http import require_POST
 from django.views.decorators.http import require_http_methods
-from datetime import datetime
+from django.utils import timezone
+from datetime import datetime, timedelta
 import hashlib
 from django.utils.crypto import get_random_string
 from django.views import View
 from django.contrib.auth.views import LoginView
 from django.urls import reverse_lazy
 from .forms import EmailLoginForm
+from decimal import Decimal
 
 User = get_user_model()
 
@@ -29,7 +31,7 @@ class StoreLoginView(LoginView):
         user = self.request.user
         if not user.first_login_complete:
             return reverse_lazy('user_account:choose_plan')
-        return reverse_lazy("user_account:profile")
+        return reverse_lazy("library:main_page")
 
 class RegisterView(View):
     def get(self, request):
@@ -85,7 +87,7 @@ def profile_view(request):
         profile_form = CustomUserForm(instance=user)
         password_form = CustomPasswordChangeForm(user)
 
-    subs = user.subscriptions.all().order_by('-start_date') if hasattr(user, 'subscriptions') else []
+    subs = user.subscriptions.all().order_by('active', '-start_date') if hasattr(user, 'subscriptions') else []
     orders = user.orders.all().order_by('-submitted_at') if hasattr(user, 'orders') else []
     has_sub = user.has_active_subscription
     fields = ['full_name', 'phone', 'city', 'country', 'street', 'zip_code', 'avatar_url', 'preferred_channel']
@@ -93,7 +95,7 @@ def profile_view(request):
     return render(request, 'user_account/profile.html', {
         'profile_form': profile_form,
         'password_form': password_form,
-        'orders': orders if not has_sub else [],
+        'orders': orders,
         'subscriptions': subs,
         'has_subscription': has_sub,
         'fields': fields
@@ -144,7 +146,7 @@ def add_to_cart(request, material_id):
 def cart_view(request):
     cart = request.session.get("cart", {})
     materials = []
-    total = 0
+    total = Decimal('0.0')
 
     plan_id = request.GET.get('plan_id')
     if plan_id:
@@ -161,6 +163,14 @@ def cart_view(request):
             selected_plan = SubscriptionPlan.objects.get(pk=stored_plan_id)
         except SubscriptionPlan.DoesNotExist:
             request.session.pop("selected_plan_id", None)
+    has_active_subscription = False
+    if selected_plan:
+        has_active_subscription = Subscription.objects.filter(
+            user=request.user,
+            plan=selected_plan,
+            end_date__gte=timezone.now(),
+            active=True
+        ).exists()
 
     for item in cart.values():
         try:
@@ -168,7 +178,7 @@ def cart_view(request):
             material.quantity = item["quantity"]
             material.total = item["total"]
             materials.append(material)
-            total += material.total
+            total += Decimal(str(material.total))
         except ReadingMaterials.DoesNotExist:
             continue
     if selected_plan:
@@ -185,6 +195,7 @@ def cart_view(request):
         "total_price": total,
         "order_token": order_token,
         "selected_plan":selected_plan,
+        "has_active_subscription": has_active_subscription,
     })
 
 @require_POST
@@ -227,6 +238,17 @@ def checkout_view(request, token):
             total_price += selected_plan.price
         except SubscriptionPlan.DoesNotExist:
             request.session.pop("selected_plan_id", None)
+
+    if selected_plan:
+        existing_active = Subscription.objects.filter(
+            user=request.user,
+            plan=selected_plan,
+            end_date__gte=timezone.now(),
+            active=True
+        ).exists()
+        if existing_active:
+            messages.error(request, "You already have an active subscription for this plan.")
+            return redirect("user_account:cart")
 
     if request.method == "POST":
         # Validate fields (same as before)
@@ -282,21 +304,29 @@ def checkout_view(request, token):
                 status=Order.Status.PAID,
             )
 
-        # ✅ CREARE ABONAMENT dacă există plan selectat
+        # ✅ CREARE ABONAMENT doar dacă NU există deja unul activ pentru același plan
         if selected_plan:
+            from django.utils.timezone import now
             from datetime import timedelta
 
-            start_date = datetime.today()
-            end_date = start_date + timedelta(days=selected_plan.duration_days or 30)
-
-            from library.models import Subscription  # asigură-te că importul e prezent
-            Subscription.objects.create(
+            existing_active = Subscription.objects.filter(
                 user=request.user,
                 plan=selected_plan,
-                start_date=start_date,
-                end_date=end_date,
+                end_date__gte=now(),  # încă activ
                 active=True
-            )
+            ).exists()
+
+            if not existing_active:
+                start_date = timezone.now()
+                end_date = start_date + timedelta(days=selected_plan.duration_days or 30)
+
+                Subscription.objects.create(
+                    user=request.user,
+                    plan=selected_plan,
+                    start_date=start_date,
+                    end_date=end_date,
+                    active=True
+                )
 
         # Finalize: clear cart + token
         request.session.pop("cart", None)

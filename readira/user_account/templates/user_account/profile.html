@@ -127,7 +127,8 @@ profile.html: {% extends "readira/base.html" %}
         {% if subscriptions %}
           {% for sub in subscriptions %}
             <div class="text-sm mb-6">
-              <p>#{{ sub.id }} – {{ sub.created_at|date:"SHORT_DATE_FORMAT" }} – {{ sub.plan.name }} – {{ sub.get_status_display }}</p>
+              <p>#{{ sub.id }} {{ sub.start_date|date:"SHORT_DATE_FORMAT" }}: {{ sub.plan.name }} – {{ sub.plan.price }} {{ sub.plan.currency|default:"EUR" }} – 
+                {% if sub.active %}{% trans "Active" %}{% else %}{% trans "Inactive" %}{% endif %}</p>
             </div>
           {% endfor %}
         {% else %}

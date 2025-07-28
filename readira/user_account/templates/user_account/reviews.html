@@ -1,0 +1,31 @@
+{% extends "readira/base.html" %}
+{% load i18n static widget_tweaks %}
+
+{% block content %}
+<section class="bg-white dark:bg-black text-black dark:text-white py-24 px-4">
+  <div class="max-w-3xl mx-auto border border-gray-300 dark:bg-gray-800 p-6 rounded shadow">
+    <h2 class="text-2xl font-bold mb-6 text-black dark:text-white">{% trans "Write a Review" %}</h2>
+
+    <form method="post">
+      {% csrf_token %}
+      {% for field in form %}
+        <div class="mb-4 flex items-center gap-4">
+          <label for="{{ field.id_for_label }}" class="w-48 font-medium">{{ field.label }}</label>
+          {{ field|add_class:"w-full rounded-lg border border-zinc-400 dark:border-zinc-500 bg-white dark:bg-zinc-800 text-black dark:text-white px-3 py-2" }}
+        </div>
+        {% if field.errors %}
+          <div class="text-red-500 text-sm mb-4 ml-52">
+            {% for error in field.errors %}
+              <p>{{ error }}</p>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endfor %}
+
+      <button type="submit" class="inline-block mt-4 px-5 py-2 bg-violet-800 hover:bg-violet-600 text-white rounded-lg font-semibold">
+        {% trans "Submit Review" %}
+      </button>
+    </form>
+  </div>
+</section>
+{% endblock %}

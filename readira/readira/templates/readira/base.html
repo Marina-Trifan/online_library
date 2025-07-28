@@ -66,7 +66,7 @@
                     
                     <!-- Cart icon -->
                     <a href="{% url 'user_account:cart' %}" class="cart-icon">
-                    <i class="ph ph-shopping-cart" style="font-size: 24px;"></i>
+                    <i class="ph ph-shopping-cart" style="font-size: 28px;"></i>
                     </a>
                 </div>
 
@@ -77,9 +77,9 @@
                     {% if user.is_authenticated %}
                         <a href="{% url 'user_account:profile' %}" class="text-black rounded-xl text-sm font-semibold">
                             {% if user.avatar_url %}
-                                <img src="{{ user.avatar_url }}" alt="Avatar" class="rounded-full object-coverw-8 h-8">
+                                <img src="{{ user.avatar_url }}" alt="Avatar" class="rounded-full object-cover w-10 h-10">
                             {% else %}
-                                <i class="ph ph-user-circle"></i>
+                                <i class="ph ph-user-circle text-3xl text-white"></i>
                             {% endif %}
                         </a>
                         <a href="{% url 'user_account:logout' %}" class="px-2 py-2 bg-red-600 text-white rounded-xl text-sm hover:bg-red-400">Log Out</a>

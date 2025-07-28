@@ -7,66 +7,89 @@
     {% if material.image %}
       <img src="{{ material.image.url }}" alt="{{ material.title }}" class="w-full max-w-sm rounded-lg shadow-md mb-6 md:mb-0">
     {% endif %}
+    
     <!-- Title, Author, Genre and Rating container-->
     <div class="flex-1">
       <h1 class="text-3xl font-bold text-black dark:text-white mb-4">{{ material.title }}</h1>
       <p class="text-black dark:text-white mb-2"><span class="font-semibold">Author:</span> {{ material.author.name }} {{ material.author.surname }}</p>
       <p class="text-black dark:text-white mb-2"><span class="font-semibold">Genre:</span> {{ material.genre.name }}</p>
       <p class="text-black dark:text-white mb-2"><span class="font-semibold">Category:</span> {{ material.category.name }}</p>
+      
       <!-- Display Rating as stars -->
       <div class="mt-4">
-        <p class="text-xl text-black dark:text-white mb-2"><span class="font-semibold"></span>Rating:</p>
-        <div class="flex space-x-1 text-xl">
+        <p class="text-xl text-black dark:text-white mb-2"><span class="font-semibold">Rating:</span></p>
+        <div id="stars-preview" class="flex space-x-1 text-2xl mb-4">
           {% for i in "12345" %}
-            {% if forloop.counter <= material.average_rating|floatformat:0 %}
-              <span class="text-yellow-400">★</span>
+            {% if forloop.counter <= user_rating %}
+              <span class="star text-yellow-400">★</span>
             {% else %}
-              <span class="text-gray-400 dark:text-gray-200">★</span>
+              <span class="star text-gray-400">★</span>
             {% endif %}
           {% endfor %}
         </div>
-        <!-- Review, Rating and Buy Buttons, Price-->
-          {% if user.is_authenticated %}
-            <!-- Review, Rating Buttons-->
-            <div class="flex justify-center gap-4 mt-2">
-              <a href="{% url 'library:create_review' material.pk %}" 
-                class="inline-block px-5 py-2 bg-violet-800 hover:bg-violet-600 text-white rounded-lg font-semibold">Leave a Review</a>
-              <a href="{% url 'library:create_rating' material.pk %}" class="inline-block px-5 py-2 bg-orange-700 hover:bg-orange-600 text-white rounded-lg font-semibold">Rate this Book</a>
-            </div>  
-              
-            <!-- Price and Buy Button or Subscription Button -->
-            {% if has_subscription %}
-              <form method="post" action="{% url 'library:borrow_material' material.pk %}">
-                {% csrf_token %}
-                <button type="submit" class="px-5 py-2 bg-blue-700 text-white rounded-lg font-semibold mt-6">
-                  Borrow
-                </button>
-              </form>
-            {% else %}
-              <div class="flex justify-center mt-6">
-                <form method="post" action="{% url 'user_account:add_to_cart' material.pk %}">
-                  {% csrf_token %}
-                  <button type="submit" class="px-5 py-2 bg-green-700 text-white rounded-lg font-semibold">
-                    {{ material.price }} € Buy
-                  </button>
-                </form>
-              </div>
-            {% endif %}
-            
-          {% else %}
-            <p class="text-black dark:text-white mt-4">
-              <a href="{% url 'user_account:login' %}" class="text-blue-600 font-semibold hover:underline">Login</a> to Buy, Rate or Review this material.
-            </p>
-          {% endif %}
+
+        <!-- Authenticated user actions -->
+        {% if user.is_authenticated %}
+        <div class="flex justify-center gap-4 mt-2">
+          <!-- Leave a Review Button -->
+          <a href="{% url 'library:create_review' material.pk %}" 
+             class="inline-block px-5 py-2 bg-sky-800 hover:bg-sky-600 text-white rounded-lg font-semibold w-40 text-center">
+            Leave a Review
+          </a>
+
+          <!-- Rating Dropdown -->
+          <form method="post" class="w-40">
+            {% csrf_token %}
+            <input type="hidden" name="score" id="rating-value">
+            <select id="rating-select" name="rating"
+                    class="w-full px-5 py-2 bg-yellow-600 hover:bg-yellow-400 text-white rounded-lg font-semibold text-center">
+              <option value="" selected>Rate</option>
+              <option value="1">1 star</option>
+              <option value="2">2 stars</option>
+              <option value="3">3 stars</option>
+              <option value="4">4 stars</option>
+              <option value="5">5 stars</option>
+            </select>
+          </form>
+        </div>  
+
+        <!-- Price and Borrow/Buy Buttons -->
+        {% if has_subscription %}
+          <form method="post" action="{% url 'library:borrow_material' material.pk %}">
+            {% csrf_token %}
+            <div class="flex justify-center mt-6">
+              <button type="submit" class="px-5 py-2 bg-green-800 hover:bg-green-600 text-white rounded-lg font-semibold">
+                Borrow
+              </button>
+            </div>
+          </form>
+        {% else %}
+          <div class="flex justify-center mt-6">
+            <form method="post" action="{% url 'user_account:add_to_cart' material.pk %}">
+              {% csrf_token %}
+              <button type="submit" class="px-5 py-2 bg-green-800 hover:bg-green-600 text-white rounded-lg font-semibold">
+                {{ material.price }} € Buy
+              </button>
+            </form>
+          </div>
+        {% endif %}
+
+        {% else %}
+          <p class="text-black dark:text-white mt-4">
+            <a href="{% url 'user_account:login' %}" class="text-blue-600 font-semibold hover:underline">Login</a> to Buy, Rate or Review this material.
+          </p>
+        {% endif %}
       </div>
     </div>
   </div>
-  <!-- Reading material Summary-->
+
+  <!-- Reading material Summary -->
   <div class="mt-8 space-y-4 text-black dark:text-white">
     <p><span class="font-semibold">Summary:</span> {{ material.book_summary }}</p>
   </div>
-  <!-- Demarcation line -->
+
   <hr class="my-6 border-gray-300">
+
   <!-- Reviews -->
   <div>
     <h3 class="text-2xl font-bold text-black dark:text-white mb-4">Reviews</h3>
@@ -83,4 +106,28 @@
     </div>
   </div>
 </div>
+
+<!-- JavaScript: update stars based on dropdown -->
+<script>
+  const select = document.getElementById('rating-select');
+  const stars = document.querySelectorAll('#stars-preview .star');
+  const ratingValue = document.getElementById('rating-value');
+
+  select.addEventListener('change', function () {
+    const value = parseInt(this.value);
+    ratingValue.value = value;
+
+    stars.forEach((star, index) => {
+      if (index < value) {
+        star.classList.remove('text-gray-400');
+        star.classList.add('text-yellow-400');
+      } else {
+        star.classList.remove('text-yellow-400');
+        star.classList.add('text-gray-400');
+      }
+    });
+
+    this.form.submit();
+  });
+</script>
 {% endblock %}
