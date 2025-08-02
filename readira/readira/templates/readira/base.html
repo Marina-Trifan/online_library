@@ -83,6 +83,12 @@
                             {% endif %}
                         </a>
                         <a href="{% url 'user_account:logout' %}" class="px-2 py-2 bg-red-600 text-white rounded-xl text-sm hover:bg-red-400">Log Out</a>
+                        {% if user.is_staff %}
+                            <a href="{% url 'admin_backend:book_list' %}"
+                            class="ml-6 px-3 py-2 bg-blue-600 text-white rounded-xl text-sm hover:bg-blue-700 transition font-semibold">
+                                Admin Panel
+                            </a>
+                        {% endif %}
                     {% else %}
                         <a href="{% url 'user_account:login' %}"
                             class="px-3 py-2 bg-green-200 text-green-900 rounded-xl text-sm hover:bg-green-300 transition font-medium">

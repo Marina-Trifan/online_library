@@ -1,0 +1,39 @@
+{% extends "readira/base.html" %}
+{% load i18n static widget_tweaks %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto py-24 px-4">
+    <!-- Title -->
+    <h2 class="text-2xl font-bold text-black dark:text-white mb-6">
+        {% if form.instance.pk %} {% trans "Edit Book" %} {% else %} {% trans "Add Reading Material" %} {% endif %}
+    </h2>
+
+    <!-- Add reading material FORM -->
+    <form method="post" enctype="multipart/form-data" class="border border-gray-300 bg-white dark:bg-gray-800 p-6 rounded shadow space-y-6">
+        {% csrf_token %}
+        {% for field in form %}
+
+            <!-- Label and input container -->
+            <div class="flex items-center gap-4">
+                <label for="{{ field.id_for_label }}" class="w-48 font-medium text-black dark:text-white">{{ field.label }}</label>
+                {{ field|add_class:"w-full rounded-lg border border-gray-300 bg-white dark:bg-zinc-800 text-black dark:text-white px-3 py-2" }}
+            </div>
+
+            <!-- Input errors -->
+            {% if field.errors %}
+                <p class="text-sm text-red-600 ml-48">{{ field.errors|striptags }}</p>
+            {% endif %}
+        {% endfor %}
+
+        <!-- Buttons: Save & Cancel -->
+        <div class="pt-4">
+            <button type="submit" class="bg-green-700 hover:bg-green-600 text-white px-5 py-2 rounded-lg font-semibold">
+                {% trans "Save" %}
+            </button>
+            <button type="submit" class="bg-gray-600 hover:bg-gray-500 text-white px-5 py-2 rounded-lg font-semibold ml-4">
+                {% trans "Cancel" %}
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

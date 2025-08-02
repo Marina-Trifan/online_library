@@ -3,21 +3,31 @@
 
 {% block content %}
 <section class="py-10 px-4 max-w-4xl mx-auto">
+
+  <!-- Title -->
   <h1 class="text-2xl font-bold text-green-600 mb-6">{% trans "Search Results" %}</h1>
 
+
+  <!-- Search mechanism -->
   {% if query %}
     <p class="mb-4 text-sm text-zinc-700 dark:text-zinc-300">
       {% trans "You searched for" %}: <strong>{{ query }}</strong>
     </p>
 
+
+    <!-- Results -->
     {% if results_books or results_authors %}
       {% if results_books %}
         <h2 class="text-xl font-semibold mt-6 mb-3">{% trans "Reading Materials" %}</h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-x-4 gap-y-8">
+          
+          <!-- Results for materials -->
           {% for book in results_books %}
             <a href="{% url 'library:reading_material_detail' book.pk %}" 
               class="border border-gray-300 hover:scale-105 dark:bg-gray-800 p-4 rounded shadow transition-colors duration-200">
               
+
+              <!-- Material cover photo -->
               {% if book.image %}
                 <img src="{{ book.image.url }}" alt="{{ book.title }}" 
                     class="w-30 h-48 rounded-lg object-cover shadow mx-auto mb-4">
@@ -26,15 +36,21 @@
                   No Image
                 </div>
               {% endif %}
+              
 
+              <!-- Material Title -->
               <p class="text-lg font-bold text-center text-black dark:text-white">{{ book.title }}</p>
               
+
+              <!-- Author name and surname -->
               {% if book.author %}
                 <p class="text-sm text-gray-800 dark:text-gray-300 text-center mt-1 font-semibold">
                   {{ book.author.name }} {{ book.author.surname }}
                 </p>
               {% endif %}
+              
 
+              <!-- Material price -->
               {% if book.price %}
                 <div class="text-center mt-3">
                   <p class="text-lg text-green-700 dark:text-green-500 font-semibold">Price: {{ book.price }} €</p>
@@ -44,16 +60,20 @@
           {% endfor %}
         </div>
       {% endif %}
-
+      
+      <!-- Results for authors -->
       {% if results_authors %}
         <h2 class="text-xl font-semibold mt-10 mb-5">{% trans "Authors" %}</h2>
         <ul class="space-y-6">
           {% for author in results_authors %}
             <li class="border border-gray-300 dark:border-gray-600 bg-white dark:bg-zinc-800 p-6 rounded-lg shadow">
+              
+              <!-- Author name and surname -->
               <h3 class="text-lg font-bold text-black dark:text-white mb-3">
                 {{ author.name }} {{ author.surname }}
               </h3>
 
+              <!-- Books associated with author name -->
               {% if author.books.exists %}
                 <p class="text-sm text-zinc-600 dark:text-zinc-300 mb-2">
                   {% trans "Books by this author:" %}
@@ -61,6 +81,8 @@
                 <ul class="space-y-2">
                   {% for book in author.books.all %}
                     <li class="flex items-center space-x-3">
+                      
+                      <!-- Material cover photo -->
                       {% if book.image %}
                         <img src="{{ book.image.url }}" alt="{{ book.title }}" class="w-12 h-16 object-cover rounded shadow">
                       {% else %}
@@ -68,6 +90,8 @@
                           No Image
                         </div>
                       {% endif %}
+
+                      <!-- Material title and link to details page -->
                       <a href="{% url 'library:reading_material_detail' book.pk %}" class="text-sm font-medium hover:underline text-black dark:text-white">
                         {{ book.title }}
                       </a>
@@ -75,6 +99,8 @@
                   {% endfor %}
                 </ul>
               {% else %}
+                
+                <!-- Author with no associated books -->
                 <p class="text-sm text-gray-500 dark:text-gray-400 italic mt-2">
                   {% trans "No books listed." %}
                 </p>
@@ -84,6 +110,8 @@
         </ul>
       {% endif %}
     {% else %}
+
+    <!-- Messages -->
       <p class="text-red-500 mt-4">{% trans "No results found." %}</p>
     {% endif %}
   {% else %}

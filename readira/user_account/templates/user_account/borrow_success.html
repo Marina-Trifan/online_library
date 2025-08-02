@@ -4,8 +4,14 @@
 
 {% block content %}
 <section class="flex flex-col items-center mt-24">
+
+  <!-- Success message -->
   <h1 class="text-3xl font-bold text-green-600">Book borrowed successfully!</h1>
+
+  <!-- Material title -->
   <p class="mt-4 text-xl">{{ material.title }}</p>
+
+  <!-- Return button -->
   <a href="{% url 'library:reading_materials' %}" class="mt-6 px-6 py-3 bg-blue-600 text-white rounded-lg">Back to Library</a>
 </section>
 {% endblock %}

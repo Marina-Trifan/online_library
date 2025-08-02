@@ -3,14 +3,14 @@ from django.utils.translation import gettext_lazy as _
 from django.conf import settings
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 
-
+# Custom User Manager model:
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
         if not email:
             raise ValueError("Email is required")
         email = self.normalize_email(email)
         user = self.model(email=email, **extra_fields)
-        user.set_password(password)  # hashes password
+        user.set_password(password)  
         user.save(using=self._db)
         return user
 
@@ -20,6 +20,7 @@ class CustomUserManager(BaseUserManager):
         return self.create_user(email, password, **extra_fields)
 
 
+# Custom User model:
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True, verbose_name=_("Email (Login)"))
     city = models.CharField(max_length=100, null=True, blank = True, verbose_name=_("City"))

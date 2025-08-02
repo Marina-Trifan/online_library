@@ -5,10 +5,15 @@
 {% block content %}
   <div class="max-w-3xl mx-auto px-4 py-12 mt-24">
     <div class="border border-gray-400 dark:border-gray-500 bg-white dark:bg-gray-800 dark:text-white rounded shadow p-6 transition-colors duration-200">
+      
+      <!-- Author Details-->
       <div class="flex flex-col md:flex-row gap-6 items-center">
+        <!-- Author photo -->
         {% if author.image %}
           <img src="{{ author.image.url }}" alt="{{ author.name }}" class="w-32 h-32 rounded-full object-cover shadow-md">
         {% endif %}
+
+        <!-- Author name, date of birth, written genres -->
         <div>
           <h1 class="text-3xl font-bold text-black dark:text-white mb-2">
             {{ author.name }} {{ author.surname }}
@@ -17,6 +22,8 @@
           <p class="text-black dark:text-white"><strong>Genres:</strong> {{ author.written_genres }}</p>
         </div>
       </div>
+
+      <!-- Author's Biography -->
       <div class="mt-6 text-black dark:text-white">
         <h2 class="text-xl font-semibold mb-2">Biography</h2>
         <p>{{ author.bio }}</p>

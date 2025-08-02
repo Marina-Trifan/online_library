@@ -11,16 +11,21 @@ from django.utils.translation import gettext_lazy as _
 
 CustomUser = get_user_model()
 
+# Review form:
 class ReviewForm(forms.ModelForm):
     class Meta:
         model = Review
         fields = ['title', 'content']
 
+
+# Rating form:
 class RatingForm(forms.ModelForm):
     class Meta:
         model = Rating
         fields = ['value']
 
+
+# Custom user form:
 class CustomUserForm(forms.ModelForm):
     class Meta:
         model = CustomUser
@@ -39,6 +44,7 @@ class CustomUserForm(forms.ModelForm):
         }
 
 
+# Custom change password form:
 class CustomPasswordChangeForm(PasswordChangeForm):
     def clean_old_password(self):
         old_password = self.cleaned_data.get('old_passord')
@@ -47,7 +53,7 @@ class CustomPasswordChangeForm(PasswordChangeForm):
         return old_password
 
 
-
+# Email login form:
 class EmailLoginForm(forms.Form):
     email = forms.EmailField(
         label=_("Email"),

@@ -40,6 +40,7 @@ urlpatterns +=i18n_patterns (
     path('library/', include('library.urls', namespace='library')),
     path('user/', include('user_account.urls', namespace='user_account')),
     path('search/', search_view, name='search'),
+    path('admin_backend/', include('admin_backend.urls', namespace='admin_backend')),
 )
 
 if settings.DEBUG:

@@ -80,13 +80,13 @@
         </div>
       {% endif %}
 
-      <!-- Totals -->
+      <!-- Materials Total -->
       <div class="mt-8 border-t-2 border-zinc-400 dark:border-zinc-200 pt-4 flex justify-between text-xl font-semibold">
         <span>Total:</span>
         <span class="text-green-700 dark:text-green-600">{{ total_price }} €</span>
       </div>
 
-      <!-- Checkout -->
+      <!-- Materials Checkout -->
       <div class="mt-6 text-right">
         <a href="{% url 'user_account:checkout' order_token %}"
            class="inline-block bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-lg font-semibold transition">
@@ -95,6 +95,8 @@
       </div>
 
     {% else %}
+
+      <!-- Subscriptions -->
       {% if selected_plan %}
         <div class="mt-8 border-t-2 border-gray-400 dark:border-gray-200 pt-4">
           <h2 class="text-2xl font-semibold mb-4 text-black dark:text-white">Subscription Plan</h2>
@@ -119,13 +121,13 @@
           </div>
         </div>
 
-        <!-- Totals -->
+        <!-- Subscriptions Total -->
         <div class="mt-8 border-t-2 border-zinc-400 dark:border-zinc-200 pt-4 flex justify-between text-xl font-semibold">
           <span>Total:</span>
           <span class="text-green-700 dark:text-green-600">{{ selected_plan.price }} €</span>
         </div>
 
-        <!-- Checkout -->
+        <!-- Subscription Checkout -->
         <div class="mt-6 text-right">
           <a href="{% url 'user_account:checkout' order_token %}"
             class="inline-block bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-lg font-semibold transition">

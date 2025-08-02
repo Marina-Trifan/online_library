@@ -23,6 +23,7 @@ from decimal import Decimal
 
 User = get_user_model()
 
+# Store Login view:
 class StoreLoginView(LoginView):
     template_name = "user_account/login.html"
     authentication_form = EmailLoginForm
@@ -33,10 +34,12 @@ class StoreLoginView(LoginView):
             return reverse_lazy('user_account:choose_plan')
         return reverse_lazy("library:main_page")
 
+
+# Register view:
 class RegisterView(View):
     def get(self, request):
         if request.user.is_authenticated:
-            return redirect("user_account:profile")  # or wherever you want
+            return redirect("user_account:profile")
         email = request.GET.get("email", "")
         return render(request, "user_account/register.html", {"email": email})
 
@@ -62,6 +65,7 @@ class RegisterView(View):
         login(request, user)
         return redirect("user_account:cart")
 
+# Profile view:
 @login_required
 def profile_view(request):
     user = request.user
@@ -101,14 +105,14 @@ def profile_view(request):
         'fields': fields
     })
 
-# Logout View
+# Logout view:
 @login_required
 def logout_view(request):
     logout(request)
     return redirect('/')
 
 
-# Buy Button View
+# Add to cart view:
 @login_required
 def add_to_cart(request, material_id):
     material = get_object_or_404(ReadingMaterials, id=material_id)
@@ -142,6 +146,7 @@ def add_to_cart(request, material_id):
     return redirect("user_account:cart")
 
 
+# Cart view:
 @login_required
 def cart_view(request):
     cart = request.session.get("cart", {})
@@ -198,6 +203,8 @@ def cart_view(request):
         "has_active_subscription": has_active_subscription,
     })
 
+
+# Remove from cart view:
 @require_POST
 def remove_from_cart(request, material_id):
     cart = request.session.get("cart", {})
@@ -207,7 +214,8 @@ def remove_from_cart(request, material_id):
         request.session.modified = True
     return redirect('user_account:cart')
 
-# Remove subscription view
+
+# Remove subscription view:
 @require_POST
 @login_required
 def remove_subscription(request):
@@ -218,6 +226,7 @@ def remove_subscription(request):
     return redirect("user_account:cart")
 
 
+# Checkout view:
 @require_http_methods(["GET", "POST"])
 @login_required
 def checkout_view(request, token):
@@ -251,7 +260,7 @@ def checkout_view(request, token):
             return redirect("user_account:cart")
 
     if request.method == "POST":
-        # Validate fields (same as before)
+        # Validate fields
         cardholder_name = request.POST.get("cardholder_name", "").strip()
         card_number = request.POST.get("card_number", "").strip()
         card_expiry = request.POST.get("card_expiry", "").strip()
@@ -304,7 +313,7 @@ def checkout_view(request, token):
                 status=Order.Status.PAID,
             )
 
-        # ✅ CREARE ABONAMENT doar dacă NU există deja unul activ pentru același plan
+        # Create subscription only if one isn't active for the same plan
         if selected_plan:
             from django.utils.timezone import now
             from datetime import timedelta
@@ -312,7 +321,7 @@ def checkout_view(request, token):
             existing_active = Subscription.objects.filter(
                 user=request.user,
                 plan=selected_plan,
-                end_date__gte=now(),  # încă activ
+                end_date__gte=now(),
                 active=True
             ).exists()
 
@@ -345,7 +354,7 @@ def checkout_view(request, token):
 def checkout_success_view(request):
     return render(request, "user_account/success.html")
 
-# Subscriptions view
+# Subscriptions page view: 
 class SubscriptionPageView(TemplateView):
     template_name = 'user_account/subscriptions.html'
 
@@ -354,7 +363,9 @@ class SubscriptionPageView(TemplateView):
         plans = SubscriptionPlan.objects.all()
         context['plans'] = plans
         return context
-    
+
+
+# Choose subscription view: 
 @login_required
 def choose_subscription(request):
     user = request.user

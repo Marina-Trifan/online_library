@@ -9,7 +9,7 @@ from .views import (
     choose_subscription,
     )
 
-app_name = 'user_backend'
+app_name = 'user_account'
 
 urlpatterns = [
     path("login/", StoreLoginView.as_view(), name="login"),

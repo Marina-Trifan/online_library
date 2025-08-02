@@ -11,10 +11,12 @@ from django.utils.translation import get_language
 from django.db.models import Q
 
 
-
+# Main page view:
 class MainPage(TemplateView):
     template_name = 'library/main_page.html'
 
+
+# Search view:
 def search_view(request):
     query = request.GET.get('q', '')
     results_books = []
@@ -31,8 +33,8 @@ def search_view(request):
         "LANGUAGE_CODE": get_language()
     })
 
-# Reading Materials Views
 
+# Reading Materials Views:
 class ReadingMaterialsListView(ListView):
     model = ReadingMaterials
     template_name = 'reading_materials/list.html'
@@ -45,7 +47,6 @@ class ReadingMaterialsListView(ListView):
         user = self.request.user
         context['has_subscription'] = user.is_authenticated and user.has_active_subscription
         return context 
-
 
 class ReadingMaterialsDetailView(DetailView):
     model = ReadingMaterials
@@ -77,7 +78,7 @@ class ReadingMaterialsDetailView(DetailView):
         if score and score.isdigit():
             score = int(score)
             if 1 <= score <= 5:
-                # Creează sau actualizează ratingul utilizatorului
+                # Create or update user rating
                 Rating.objects.update_or_create(
                     user=request.user,
                     book=self.object,
@@ -87,8 +88,7 @@ class ReadingMaterialsDetailView(DetailView):
         return redirect('library:reading_material_detail', pk=self.object.pk)
 
 
-# Author Views
-
+# Author views:
 class AuthorListView(ListView):
     model = Author
     template_name = 'authors/list.html'
@@ -107,8 +107,7 @@ class AuthorDetailView(LoginRequiredMixin, DetailView):
         return super().dispatch(request, *args, **kwargs)
    
 
-# Review View
-
+# Review view:
 class ReviewCreateView(LoginRequiredMixin, CreateView):
     model = Review
     form_class = ReviewForm
@@ -122,8 +121,8 @@ class ReviewCreateView(LoginRequiredMixin, CreateView):
     def get_success_url(self):
         return reverse_lazy('library:reading_material_detail', kwargs = {'pk': self.kwargs['pk']})  
 
-# Borrow View
 
+# Borrow View:
 @login_required
 def borrow_material(request, material_id):
     user = request.user

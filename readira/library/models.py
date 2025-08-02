@@ -5,6 +5,8 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from user_account.models import CustomUser
 from django.utils import timezone
 
+
+# Category model:
 class Category(models.Model):
     name = models.CharField(max_length=255)
     parent = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, blank=True, related_name='children')
@@ -16,6 +18,7 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+# Genre model:
 class Genre(models.Model):
     name= models.CharField(max_length=255, null=True, blank=True, verbose_name=_('Genre Name'))
     category=models.ForeignKey(Category, on_delete= models.CASCADE, related_name='genre', null=True, blank=True, verbose_name='Category')
@@ -27,6 +30,7 @@ class Genre(models.Model):
     def __str__(self):
         return self.name
 
+# Author model:
 class Author(models.Model):
     name = models.CharField(max_length=255, verbose_name=_('Author'), null=True, blank=True)
     surname = models.CharField(max_length=255, verbose_name=_('Surname'), null=True, blank=True)
@@ -42,12 +46,13 @@ class Author(models.Model):
     def __str__(self):
         return self.name or "Unnamed Author"
 
+# Reading materials model:
 class ReadingMaterials(models.Model):
     title = models.CharField(max_length=255, null=True, blank=True, verbose_name=_('Title'))
     author = models.ForeignKey(Author, on_delete=models.DO_NOTHING, verbose_name=_('Author'), related_name='books', null=True, blank=True)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, verbose_name=_('Category'), null=True, blank=True)
     genre = models.ForeignKey(Genre, on_delete=models.SET_NULL, null=True, blank=True, verbose_name=_('Genre'))
-    book_summary = models.TextField(verbose_name=_('Book Summary'), null=True, blank=True)
+    book_summary = models.TextField(verbose_name=_('Summary'), null=True, blank=True)
     release_date = models.DateField(verbose_name=_('Release Date'), null=True, blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0)], null=True, blank=True)
     image = models.ImageField(upload_to='reading_materials/', verbose_name=_('Image'), null=True, blank=True)
@@ -70,6 +75,7 @@ class ReadingMaterials(models.Model):
     def __str__(self):
         return self.title or "Unnamed Material"
 
+# Review model:
 class Review(models.Model):
     book = models.ForeignKey(ReadingMaterials, on_delete=models.CASCADE, related_name='reviews', verbose_name=_('Reading Material Review'), null=True, blank=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
@@ -84,6 +90,7 @@ class Review(models.Model):
     def __str__(self):
         return f'Review by {self.user} - {self.title}'
 
+# Rating model:
 class Rating(models.Model):
     book = models.ForeignKey(ReadingMaterials, related_name='ratings', on_delete=models.CASCADE, verbose_name=_('Review'), null=True, blank=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
@@ -98,6 +105,7 @@ class Rating(models.Model):
     def __str__(self):
         return f'{self.user} rated "{self.book}" {self.value} stars'
 
+# Subscription plan model:
 class SubscriptionPlan(models.Model):
     name = models.CharField(max_length=100, verbose_name=_('Plan Name'), null=True, blank=True)
     price = models.DecimalField(max_digits=8, decimal_places=2, verbose_name=_('Price'), null=True, blank=True)
@@ -111,6 +119,7 @@ class SubscriptionPlan(models.Model):
     def __str__(self):
         return f"{self.name} - {self.duration_days} days" if self.name else "Unnamed Plan"
 
+# Subscription model: 
 class Subscription(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='subscriptions', verbose_name=_('User'), null=True, blank=True)
     plan = models.ForeignKey(SubscriptionPlan, on_delete=models.CASCADE, verbose_name=_('Plan'), null=True, blank=True)
@@ -125,6 +134,7 @@ class Subscription(models.Model):
     def __str__(self):
         return f"{self.user.email} - {self.plan.name}" if self.user and self.plan else "Incomplete Subscription"
 
+# Order model:
 class Order(models.Model):
     class Status(models.TextChoices):
         PAID = 'paid', 'Paid'
