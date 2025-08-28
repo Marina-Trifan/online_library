@@ -2,10 +2,10 @@
 {% load i18n static %}
 
 {% block content %}
-<div class="max-w-6xl mx-auto pt-24 pb-24 px-4">
+<div class="mx-auto max-w-6xl px-4 pt-24 pb-24">
 
     <!-- Title and Add button -->  
-    <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6 gap-y-4 md:gap-x-6">
+    <div class="mb-6 flex flex-col gap-y-4 md:flex-row md:items-center md:justify-between md:gap-x-6">
 
         <!-- Title -->
         <h2 class="text-2xl font-bold text-black dark:text-white">
@@ -14,7 +14,7 @@
 
         <!-- Add button -->
         <a href="{% url 'admin_backend:book_create' %}"
-            class="px-4 py-2 bg-blue-800 hover:bg-blue-600 text-white rounded-lg shadow font-semibold">
+            class="px-4 py-2 rounded-lg bg-blue-800 hover:bg-blue-600 text-white font-semibold shadow">
             + {% trans "Add" %}
         </a>
     </div>
@@ -25,20 +25,28 @@
       {% for book in books %}
 
         <!-- Reading material individual card -->
-        <div class="border border-gray-300 dark:bg-gray-800 p-4 rounded shadow flex flex-col justify-between">
+        <div class="p-4 rounded border border-gray-300 dark:bg-gray-800 shadow flex flex-col justify-between">
           
           <!-- Reading material info -->
           <div>
-            <p class="text-lg font-bold text-black dark:text-white">{{ book.title }}</p>
-            <p class="text-sm text-gray-700 dark:text-gray-300">{% trans "Author" %}: {{ book.author.name }} {{ book.author.surname }}</p>
+            <p class="text-lg font-bold text-black dark:text-white">
+              {{ book.title }}
+            </p>
+            <p class="text-sm text-gray-700 dark:text-gray-300">
+              {% trans "Author" %}: {{ book.author.name }} {{ book.author.surname }}
+            </p>
           </div>
 
           <!-- Edit and Delete links -->
           <div class="flex gap-4 mt-4">
             <a href="{% url 'admin_backend:book_edit' book.pk %}"
-               class="text-blue-600 hover:underline dark:text-blue-400">{% trans "Edit" %}</a>
+               class="text-blue-600 dark:text-blue-400 hover:underline">
+               {% trans "Edit" %}
+            </a>
             <a href="{% url 'admin_backend:book_delete' book.pk %}"
-               class="text-red-600 hover:underline dark:text-red-400">{% trans "Delete" %}</a>
+               class="text-red-600 dark:text-red-400 hover:underline">
+               {% trans "Delete" %}
+            </a>
           </div>
         </div>
       {% endfor %}

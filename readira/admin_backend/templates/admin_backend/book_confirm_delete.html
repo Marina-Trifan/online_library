@@ -2,25 +2,26 @@
 {% load i18n static %}
 
 {% block content %}
-<div class="max-w-2xl mx-auto py-10 px-4 text-center">
-    <!-- Title -->  
-    <h2 class="text-2xl font-bold text-black dark:text-white mb-4 mt-10">
-        Confirm deletion
-    </h2>
+    <div class="max-w-2xl mx-auto py-10 px-4 text-center">
+        <!-- Title -->  
+        <h2 class="text-2xl font-bold text-black dark:text-white mb-4 mt-10">
+            Confirm deletion
+        </h2>
 
-    <!-- Subtitle: confirmation question -->
-    <p class="text-gray-800 dark:text-gray-300 mb-6">
-        Are you sure that you want to delete this reading material: <span class="font-semibold">{{ object.title }}</span>?
-    </p>
+        <!-- Subtitle: confirmation question -->
+        <p class="text-gray-800 dark:text-gray-300 mb-6">
+            Are you sure that you want to delete this reading material: <span class="font-semibold">{{ object.title }}</span>?
+        </p>
 
-    <!-- Buttons: Delete & Cancel -->
-    <form method="post" class="flex justify-center gap-4">
-        {% csrf_token %}
-        <button type="submit" class="inline-block mt-4 px-5 py-2 bg-red-700 hover:bg-red-500 text-white rounded-lg font-semibold">
-            Delete
-        </button>
-        <a href="{% url 'admin_backend:book_list' %}" class="inline-block mt-4 px-5 py-2 bg-gray-700 hover:bg-gray-500 text-white rounded-lg font-semibold">
-            Cancel
-        </a>
-    </form>
+        <!-- Buttons: Delete & Cancel -->
+        <form method="post" class="flex justify-center gap-4">
+            {% csrf_token %}
+            <button type="submit" class="mt-4 inline-block px-5 py-2 rounded-lg bg-red-700 hover:bg-red-500 text-white font-semibold">
+                Delete
+            </button>
+            <a href="{% url 'admin_backend:book_list' %}" class="mt-4 inline-block px-5 py-2 rounded-lg bg-gray-700 hover:bg-gray-500 text-white font-semibold">
+                Cancel
+            </a>
+        </form>
+    </div>
 {% endblock %}
