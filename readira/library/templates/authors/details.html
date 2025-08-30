@@ -3,29 +3,29 @@
 
 
 {% block content %}
-  <div class="max-w-3xl mx-auto px-4 py-12 mt-24">
-    <div class="border border-gray-400 dark:border-gray-500 bg-white dark:bg-gray-800 dark:text-white rounded shadow p-6 transition-colors duration-200">
+  <div class="mx-auto max-w-3xl px-4 py-12 mt-24">
+    <div class="rounded border border-gray-400 dark:border-gray-500 p-6 bg-white dark:bg-gray-800 shadow transition-colors duration-200 dark:text-white">
       
       <!-- Author Details-->
-      <div class="flex flex-col md:flex-row gap-6 items-center">
+      <div class="flex flex-col items-center gap-6 md:flex-row">
         <!-- Author photo -->
         {% if author.image %}
-          <img src="{{ author.image.url }}" alt="{{ author.name }}" class="w-32 h-32 rounded-full object-cover shadow-md">
+          <img src="{{ author.image.url }}" alt="{{ author.name }}" class="h-32 w-32 rounded-full object-cover shadow-md">
         {% endif %}
 
         <!-- Author name, date of birth, written genres -->
         <div>
-          <h1 class="text-3xl font-bold text-black dark:text-white mb-2">
+          <h1 class="mb-2 text-3xl font-bold text-black dark:text-white">
             {{ author.name }} {{ author.surname }}
           </h1>
-          <p class="text-black dark:text-white mb-1"><strong>Date of Birth:</strong> {{ author.date_of_birth }}</p>
+          <p class="mb-1 text-black dark:text-white"><strong>Date of Birth:</strong> {{ author.date_of_birth }}</p>
           <p class="text-black dark:text-white"><strong>Genres:</strong> {{ author.written_genres }}</p>
         </div>
       </div>
 
       <!-- Author's Biography -->
       <div class="mt-6 text-black dark:text-white">
-        <h2 class="text-xl font-semibold mb-2">Biography</h2>
+        <h2 class="mb-2 text-xl font-semibold">Biography</h2>
         <p>{{ author.bio }}</p>
       </div>
     </div>

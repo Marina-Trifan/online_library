@@ -1,7 +1,8 @@
 {% extends "readira/base.html" %}
 {% load i18n static %}
+
 {% block content %}
-<div class="max-w-4xl mx-auto px-4 py-8 border border-gray-400 dark:bg-gray-800 bg-white dark:text-white rounded shadow transition-colors duration-200 mt-24 mb-12">
+<div class="mx-auto max-w-4xl px-4 py-8 border border-gray-400 dark:bg-gray-800 bg-white dark:text-white rounded shadow transition-colors duration-200 mt-24 mb-12">
   <div class="flex flex-col md:flex-row md:items-start md:space-x-6">
     <!-- Display image-->
     {% if material.image %}
@@ -10,7 +11,7 @@
     
     <!-- Title, Author, Genre and Rating container-->
     <div class="flex-1">
-      <h1 class="text-3xl font-bold text-black dark:text-white mb-4">{{ material.title }}</h1>
+      <h1 class="text-3xl text-black dark:text-white font-bold mb-4">{{ material.title }}</h1>
       <p class="text-black dark:text-white mb-2"><span class="font-semibold">Author:</span> {{ material.author.name }} {{ material.author.surname }}</p>
       <p class="text-black dark:text-white mb-2"><span class="font-semibold">Genre:</span> {{ material.genre.name }}</p>
       <p class="text-black dark:text-white mb-2"><span class="font-semibold">Category:</span> {{ material.category.name }}</p>
@@ -34,7 +35,7 @@
           
           <!-- Leave a Review Button -->
           <a href="{% url 'library:create_review' material.pk %}" 
-             class="inline-block px-5 py-2 bg-sky-800 hover:bg-sky-600 text-white rounded-lg font-semibold w-40 text-center">
+             class="inline-block w-40 px-5 py-2 bg-sky-800 hover:bg-sky-600 text-center text-white font-semibold rounded-lg">
             Leave a Review
           </a>
 
@@ -43,7 +44,7 @@
             {% csrf_token %}
             <input type="hidden" name="score" id="rating-value">
             <select id="rating-select" name="rating"
-                    class="w-full px-5 py-2 bg-yellow-600 hover:bg-yellow-400 text-white rounded-lg font-semibold text-center">
+                    class="w-full px-5 py-2 bg-yellow-600 hover:bg-yellow-400 text-center text-white font-semibold rounded-lg">
               <option value="" selected>Rate</option>
               <option value="1">1 star</option>
               <option value="2">2 stars</option>
@@ -59,7 +60,7 @@
           <form method="post" action="{% url 'library:borrow_material' material.pk %}">
             {% csrf_token %}
             <div class="flex justify-center mt-6">
-              <button type="submit" class="px-5 py-2 bg-green-800 hover:bg-green-600 text-white rounded-lg font-semibold">
+              <button type="submit" class="px-5 py-2 bg-green-800 hover:bg-green-600 text-white font-semibold rounded-lg">
                 Borrow
               </button>
             </div>
@@ -68,7 +69,7 @@
           <div class="flex justify-center mt-6">
             <form method="post" action="{% url 'user_account:add_to_cart' material.pk %}">
               {% csrf_token %}
-              <button type="submit" class="px-5 py-2 bg-green-800 hover:bg-green-600 text-white rounded-lg font-semibold">
+              <button type="submit" class="px-5 py-2 bg-green-800 hover:bg-green-600 text-white font-semibold rounded-lg">
                 {{ material.price }} € Buy
               </button>
             </form>
@@ -93,10 +94,10 @@
 
   <!-- Reviews -->
   <div>
-    <h3 class="text-2xl font-bold text-black dark:text-white mb-4">Reviews</h3>
+    <h3 class="text-2xl text-black dark:text-white font-bold mb-4">Reviews</h3>
     <div class="space-y-4">
       {% for review in material.reviews.all %}
-        <div class="border border-gray-300 dark:border-gray-600 p-4 rounded-md bg-white dark:bg-gray-700 transition">
+        <div class="border border-gray-300 dark:border-gray-600 p-4 rounded-md bg-white dark:bg-gray-700">
           <p class="text-sm text-gray-500 font-semibold">{{ review.user.username }}</p>
           <p class="text-lg font-medium text-gray-800">{{ review.title }}</p>
           <p class="text-gray-700">{{ review.content }}</p>

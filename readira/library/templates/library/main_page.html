@@ -16,7 +16,7 @@
 <!-- About Section -->
 <section class="bg-white dark:bg-zinc-900 py-12 px-4 md:px-10 text-center text-black dark:text-white">
     <h2 class="text-3xl font-bold mb-4">Welcome to Readira</h2>
-    <p class="text-lg max-w-4xl mx-auto">
+    <p class="text-lg mx-auto max-w-4xl">
         At Readira, we’re more than just an online library — we’re also your trusted bookstore. Whether you prefer a flexible subscription plan that gives you unlimited access to thousands of books, or you want to purchase your favorite titles, Readira has you covered. Dive into our extensive collection of ebooks, audiobooks, magazines and newspapers, and enjoy the freedom to read your way. Join today and unlock a world of stories, anytime, anywhere.
     </p>
 </section>
@@ -32,7 +32,7 @@
         <!-- Monthly Subscription -->
         <div class="border border-gray-400 dark:border-gray-500 bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 w-full md:w-1/3 transition hover:scale-105">
             <h3 class="text-2xl font-semibold mb-2">Monthly Plan</h3>
-            <p class="mb-4 text-sm text-black dark:text-gray-300">
+            <p class="text-sm text-black dark:text-gray-300 mb-4">
                 Unlimited access to our full library for 30 days. Perfect for casual readers and quick adventures.
             </p>
             <a href="{% url 'user_account:subscriptions' %}" class="inline-block px-5 py-2 bg-blue-800 hover:bg-blue-700 text-white rounded-lg font-semibold">
@@ -43,10 +43,11 @@
         <!-- Annual Subscription -->
         <div class="border border-gray-400 dark:border-gray-500 bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 w-full md:w-1/3 transition hover:scale-105">
             <h3 class="text-2xl font-semibold mb-2">Annual Plan</h3>
-            <p class="mb-4 text-sm text-black dark:text-gray-300">
+            <p class="text-sm text-black dark:text-gray-300 mb-4">
                 A full year of reading without limits. Save more and enjoy exclusive early access to new titles.
             </p>
-            <a href="{% url 'user_account:subscriptions' %}" class="inline-block px-5 py-2 bg-blue-800 hover:bg-blue-700 text-white rounded-lg font-semibold">
+            <a href="{% url 'user_account:subscriptions' %}"
+              class="inline-block px-5 py-2 bg-blue-800 hover:bg-blue-700 text-white font-semibold rounded-lg">
                 Details
             </a>
         </div>

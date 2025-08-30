@@ -2,15 +2,15 @@
 {% load i18n %}
 
 {% block content %}
-<section class="py-10 px-4 max-w-4xl mx-auto">
+<section class="mx-auto max-w-4xl py-10 px-4">
 
   <!-- Title -->
-  <h1 class="text-2xl font-bold text-green-600 mb-6">{% trans "Search Results" %}</h1>
+  <h1 class="text-2xl text-green-600 font-bold mb-6">{% trans "Search Results" %}</h1>
 
 
   <!-- Search mechanism -->
   {% if query %}
-    <p class="mb-4 text-sm text-zinc-700 dark:text-zinc-300">
+    <p class="text-sm text-zinc-700 dark:text-zinc-300 mb-4">
       {% trans "You searched for" %}: <strong>{{ query }}</strong>
     </p>
 
@@ -24,7 +24,7 @@
           <!-- Results for materials -->
           {% for book in results_books %}
             <a href="{% url 'library:reading_material_detail' book.pk %}" 
-              class="border border-gray-300 hover:scale-105 dark:bg-gray-800 p-4 rounded shadow transition-colors duration-200">
+              class="border border-gray-300 dark:bg-gray-800 hover:scale-105 p-4 rounded shadow transition-colors duration-200">
               
 
               <!-- Material cover photo -->
@@ -39,12 +39,12 @@
               
 
               <!-- Material Title -->
-              <p class="text-lg font-bold text-center text-black dark:text-white">{{ book.title }}</p>
+              <p class="text-center text-lg text-black dark:text-white font-bold ">{{ book.title }}</p>
               
 
               <!-- Author name and surname -->
               {% if book.author %}
-                <p class="text-sm text-gray-800 dark:text-gray-300 text-center mt-1 font-semibold">
+                <p class="text-center text-sm text-gray-800 dark:text-gray-300 font-semibold mt-1">
                   {{ book.author.name }} {{ book.author.surname }}
                 </p>
               {% endif %}
@@ -69,7 +69,7 @@
             <li class="border border-gray-300 dark:border-gray-600 bg-white dark:bg-zinc-800 p-6 rounded-lg shadow">
               
               <!-- Author name and surname -->
-              <h3 class="text-lg font-bold text-black dark:text-white mb-3">
+              <h3 class="text-lg text-black dark:text-white font-bold mb-3">
                 {{ author.name }} {{ author.surname }}
               </h3>
 
@@ -92,7 +92,7 @@
                       {% endif %}
 
                       <!-- Material title and link to details page -->
-                      <a href="{% url 'library:reading_material_detail' book.pk %}" class="text-sm font-medium hover:underline text-black dark:text-white">
+                      <a href="{% url 'library:reading_material_detail' book.pk %}" class="text-sm text-black dark:text-white font-medium hover:underline">
                         {{ book.title }}
                       </a>
                     </li>
