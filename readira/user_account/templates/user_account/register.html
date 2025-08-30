@@ -1,15 +1,17 @@
 {% extends "readira/base.html" %}
+{% load i18n static %}
+
 {% block content %}
-<section class="bg-white dark:bg-black text-black dark:text-white py-12 px-4">
+<section class="px-4 py-12 bg-white dark:bg-black text-black dark:text-white">
 
   <!-- Container for registration form -->
-  <div class="max-w-md mx-auto mt-24 p-8 border border-gray-300 dark:bg-gray-800 p-4 rounded shadow flex flex-col">
+  <div class="mx-auto max-w-md mt-24 p-8 rounded border border-gray-300 dark:bg-gray-800 p-4 shadow flex flex-col">
     
     <!--Page title -->
-    <h2 class="text-2xl font-bold mb-6 text-black dark:text-white text-center">Create an Account</h2>
+    <h2 class="text-center text-2xl text-black dark:text-white font-bold mb-6">Create an Account</h2>
 
     {% if error %}
-      <div class="bg-red-500 text-white p-3 rounded mb-4 text-sm">
+      <div class="rounded bg-red-500 text-sm text-white p-3 mb-4 ">
         {{ error }}
       </div>
     {% endif %}
@@ -31,13 +33,13 @@
              class="w-full px-4 py-2 rounded-lg border border-zinc-400 dark:border-zinc-500 bg-white dark:bg-zinc-800 text-black dark:text-white">
 
       <!-- Sign Up button -->
-      <button type="submit" class="w-full bg-pink-800 text-white py-2 rounded-xl hover:bg-pink-600 font-semibold">
+      <button type="submit" class="w-full py-2 rounded-xl bg-pink-800 hover:bg-pink-600 text-white  font-semibold">
         Sign Up
       </button>
     </form>
 
     <!--Login link -->
-    <p class="text-sm text-gray-400 text-center mt-4">
+    <p class="text-center text-sm text-gray-400 mt-4">
       Already have an account?
       <a href="{% url 'user_account:login' %}" class="text-blue-500 font-semibold hover:underline">Log in</a>
     </p>

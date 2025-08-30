@@ -2,17 +2,17 @@ profile.html: {% extends "readira/base.html" %}
 {% load i18n static widget_tweaks %}
 
 {% block content %}
-<section class="bg-white dark:bg-black text-black dark:text-white py-24 px-4">
-  <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
+<section class="px-4 py-24 bg-white dark:bg-black text-black dark:text-white">
+  <div class="mx-auto max-w-6xl grid grid-cols-1 md:grid-cols-3 gap-6">
     {% if messages %}
       <div class="col-span-3">
         {% for message in messages %}
           {% if message.tags == 'success' %}
-            <div class="p-4 text-xl text-green-600 text-center font-bold mx-auto w-full max-w-lg">
+            <div class="p-4 w-full mx-auto max-w-lg text-center text-xl text-green-600 font-bold">
               {{ message }}
             </div>
           {% elif message.tags == 'error' %}
-            <div class="p-4 text-xl text-red-600 text-center font-bold mx-auto w-full max-w-lg">
+            <div class="p-4 w-full mx-auto max-w-lg text-center text-xl text-red-600 font-bold">
               {{ message }}
             </div>
           {% endif %}
@@ -21,51 +21,51 @@ profile.html: {% extends "readira/base.html" %}
     {% endif %}
 
     <!-- Personal Info Card -->
-    <div class="border border-gray-300 dark:bg-gray-800 p-4 rounded shadow flex flex-col">
-      <h2 class="text-xl font-bold mb-4 text-black dark:text-white">{% trans "Personal Information" %}</h2>
+    <div class="p-4 border border-gray-300 rounded dark:bg-gray-800 shadow flex flex-col">
+      <h2 class="text-xl text-black dark:text-white font-bold mb-4 ">{% trans "Personal Information" %}</h2>
       <form method="post">
         {% csrf_token %}
         <div class="mb-4 flex items-center gap-4">
           <label for="{{ profile_form.full_name.id_for_label }}" class="w-48 font-medium">{% trans "Full Name" %}</label>
-          {{ profile_form.full_name | add_class:"w-full rounded-lg border border-zinc-400 dark:border-zinc-500 bg-white dark:bg-zinc-800 text-black dark:text-white px-3 py-2" }}
+          {{ profile_form.full_name | add_class:"px-3 py-2 w-full rounded-lg border border-zinc-400 dark:border-zinc-500 bg-white dark:bg-zinc-800 text-black dark:text-white" }}
         </div>
         <div class="mb-4 flex items-center gap-4">
           <label for="{{ profile_form.avatar_url.id_for_label }}" class="w-48 font-medium">{% trans "Avatar URL" %}</label>
-          {{ profile_form.avatar_url | add_class:"w-full rounded-lg border border-zinc-400 dark:border-zinc-500 bg-white dark:bg-zinc-800 text-black dark:text-white px-3 py-2" }}
+          {{ profile_form.avatar_url | add_class:"px-3 py-2 w-full rounded-lg border border-zinc-400 dark:border-zinc-500 bg-white dark:bg-zinc-800 text-black dark:text-white" }}
         </div>
         <div class="mb-4 flex items-center gap-4">
           <label for="{{ profile_form.city.id_for_label }}" class="w-48 font-medium">{% trans "City" %}</label>
-          {{ profile_form.city | add_class:"w-full rounded-lg border border-zinc-400 dark:border-zinc-500 bg-white dark:bg-zinc-800 text-black dark:text-white px-3 py-2" }}
+          {{ profile_form.city | add_class:"px-3 py-2 w-full rounded-lg border border-zinc-400 dark:border-zinc-500 bg-white dark:bg-zinc-800 text-black dark:text-white" }}
         </div>
         <div class="mb-4 flex items-center gap-4">
           <label for="{{ profile_form.country.id_for_label }}" class="w-48 font-medium">{% trans "Country" %}</label>
-          {{ profile_form.country | add_class:"w-full rounded-lg border border-zinc-400 dark:border-zinc-500 bg-white dark:bg-zinc-800 text-black dark:text-white px-3 py-2" }}
+          {{ profile_form.country | add_class:"px-3 py-2 w-full rounded-lg border border-zinc-400 dark:border-zinc-500 bg-white dark:bg-zinc-800 text-black dark:text-white" }}
         </div>
         <div class="mb-4 flex items-center gap-4">
           <label for="{{ profile_form.street.id_for_label }}" class="w-48 font-medium">{% trans "Street" %}</label>
-          {{ profile_form.street | add_class:"w-full rounded-lg border border-zinc-400 dark:border-zinc-500 bg-white dark:bg-zinc-800 text-black dark:text-white px-3 py-2" }}
+          {{ profile_form.street | add_class:"w-full rounded-lg border border-zinc-400 dark:border-zinc-500 bg-white dark:bg-zinc-800 text-black dark:text-white" }}
         </div>
         <div class="mb-4 flex items-center gap-4">
           <label for="{{ profile_form.zip_code.id_for_label }}" class="w-48 font-medium">{% trans "ZIP Code" %}</label>
-          {{ profile_form.zip_code | add_class:"w-full rounded-lg border border-zinc-400 dark:border-zinc-500 bg-white dark:bg-zinc-800 text-black dark:text-white px-3 py-2" }}
+          {{ profile_form.zip_code | add_class:"px-3 py-2 w-full rounded-lg border border-zinc-400 dark:border-zinc-500 bg-white dark:bg-zinc-800 text-black dark:text-white px-3 py-2" }}
         </div>
         <div class="mb-4 flex items-center gap-4">
           <label for="{{ profile_form.preferred_channel.id_for_label }}" class="w-48 font-medium">{% trans "Preferred Channel" %}</label>
-          {{ profile_form.preferred_channel | add_class:"w-full rounded-lg border border-zinc-400 dark:border-zinc-500 bg-white dark:bg-zinc-800 text-black dark:text-white px-3 py-2" }}
+          {{ profile_form.preferred_channel | add_class:"px-3 py-2 w-full rounded-lg border border-zinc-400 dark:border-zinc-500 bg-white dark:bg-zinc-800 text-black dark:text-white" }}
         </div>
         <div class="mb-4 flex items-center gap-4">
           <label for="{{ profile_form.email.id_for_label }}" class="w-48 font-medium">{% trans "Email" %}</label>
-          {{ profile_form.email | add_class:"w-full rounded-lg border border-zinc-400 dark:border-zinc-500 bg-white dark:bg-zinc-800 text-black dark:text-white px-3 py-2" }}
+          {{ profile_form.email | add_class:"px-3 py-2 w-full rounded-lg border border-zinc-400 dark:border-zinc-500 bg-white dark:bg-zinc-800 text-black dark:text-white" }}
         </div>
-        <button type="submit" name="save_profile" class="inline-block mt-4 px-5 py-2 bg-blue-800 hover:bg-blue-600 text-white rounded-lg font-semibold">
+        <button type="submit" name="save_profile" class="inline-block mt-4 px-5 py-2 rounded-lg bg-blue-800 hover:bg-blue-600 text-white font-semibold">
           {% trans "Save Profile" %}
         </button>
         </form>
     </div>
 
     <!-- Change Password Card -->
-    <div class="border border-gray-300 dark:bg-gray-800 p-4 rounded shadow flex flex-col">
-      <h2 class="text-xl font-bold mb-4 text-black dark:text-white">{% trans "Change Password" %}</h2>
+    <div class="rounded border border-gray-300 dark:bg-gray-800 p-4 shadow flex flex-col">
+      <h2 class="text-xl text-black dark:text-white font-bold mb-4 ">{% trans "Change Password" %}</h2>
       <form method="post">
         {% csrf_token %}
 
@@ -73,10 +73,10 @@ profile.html: {% extends "readira/base.html" %}
         <div class="mb-4">
           <div class="flex items-center gap-4">
             <label for="{{ password_form.old_password.id_for_label }}" class="w-48 font-medium">{% trans "Old password" %}</label>
-            {{ password_form.old_password|add_class:"w-full rounded-lg border border-zinc-400 dark:border-zinc-500 bg-white dark:bg-zinc-800 text-black dark:text-white px-3 py-2" }}
+            {{ password_form.old_password|add_class:"px-3 py-2 w-full rounded-lg border border-zinc-400 dark:border-zinc-500 bg-white dark:bg-zinc-800 text-black dark:text-white" }}
           </div>
           {% if password_form.old_password.errors %}
-            <div class="text-red-500 text-sm mt-2 ml-40">
+            <div class="mt-2 ml-40 text-sm text-red-500">
               {% for error in password_form.old_password.errors %}
                 <p>{{ error }}</p>
               {% endfor %}
@@ -87,9 +87,9 @@ profile.html: {% extends "readira/base.html" %}
         <!-- New Password -->
         <div class="mb-4 flex items-center gap-4">
           <label for="{{ password_form.new_password1.id_for_label }}" class="w-48 font-medium">{% trans "New password" %}</label>
-          {{ password_form.new_password1|add_class:"w-full rounded-lg border border-zinc-400 dark:border-zinc-500 bg-white dark:bg-zinc-800 text-black dark:text-white px-3 py-2" }}
+          {{ password_form.new_password1|add_class:"px-3 py-2 w-full rounded-lg border border-zinc-400 dark:border-zinc-500 bg-white dark:bg-zinc-800 text-black dark:text-white" }}
           {% if password_form.new_password1.errors %}
-            <div class="text-red-500 text-sm">
+            <div class="text-sm text-red-500">
               {% for error in password_form.new_password1.errors %}
                 <p>{{ error }}</p>
               {% endfor %}
@@ -101,10 +101,10 @@ profile.html: {% extends "readira/base.html" %}
         <div class="'mb-4">
           <div class="flex items-center gap-4">
             <label for="{{ password_form.new_password2.id_for_label }}" class="w-48 font-medium">{% trans "New password confirmation" %}</label>
-            {{ password_form.new_password2|add_class:"w-full rounded-lg border border-zinc-400 dark:border-zinc-500 bg-white dark:bg-zinc-800 text-black dark:text-white px-3 py-2" }}
+            {{ password_form.new_password2|add_class:"px-3 py-2 w-full rounded-lg border border-zinc-400 dark:border-zinc-500 bg-white dark:bg-zinc-800 text-black dark:text-white" }}
           </div>
           {% if password_form.new_password2.errors %}
-            <div class="text-red-500 text-sm mt-2 ml-40">
+            <div class="mt-2 ml-40 text-sm text-red-500">
               {% for error in password_form.new_password2.errors %}
                 <p>{{ error }}</p>
               {% endfor %}
@@ -112,18 +112,18 @@ profile.html: {% extends "readira/base.html" %}
           {% endif %}
         </div>
 
-        <button type="submit" name="change_password" class="inline-block mt-4 px-5 py-2 bg-blue-800 hover:bg-blue-600 text-white rounded-lg font-semibold">
+        <button type="submit" name="change_password" class="inline-block mt-4 px-5 py-2 rounded-lg bg-blue-800 hover:bg-blue-600 text-white font-semibold">
           {% trans "Change Password" %}
         </button>
         </form>
     </div>
 
     <!-- Order and Subscription container -->
-    <div class="border border-gray-300 dark:bg-gray-800 p-4 rounded shadow flex flex-col justify-between">
+    <div class="border border-gray-300 rounded dark:bg-gray-800 p-4 shadow flex flex-col justify-between">
       
       <!-- Subscription History -->
       <div>
-        <h2 class="text-xl font-bold mb-4 text-black dark:text-white">{% trans "Subscription History" %}</h2>
+        <h2 class="text-xl text-black dark:text-white font-bold mb-4">{% trans "Subscription History" %}</h2>
         {% if subscriptions %}
           {% for sub in subscriptions %}
             <div class="text-sm mb-6">
@@ -138,7 +138,7 @@ profile.html: {% extends "readira/base.html" %}
 
       <!-- Orders History -->
       <div class="mt-8">
-        <h2 class="text-xl font-bold mb-4 text-black dark:text-white">{% trans "Orders" %}</h2>
+        <h2 class="text-xl text-black dark:text-white font-bold mb-4">{% trans "Orders" %}</h2>
         {% if orders %}
           {% for order in orders %}
             <div class="text-sm mb-6">

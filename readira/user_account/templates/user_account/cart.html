@@ -2,20 +2,20 @@
 {% load i18n static %}
 
 {% block content %}
-<section class="text-black dark:text-white py-12 px-4 mt-10">
-  <div class="max-w-4xl mx-auto border border-gray-300 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+<section class="mt-10 px-4 py-12 text-black dark:text-white">
+  <div class="mx-auto max-w-4xl border border-gray-300 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
 
     {% if messages %}
       <div class="mb-6">
         {% for message in messages %}
-          <div class="p-4 mb-3 rounded bg-yellow-200 text-black border-l-4 border-yellow-500">
+          <div class="p-4 mb-3 border-l-4 border-yellow-500 rounded bg-yellow-200 text-black">
             {{ message }}
           </div>
         {% endfor %}
       </div>
     {% endif %}
 
-    <h1 class="text-3xl font-bold mb-6 text-center text-black  dark:text-white">Your Cart</h1>
+    <h1 class="text-center text-3xl text-black dark:text-white font-bold mb-6">Your Cart</h1>
 
     {% if materials %}
       <ul class="divide-y-2 divide-zinc-200 dark:divide-zinc-600">
@@ -28,7 +28,7 @@
                   <img src="{{ item.image.url }}" alt="{{ item.title }}" class="w-20 h-28 object-cover rounded shadow-md">
                 {% endif %}
               <div>
-                <h2 class="font-semibold text-lg text-zinc-900 dark:text-white">{{ item.title }}</h2>
+                <h2 class="text-lg text-zinc-900 dark:text-white font-semibold">{{ item.title }}</h2>
                 <p class="text-sm text-zinc-600 dark:text-zinc-400">
                   {{ item.author.name }} {{ item.author.surname }}
                 </p>
@@ -45,7 +45,7 @@
 
             <!-- Right Section -->
             <div class="text-right">
-              <p class="text-lg font-bold text-green-700 dark:text-green-600">{{ item.price }} €</p>
+              <p class="text-lg text-green-700 dark:text-green-600 font-bold">{{ item.price }} €</p>
               <form method="post" action="{% url 'user_account:remove_from_cart' item.id %}">
                 {% csrf_token %}
                 <button type="submit" class="text-sm text-red-600 font-semibold hover:underline">Remove</button>
@@ -57,7 +57,7 @@
 
       {% if selected_plan %}
         <div class="mt-8 border-t-2 border-gray-400 dark:border-gray-200 pt-4">
-          <h2 class="text-2xl font-semibold mb-4 text-black dark:text-white">Subscription Plan</h2>
+          <h2 class="text-2xl text-black dark:text-white font-semibold mb-4">Subscription Plan</h2>
           <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
             <div>
               <p class="text-lg">
@@ -89,7 +89,7 @@
       <!-- Materials Checkout -->
       <div class="mt-6 text-right">
         <a href="{% url 'user_account:checkout' order_token %}"
-           class="inline-block bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-lg font-semibold transition">
+           class="inline-block bg-blue-600 hover:bg-blue-500 px-6 py-3 text-white font-semibold rounded-lg">
            Proceed to Checkout
         </a>
       </div>
@@ -99,7 +99,7 @@
       <!-- Subscriptions -->
       {% if selected_plan %}
         <div class="mt-8 border-t-2 border-gray-400 dark:border-gray-200 pt-4">
-          <h2 class="text-2xl font-semibold mb-4 text-black dark:text-white">Subscription Plan</h2>
+          <h2 class="text-2xl text-black dark:text-white font-semibold mb-4">Subscription Plan</h2>
           <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
             <div>
               <p class="text-lg">
@@ -130,13 +130,13 @@
         <!-- Subscription Checkout -->
         <div class="mt-6 text-right">
           <a href="{% url 'user_account:checkout' order_token %}"
-            class="inline-block bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-lg font-semibold transition">
+            class="inline-block bg-blue-600 hover:bg-blue-500 px-6 py-3 text-white font-semibold rounded-lg">
             Proceed to Checkout
           </a>
         </div>
 
       {% else %}
-        <p class="text-center text-gray-600 text-lg">Your cart is empty.</p>
+        <p class="text-center text-lg text-gray-600">Your cart is empty.</p>
       {% endif %}
       <div class="text-center mt-6">
         <a href="{% url 'library:reading_materials' %}"

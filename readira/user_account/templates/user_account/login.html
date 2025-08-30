@@ -1,14 +1,16 @@
 {% extends "readira/base.html" %}
+{% load i18n static %}
+
 {% block content %}
-<section class="bg-white dark:bg-black text-black dark:text-white py-12 px-4">
+<section class="px-4 py-12 bg-white dark:bg-black text-black dark:text-white">
 
   <!-- Authentication container -->
-  <div class="max-w-md mx-auto mt-24 p-8 border border-gray-300 dark:bg-gray-800 p-4 rounded shadow flex flex-col">
-    <h2 class="text-2xl font-bold mb-6 text-black dark:text-white text-center">Login to Your Account</h2>
+  <div class="mx-auto max-w-md mt-24 p-8 border border-gray-300 dark:bg-gray-800 p-4 rounded shadow flex flex-col">
+    <h2 class="text-center text-2xl text-black dark:text-white font-bold mb-6">Login to Your Account</h2>
 
     <!-- Error messages -->
     {% if form.errors %}
-      <div class="bg-red-500 text-white p-3 rounded mb-4 text-sm">
+      <div class="p-3 rounded bg-red-500 text-white text-sm mb-4">
         {% with form.errors|length as error_count %}
           Please correct the error{{ error_count|pluralize }} below.
         {% endwith %}
@@ -24,7 +26,7 @@
         {{ form.email.label_tag }}
         {{ form.email }}
         {% if form.email.errors %}
-          <p class="text-red-300 text-sm mt-1">{{ form.email.errors.0 }}</p>
+          <p class="text-sm text-red-300 mt-1">{{ form.email.errors.0 }}</p>
         {% endif %}
       </div>
 
@@ -33,18 +35,18 @@
         {{ form.password.label_tag }}
         {{ form.password }}
         {% if form.password.errors %}
-          <p class="text-red-300 text-sm mt-1">{{ form.password.errors.0 }}</p>
+          <p class="text-sm text-red-300 mt-1">{{ form.password.errors.0 }}</p>
         {% endif %}
       </div>
 
       <!-- Login button -->
-      <button type="submit"  class="inline-block w-full px-5 py-2 bg-green-800 hover:bg-green-600 text-white rounded-lg font-semibold">
+      <button type="submit"  class="inline-block w-full px-5 py-2 rounded-lg bg-green-800 hover:bg-green-600 text-white font-semibold">
         Login
       </button>
     </form>
 
     <!-- Redirect link -->
-    <p class="text-sm text-gray-400 text-center mt-4">
+    <p class="text-center text-sm text-gray-400 mt-4">
       Don't have an account?
       <a href="{% url 'user_account:register' %}" class="text-blue-500 font-semibold hover:underline">Sign up</a>
     </p>

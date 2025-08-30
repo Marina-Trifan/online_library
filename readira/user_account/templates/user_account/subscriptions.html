@@ -8,25 +8,25 @@
     <h1 class="text-4xl font-bold mb-4">Choose Your Subscription</h1>
 
     <!-- Short description -->
-    <p class="text-lg text-gray-800 font-semibold dark:text-gray-300 mb-12">
+    <p class="text-lg text-gray-800 dark:text-gray-300 font-semibold mb-12">
         Here you can choose between our Monthly and Annual plans.
     </p>
 
     <!-- Subscription plans -->
     <div class="flex flex-col md:flex-row justify-center items-center gap-8 px-4">
         {% for plan in plans %}
-        <div class="border border-gray-400 dark:border-gray-500 bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 w-full md:w-1/3 transition hover:scale-105">
+        <div class="rounded-lg border border-gray-400 dark:border-gray-500 bg-white dark:bg-gray-800 shadow-lg p-6 w-full md:w-1/3 hover:scale-105">
             
             <!-- Plan name -->
             <h3 class="text-2xl font-semibold mb-2">{{ plan.name }}</h3>
             
             <!-- Plan description -->
-            <p class="mb-4 text-sm text-black dark:text-gray-300">
+            <p class="text-sm text-black dark:text-gray-300 mb-4">
                 {{ plan.description }}
             </p>
 
             <!-- Plan duration and price -->
-            <p class="text-xl font-bold mb-4 text-green-600 dark:text-green-400">
+            <p class="text-xl text-green-600 dark:text-green-400 font-bold mb-4">
                 {{ plan.price }} € /
                 {% if plan.duration_days == 30 %}
                     month
@@ -39,7 +39,7 @@
 
             <!-- Buy button -->
             <a href="{% url 'user_account:cart' %}?plan_id={{ plan.id }}" 
-            class="inline-block px-5 py-2 bg-green-700 hover:bg-green-600 text-white rounded-lg font-semibold">
+            class="inline-block px-5 py-2 rounded-lg bg-green-700 hover:bg-green-600 text-white font-semibold">
                 Buy
             </a>
         </div>

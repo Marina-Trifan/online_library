@@ -2,7 +2,7 @@
 {% load i18n static %}
 
 {% block content %}
-<section class="max-w-2xl mx-auto py-12 px-6">
+<section class="mx-auto max-w-2xl px-6 py-12">
 
   <!-- Page title -->
   <h1 class="text-3xl font-bold text-center text-blue-600 mb-8">Checkout</h1>
@@ -23,13 +23,29 @@
     <!-- Name -->
     <div>
       <label for="cardholder_name" class="block font-semibold mb-1">Cardholder Name</label>
-        <input type="text" name="cardholder_name" placeholder="First Last"  pattern="^[A-Za-z]+(?:\s+[A-Za-z]+)+$"  title="Please enter at least two names (letters only)"  required  class="w-full px-4 py-2 border border-gray-400 rounded-lg bg-white dark:bg-zinc-800 text-black dark:text-white">
+        <input
+          type="text"
+          name="cardholder_name"
+          placeholder="First Last" 
+          pattern="^[A-Za-z]+(?:\s+[A-Za-z]+)+$" 
+          title="Please enter at least two names (letters only)" 
+          required  class="w-full px-4 py-2 border border-gray-400 rounded-lg bg-white dark:bg-zinc-800 text-black dark:text-white">
     </div>
 
     <!-- Card number -->
     <div>
       <label for="card_number" class="block font-semibold mb-1">Card Number</label>
-        <input type="text" name="card_number"  placeholder="1234567812345678"  inputmode="numeric"  pattern="\d{16}"  maxlength="16"  title="Card number must be exactly 16 digits"  required  autocomplete="cc-number"  oninput="this.value = this.value.replace(/[^0-9]/g, '')"  class="w-full px-4 py-2 border border-gray-400 rounded-lg bg-white dark:bg-zinc-800 text-black dark:text-white">
+        <input
+        type="text"
+        name="card_number" 
+        placeholder="1234567812345678" 
+        inputmode="numeric" 
+        pattern="\d{16}" 
+        maxlength="16" 
+        title="Card number must be exactly 16 digits" 
+        required  autocomplete="cc-number"
+        oninput="this.value = this.value.replace(/[^0-9]/g, '')" 
+        class="w-full px-4 py-2 border border-gray-400 rounded-lg bg-white dark:bg-zinc-800 text-black dark:text-white">
     </div>
 
 
@@ -63,11 +79,11 @@
     </div>
 
     <!-- Total price -->
-    <p class="text-xl font-bold text-blue-600 mt-4">Total: {{ total_price }} €</p>
+    <p class="text-xl text-blue-600 font-bold mt-4">Total: {{ total_price }} €</p>
 
     <!-- Pay button -->
     <div>
-      <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white py-3 rounded-lg font-semibold">
+      <button type="submit" class="w-full py-3 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-semibold">
         Pay Now
       </button>
     </div>
