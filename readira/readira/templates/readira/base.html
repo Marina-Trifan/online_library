@@ -1,34 +1,35 @@
 {% load static i18n %}
+
 <!DOCTYPE html>
-<html lang= '{% get_current_language as LANGUAGE_CODE %} {{LANGUAGE_CODE}}' class="h-full">
+<html lang= "{% get_current_language as LANGUAGE_CODE %} {{LANGUAGE_CODE}}" class="h-full">
 <head>
     <meta charset="UTF-8">
-    <meta name = 'viewport' content = 'width=device-width, initial-scale=1.0'>
+    <meta name = "viewport" content = "width=device-width, initial-scale=1.0">
     <title>Readira</title>
 
     <!-- Alpine.js for interactivity-->
-    <script defer src = 'https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js'></script>
+    <script defer src = "https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
     <!-- Phosfor Icons-->
-    <script src = 'https://unpkg.com/@phosphor-icons/web'></script>
+    <script src = "https://unpkg.com/@phosphor-icons/web"></script>
 
     <!-- Tailwind CSS-->
-    <link href = '{%static "css/tailwind.css" %}' rel = 'stylesheet'>
+    <link href = "{%static 'css/tailwind.css' %}" rel = "stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
 
     <!-- Dark mode script from cookie-->
     <script>
         (function() {
-            const theme = document.cookie.split('; ').find(row => row.startsWith('theme='));
-            const prefersDark = !theme || theme.includes('dark');
+            const theme = document.cookie.split("; ").find(row => row.startsWith("theme="));
+            const prefersDark = !theme || theme.includes("dark");
             if (prefersDark) {
-                document.documentElement.classList.add('dark');
+                document.documentElement.classList.add("dark");
             }
         })();
     </script>
     <script>
         tailwind.config = {
-            darkMode: 'class'
+            darkMode: "class"
         }
     </script>
 </head>
@@ -37,7 +38,7 @@
 
 <!-- Header-->
     <header class="fixed top-0 left-0 right-0 top-0 z-50 bg-zinc-800 text-white shadow">
-        <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+        <div class="mx-auto max-w-7xl px-4 py-3 flex items-center justify-between">
             <!-- Left Section -->
              <div class="flex items-center space-x-20">
                 <a href="/" class="text-3xl font-bold hover:text-green-600">READIRA</a>
@@ -51,15 +52,15 @@
             </div>
 
             <!-- Right Section: Search, Cart icon, Authetication, Language, Theme toggle-->
-            <div class="flex justify-end text-sm items-center">
+            <div class="flex justify-end items-center text-sm">
 
                 <!-- Search Form and Cart icon -->
                 <div class="flex items-center space-x-6">
 
                 <!-- Search Form -->
                     <form action="/search" method="get" class="flex items-center">
-                        <input type="search" name="q" placeholder="Search your next read..." class="rounded-l px-2 py-2 text-black border border-gray-400 focus:outline-none">
-                        <button type="submit" class="bg-gray-400 px-3 py-2 rounded-r hover:bg-gray-200 text-black">
+                        <input type="search" name="q" placeholder="Search your next read..." class="border border-gray-400 px-2 py-2 rounded-l text-black focus:outline-none">
+                        <button type="submit" class="px-3 py-2 bg-gray-400 hover:bg-gray-200 rounded-r text-black">
                             Search
                         </button>
                     </form>
@@ -75,27 +76,27 @@
 
                 <!-- Authentication buttons -->
                     {% if user.is_authenticated %}
-                        <a href="{% url 'user_account:profile' %}" class="text-black rounded-xl text-sm font-semibold">
+                        <a href="{% url 'user_account:profile' %}" class="text-sm text-black font-semibold rounded-xl">
                             {% if user.avatar_url %}
                                 <img src="{{ user.avatar_url }}" alt="Avatar" class="rounded-full object-cover w-10 h-10">
                             {% else %}
                                 <i class="ph ph-user-circle text-3xl text-white"></i>
                             {% endif %}
                         </a>
-                        <a href="{% url 'user_account:logout' %}" class="px-2 py-2 bg-red-600 text-white rounded-xl text-sm hover:bg-red-400">Log Out</a>
+                        <a href="{% url 'user_account:logout' %}" class="px-2 py-2 bg-red-600 hover:bg-red-400 text-sm text-white rounded-xl">Log Out</a>
                         {% if user.is_staff %}
                             <a href="{% url 'admin_backend:book_list' %}"
-                            class="ml-6 px-3 py-2 bg-blue-600 text-white rounded-xl text-sm hover:bg-blue-700 transition font-semibold">
+                            class="ml-6 px-3 py-2 bg-blue-600 hover:bg-blue-700 text-sm text-white font-semibold rounded-xl">
                                 Admin Panel
                             </a>
                         {% endif %}
                     {% else %}
                         <a href="{% url 'user_account:login' %}"
-                            class="px-3 py-2 bg-green-200 text-green-900 rounded-xl text-sm hover:bg-green-300 transition font-medium">
+                            class="px-3 py-2 bg-green-200 hover:bg-green-300 text-sm text-green-900 font-medium rounded-xl">
                             Log In
                         </a>
                         <a href="{% url 'user_account:register' %}"
-                            class="px-3 py-2 bg-pink-200 text-pink-900 rounded-xl text-sm hover:bg-pink-300 transition font-semibold">
+                            class="px-3 py-2 bg-pink-200 hover:bg-pink-300 text-sm text-pink-900 font-semibold rounded-xl">
                             Sign Up
                         </a>
                     {% endif %}
@@ -104,14 +105,14 @@
                     <form action="{% url 'set_language' %}" method="post">
                         {% csrf_token%}
                         <select name="language" onchange="this.form.submit()"
-                            class="bg-zinc-600 text-white text-sm px-2 py-2 rounded-md">    
+                            class="px-2 py-2 bg-zinc-600 text-sm text-white rounded-md">    
                             <option value="en" {% if LANGUAGE_CODE == "en" %}selected{% endif %}>EN</option>
                             <option value="ro" {% if LANGUAGE_CODE == "ro" %}selected{% endif %}>RO</option>
                         </select>
                     </form>
 
                     <!-- Theme toggle -->
-                    <button onclick="toggleTheme()" class="text-xl hover:text-yellow-400 transition" title="Toggle theme">
+                    <button onclick="toggleTheme()" class="text-xl hover:text-yellow-400" title="Toggle theme">
                         <i id="theme-icon" class="ph ph-moon"></i>
                     </button>
                 </div>
@@ -128,11 +129,11 @@
 
 
 <!-- Footer -->
-<footer class="bg-zinc-900 text-white py-4">
+<footer class="py-4 bg-zinc-900 text-white">
   <div class="container mx-auto px-6 flex justify-between items-center">
     <!-- Left: Contact us -->
     <div class="flex flex-col items-start">
-      <p class="mb-2 font-semibold text-lg">Contact us</p>
+      <p class="mb-2 text-lg font-semibold">Contact us</p>
       <p>
         <i class="ph ph-phone text-lg"></i>
         + 40 740 123 456
