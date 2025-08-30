@@ -15,14 +15,14 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.contrib.auth.views import LogoutView
 from django.urls import path, include
-from django.conf.urls.i18n import i18n_patterns
 from django.conf import settings
+from django.conf.urls.i18n import i18n_patterns
 from django.conf.urls.static import static
 from django.views.i18n import set_language
+from django.http import HttpResponseRedirect
 from library.views import MainPage, search_view
-from django.contrib.auth.views import LogoutView
-from django.contrib.auth import logout
 
 
 def redirect_to_user_language(request):
@@ -35,7 +35,7 @@ urlpatterns = [
     path('set_language/', set_language, name = 'set_language'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-urlpatterns +=i18n_patterns (
+urlpatterns +=i18n_patterns(
     path('admin/', admin.site.urls),
     path('library/', include('library.urls', namespace='library')),
     path('user/', include('user_account.urls', namespace='user_account')),

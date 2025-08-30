@@ -158,7 +158,7 @@ LOGGING = {
         'file': {
             'level': 'WARNING',
             'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR, 'movieform.log'),  # salvează în fișierul movieform.log
+            'filename': os.path.join(BASE_DIR, 'movieform.log'),
             'formatter': 'verbose',
         },
     },
