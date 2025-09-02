@@ -82,7 +82,7 @@ class RegisterView(View):
 
         user = User.objects.create_user(email=email, password=password)
         login(request, user)
-        return redirect('user_account:cart')
+        return redirect('user_account:login')
 
 
 @login_required

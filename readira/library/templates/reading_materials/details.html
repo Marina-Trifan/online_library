@@ -99,8 +99,8 @@
       {% for review in material.reviews.all %}
         <div class="border border-gray-300 dark:border-gray-600 p-4 rounded-md bg-white dark:bg-gray-700">
           <p class="text-sm text-gray-500 font-semibold">{{ review.user.username }}</p>
-          <p class="text-lg font-medium text-gray-800">{{ review.title }}</p>
-          <p class="text-gray-700">{{ review.content }}</p>
+          <p class="text-lg font-medium text-black dark:text-white">{{ review.title }}</p>
+          <p class="text-black dark:text-white">{{ review.content }}</p>
         </div>
       {% empty %}
         <p class="text-black dark:text-white">No reviews yet.</p>
